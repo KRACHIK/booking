@@ -1,6 +1,8 @@
 #ifndef BASE_H
 #define BASE_H
 
+#include "common.h"
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -32,9 +34,6 @@ private:
 	std::string _sData;
 
 };
-
-
-
 
 
 class CStringFind_impl
@@ -102,7 +101,7 @@ public:
 			else
 			{
 				found = -1;
-				std::cout << "[return    // bad or end find" << "]\n";
+				//std::cout << "[return    // bad or end find" << "]\n";
 				return ""; // bad or end find
 			}
 
@@ -152,6 +151,27 @@ public:
 
 		return "";
 	}
+
+	static std::string Find(const std::string & line, std::string str2, std::string str3)
+	{
+
+		std::string sResult = CStringFind_impl::Find(line, str2, str3);
+
+		if (sResult.size() > 0)
+		{
+			//std::cout << "->[" << sResult << "]\n";
+			return sResult;
+		}
+		else
+		{
+			std::cout << "Error Open file \n";
+		}
+
+		std::cout << "End" << std::endl;
+
+		return "";
+	}
+
 };
 
 class CFileRead
@@ -160,7 +180,6 @@ public:
 	///		
 	static std::vector<std::string> GetArrTokenRaw_NOT_MOVE_CARRETKA(const std::string & FileText, CToken Token)
 	{
-		std::cout << "[CFileRead::GetArrTokenRaw] : " << " ";
 
 		std::vector<std::string> Arr;
 		int found = 0;
@@ -174,20 +193,16 @@ public:
 			{
 				found -= Token.GetTegEnd().size() - 1;
 
-				std::cout << " " << sResult << " ";
 				Arr.push_back(sResult);
 			}
 
 		}
 
-		std::cout << " " << sResult << "\n";
 		return Arr;
 	}
 
 	static std::vector<std::string> GetArrTokenRaw(const std::string & FileText, CToken Token)
 	{
-		std::cout << "[CFileRead::GetArrTokenRaw] : " << " ";
-
 		std::vector<std::string> Arr;
 		int found = 0;
 		std::string  sResult;
@@ -211,7 +226,6 @@ public:
 
 	static std::vector<int> GetArrToken(const std::string & FileText, CToken Token)
 	{
-		std::cout << "[CFileRead::GetArrToken] : " << " ";
 		std::vector<int> Arr;
 		int found = 0;
 		std::string  sResult;
@@ -222,22 +236,29 @@ public:
 
 			if (found >= 0)
 			{
-				std::cout << " " << sResult << " ";
+				//Log::CFileLog::Log("[CFileRead::GetArrToken] : " + sResult, LOG_PARSER);
+
 				Arr.push_back(std::stoi(sResult));
 			}
-
 		}
 
-		std::cout << " " << sResult << "\n";
+		  
 		return Arr;
 	}
 
 
-	static std::string  FindOneTokenInFile(const std::string & sFileName, CToken Tokken)
+	static std::string FindOneTokenInFile(const std::string & sFileName, CToken Tokken)
 	{
 		std::string sResult = CFindImpl::Read_And_Find(sFileName, Tokken.GetTegStart(), Tokken.GetTegEnd());
 		return sResult;
 	}
+
+	static std::string FindOneTokenInText(const std::string & sFileName, CToken Tokken)
+	{
+		std::string sResult = CFindImpl::Find(sFileName, Tokken.GetTegStart(), Tokken.GetTegEnd());
+		return sResult;
+	}
+	//
 
 	static std::string OpenFileAndReplaceCRLF(const std::string & sFileName)
 	{
@@ -283,8 +304,23 @@ public:
 		return sResult;
 	}
 
+	static std::string ReplaceCRLF(const std::string & sText)
+	{
+		std::string sResult = sText;
 
-	static std::string  CFileRead::ReplaceSpace(std::string  s)
+		for (int i = 0; i < sResult.size(); i++)
+		{
+			if (sResult[i] == '"')
+			{
+				sResult[i] = '|';
+			}
+		}
+		return sResult;
+	}
+
+
+
+	static std::string CFileRead::ReplaceSpace(std::string  s)
 	{
 		int k = 0;
 		//std::string s;
@@ -299,16 +335,8 @@ public:
 				i--;
 			}
 		}
-		//std::cout << s;
-		if (k == 0) 
-		{
-			std::cout << std::endl << "space not find";
-		}
-		else
-		{
-			std::cout << std::endl << k;
-		}
-	
+	 
+
 		return s;
 	}
 

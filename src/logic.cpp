@@ -1,8 +1,8 @@
 #include "def.h"
 #include "common.h"
- 
 
-/*  
+
+/*
 #include <iostream>
 #include <assert.h>
 #include <iomanip>
@@ -29,7 +29,7 @@ namespace OS {
 		}
 	};
 }
-namespace Base{
+namespace Base {
 
 	class CData
 	{
@@ -104,7 +104,7 @@ namespace Java {
 
 #if 0
 namespace L2
-{ 
+{
 	class CData
 	{
 	public:
@@ -282,21 +282,36 @@ namespace client
 
 			bool bCreateDir = client::CLogic::CreateWorkDir(Seting.GetWorkDir());
 
-			//if (!bCreateDir) { std::cout << "not create work dir \n"; }
-
 			std::vector<CTask> TaskArr = client::CLogic::CreateTask(Seting);
 
 			client::CLogic::CreateSettingForParser(TaskArr, Seting);
-			  
+
 			bool bRunUtil = client::CLogic::RunUtilDownload(TaskArr, Seting);
 
 			if (!bRunUtil) { std::cout << "not bRunUtil \n"; }
+
+			bRunUtil = client::CLogic::RunUtilParse(TaskArr, Seting);
 
 			return true;
 		}
 
 	private:
+		static bool RunUtilParse(const std::vector<CTask> & TaskArr, CSeting Seting)
+		{
 
+			std::string sUtilName = "booking_html_parser.exe";
+
+			int i = 0;
+
+			for (auto it : TaskArr)
+			{
+				std::string cmd = Seting.GetProgaDir() + OS::CSystyem::GetSlash() + sUtilName + " " + it.GetDirProp() + " " + std::to_string(i);
+
+				system(cmd.c_str());
+			}
+
+			return true;
+		}
 
 		static std::vector<CTask> CreateTask(CSeting Seting)
 		{
@@ -344,14 +359,12 @@ namespace client
 			return TaskArr;
 		}
 
-
 		static bool CreateWorkDir(const std::string & sDirPath)
 		{
 			std::string sDirName = L2::CData::GetStringCurrentDaraAndOffsetDay(0);
 
 			return CFileSystem::create_directories(sDirPath + OS::CSystyem::GetSlash() + sDirName);
 		}
-
 
 		static bool UpdateFileProperties(std::string WantFile, std::string  GetFullPath, std::string  GetProgaDir)
 		{
@@ -453,9 +466,9 @@ namespace client
 
 				Thread_download(WantFile, it);
 			}
-
 			return true;
 		}
+
 	};
 
 }
@@ -488,6 +501,9 @@ void Dataa2()
 
 int main()
 {
+	Log::CFileLog::Log("Term", "log.log");
+	Log::CFileLog::Log("Term tora", "log.log");
+	Log::CFileLog::Log("Term tara", "log.log");
 
 	//while (true)
 	{
@@ -505,7 +521,6 @@ int main()
 			// получить дату на n дней вперед
 	// 3 вызвать утилиты скачивания и парса
 	// 4 ожидать задания
-
 
 	return 0;
 }

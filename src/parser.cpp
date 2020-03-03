@@ -11,24 +11,10 @@
 #include <time.h>
 #include "file.h"
 
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include <string>
-
-#include <functional>
-#include <algorithm>
-#include <stdint.h>
-#include <iterator>
-#include <map> 
-#include <deque>
-
-#include <filesystem>
-
-
-
-
-
-#define DBG_PARSER_LOG 0
 
 #endif  /*DEF_H*/
