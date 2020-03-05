@@ -1,6 +1,7 @@
 #ifndef	CLIENT_BASE_TYPE_H
 #define	CLIENT_BASE_TYPE_H
 
+#include "parser_impl.h"
 #include "calendar_def.h"
 #include "def.h"
 //#include "common.h" // bad!
@@ -14,33 +15,23 @@
 
 #include <regex>
 
-#include "parser_impl.h"
-
-class  CHome;  
-
+ 
 class CHomeNameAndCostAndData
 {
 public:
 	CHomeNameAndCostAndData(
-		const CHome & Home
-		, const Base::CData & Start
-		, const Base::CData & End)
-		: _Home(Home)
-		, _Start(Start)
-		, _End(End)
-	{
-	}
+		CHome & Home
+		, Base::CData & Start
+		, Base::CData & End
+	);
 
-	CHome GetHome() const { return _Home; }
-
-	Base::CData GetDataStart() const { return _Start; }
-
-	Base::CData GetDataEnd() const { return _End; }
+	CHome GetHome() const;
+	Base::CData GetDataStart() const;
+	Base::CData GetDataEnd() const;
 
 private:
 	CHome _Home;
 	Base::CData _Start, _End;
 };
-
 
 #endif 

@@ -29,10 +29,12 @@ file( GLOB SOURCE_CODE
  	
 	src/common.cpp
 	src/common.h
-	  
-	src/calendar_def.h
 
-	src/calendar_main.cpp
+	src/fix_compilate.cpp
+	src/fix_compilate.h
+	   
+	src/calendar_def.h
+	 
 	  
 	src/foreach_dir.cpp
 	src/foreach_dir.h
@@ -113,7 +115,10 @@ file( GLOB SOURCE_CODE2
 	src/SrcContainer/BaseDequeObject.cpp
 	src/SrcContainer/BaseDequeObject.h
 	src/SrcContainer/EngineBaseMapObject.h
-
+	 
+	src/fix_compilate.cpp
+	src/fix_compilate.h
+	  
 	src/parser_impl.h
 	src/parser_impl.cpp
 

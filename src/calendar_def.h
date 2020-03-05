@@ -1,12 +1,12 @@
 #ifndef CALENDAR_DEF_H
 #define CALENDAR_DEF_H
- 
+
 #include <vector>
 #include <string>
 
 
 extern class CHotelManager;
-extern class CHome;
+class CHome;
 extern class CHomeNameAndCostAndData;
 
 
@@ -21,5 +21,5 @@ typedef	std::vector<CHomeNameAndCostAndData> ArrHomeNameAndCostAndData_;
 
 
 
- 
+
 #endif /*CALENDAR_DEF_H*/

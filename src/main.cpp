@@ -17,16 +17,17 @@ int main(int argc, const char** argv)
 #else
 
 	if (argc != 3)
+	{
+		Log::CFileLog::Log("Bad Input argc, Want  \db\29.02.2020\01.03.2020-04.03.2020 FILE_NAME_FOR_SAVE_RES_WORK" , LOG_PARSER_ERR);
 		return 1;
-
+	}
+	 
 	std::string sTarget = argv[1];
 	std::string sResult = argv[2];
-
-
+	 
 	Log::CFileLog::Log("Dir Target" + sTarget, LOG_PARSER);
 	Log::CFileLog::Log("parse result" + sResult, LOG_PARSER);
-
-
+	 
 	std::vector<std::experimental::filesystem::path> Arr = CFileSystem::directory_iterator(sTarget);
 	std::vector<std::string> HTMLArr = CFileSystem::Filter(Arr, ".html");
 
@@ -34,16 +35,16 @@ int main(int argc, const char** argv)
 	{
 		Log::CFileLog::Log("not find HTML", LOG_CALENDAR);
 		return 1;
-	} 
+	}
 
 	for (auto it : HTMLArr)
 	{
 		IHotelParser::GetNameAndPrice(it, Seting, ResultObject, sResult);
 	}
-	 
-	ResultObject.SaveAllName(Base::CUtil::GetDirByFilePath(HTMLArr[0]) + ALL_NAME_HOTEL_BY_ALL_FILE_IN_THIS_DIR);
 
-	client::CFileManager::GetAllHotelName(Base::CUtil::GetDirByFilePath(HTMLArr[0]));
+	ResultObject.SaveAllName(Base::CUtil::GetDirByFilePath(HTMLArr[0]) + ALL_NAME_HOTEL_BY_ALL_FILE_IN_THIS_DIR + FILE_FORMAT);
+
+	//client::CFileManager::GetAllHotelName(Base::CUtil::GetDirByFilePath(HTMLArr[0]));
 
 #endif
 	return 0;
