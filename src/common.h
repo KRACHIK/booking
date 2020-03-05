@@ -45,6 +45,16 @@ namespace Base
 
 		static bool Parse(const std::string & Src, CData & Start, CData & End);
 
+		bool operator == (const Base::CData & right)
+		{
+			return (
+				startDay == right.startDay &&
+				startMonth == right.startMonth &&
+				startYear == right.startYear
+				);
+		}
+		 
+
 	public:
 		int startDay;
 		int startMonth;

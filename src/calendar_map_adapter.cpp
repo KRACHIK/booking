@@ -1,10 +1,10 @@
 #include "calendar_map_adapter.h"
- 
+
 void CHotelManager::Add(client::CHotel Hotel)
 {
 	_Arr.push_back(Hotel);
 }
-  
+
 namespace Level1
 {
 	void CMapDataBase::RenderStat()
@@ -14,7 +14,7 @@ namespace Level1
 			std::string sReport = it->second.CreateCalendarNoPeopleInHotel();
 			Log::CFileLog::Log("[CMapDataBase::RenderStat] :" + sReport, "CreateCalendarNoPeopleInHotel.txt");
 		}
-		 
+
 		for (auto it = GetMap().begin(); it != GetMap().end(); it++)
 		{
 			std::string sReport = it->second.DynamikCost();
@@ -46,9 +46,26 @@ namespace Level1
 		bool bFind = FindObjectByKey(sKey);
 
 		if (bFind)
-		{
+		{ 
 			auto & it = GetIteratorObject(sKey);
-			it->second.Add(Hotel);
+
+			if (it->second.Size() > 0)
+			{
+				int df23 = 32423;
+			}
+
+
+			bool bFind = it->second.FindData(  Hotel._DayStart, Hotel._DayEnd);
+
+			if (bFind == false)
+			{
+				it->second.Add(Hotel);
+			}
+			else
+			{
+				int asdf = 345;
+			}
+
 		}
 		else
 		{

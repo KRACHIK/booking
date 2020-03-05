@@ -23,20 +23,20 @@ class CHotelManager
 public:
 	CHotelManager() { }
 
-	void Add(client::CHotel Hotel); 
+	void Add(client::CHotel Hotel);
 
 	std::string CreateCalendarNoPeopleInHotel() const
 	{
 		std::string sAllData;
 		std::string sAllCost;
-		 
+
 		for (auto it : _Arr)
 		{
 			sAllData += " [" + it.GetDataString() + "] ";
 			sAllCost += " [" + std::to_string(it._Cost) + "] ";
 		}
 
-		return _Arr[0]._sName +  sAllData + " Cost " + sAllCost;
+		return _Arr[0]._sName + sAllData + " Cost " + sAllCost;
 	}
 
 	std::string  DynamikCost() const
@@ -44,11 +44,25 @@ public:
 		std::string sAllCost;
 
 		for (auto it : _Arr)
-			sAllCost += " [" + std::to_string(it._Cost) + "] ";
-		 
-		return _Arr[0]._sName +  " Cost " + sAllCost;
+			sAllCost += " " + std::to_string(it._Cost);
+
+		return _Arr[0]._sName + " Cost " + sAllCost;
 	}
-		  
+
+	bool FindData(Base::CData DayStart, Base::CData DayEnd)
+	{  
+		for (auto it : _Arr)
+		{
+			if (it._DayStart == DayStart && it._DayEnd == DayEnd )
+			{
+				return true;
+			}
+		}
+		 
+		return false;
+	}
+
+	int Size() { return _Arr.size(); }
 private:
 	std::vector<client::CHotel> _Arr;
 };
@@ -70,7 +84,7 @@ namespace Level1
 		void AddValue(client::CHotel Hotel);
 
 	};
-	 
+
 }
 
 
