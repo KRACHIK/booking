@@ -77,9 +77,10 @@ CFileSystem::directory_iterator(const std::string & path)
 	//std::string path = "D:\\Development\\booking\\bin";
 
 	std::vector<std::experimental::filesystem::path> Arr;
-
+ 
 	for (auto & p : std::experimental::filesystem::directory_iterator(path))
 	{
+
 		Arr.push_back(p);
 	}
 

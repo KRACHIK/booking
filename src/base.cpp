@@ -44,7 +44,31 @@ std::string CStringFind_impl::Find(const std::string &str, const std::string &st
 	return "";
 }
 
+void CStringFind_impl::FindEnd(const std::string &str, const std::string &str2, int & found)
+{
+	// DIM
+	int Start, End;
+	int Result = 0;
 
+	// каретка
+
+	while (true)
+	{
+		found = str.find(str2, found + 1);
+
+		if (found != std::string::npos)
+		{
+			// ok 
+			Result = found;
+		}
+		else
+		{
+			found = Result;
+			return;
+		}
+	}
+
+}
 
 std::string CStringFind_impl::FindForeach(const std::string &str, const std::string &str2, const std::string &str3, int & found)
 {
@@ -307,7 +331,7 @@ std::string CFileRead::ReplaceSpace(std::string  s)
 
 int CFileRead::GetPositionPosledneNaideniToken(const std::string & FileText, CToken Token)
 {
-	int found = 0;  
+	int found = 0;
 
 	CStringFind_impl::FindEnd(FileText, Token.GetTegStart(), found);
 

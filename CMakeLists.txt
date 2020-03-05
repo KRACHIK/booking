@@ -74,11 +74,18 @@ file( GLOB SOURCE_CODE2
 
 	src/logic.cpp
 	
+	src/DownloadModul.cpp
+	src/DownloadModul.h
+
 	src/common.cpp
 	src/common.h
 	 
 	src/logic_impl.h
 	src/logic_impl.cpp
+	 
+	src/Str.h
+	src/Str.cpp
+	
 )
 add_executable(logic ${SOURCE_CODE2})	 
 #####################################################################################

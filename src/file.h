@@ -36,6 +36,26 @@ class CFileSystem
 {
 public:
 
+
+	static std::string GetFileNameByPath(const std::string & sPath)
+	{
+		std::experimental::filesystem::path p(sPath);
+		//"c://dir/dir//file.ext"
+		//std::cout << "filename and extension: " << p.filename() << std::endl; // "file.ext"
+		return p.filename().string();
+	}
+
+
+	static std::string  GetStemByPath(const std::string & sPath)
+	{
+		std::experimental::filesystem::path p(sPath);
+		//"c://dir/dir//file.ext"
+		//std::cout << "filename only: " << p.stem() << std::endl;              // "file"
+		return p.stem().string();
+	}
+
+
+
 	static std::vector<std::string> GetFileByMask(const std::string & sPath, const std::string & sMask);
 
 	static bool create_directories(const std::string & sMask);

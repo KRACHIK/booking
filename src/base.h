@@ -32,34 +32,9 @@ class CStringFind_impl
 public:
 	static std::string Find(const std::string &str, const std::string &str2, const std::string &str3);
 	static std::string FindForeach(const std::string &str, const std::string &str2, const std::string &str3, int & found);
-
-	static void FindEnd(const std::string &str, const std::string &str2, int & found)
-	{
-		// DIM
-		int Start, End;
-		int Result = 0;
-
-		// каретка
-
-		while (true)
-		{
-			found = str.find(str2, found + 1);
-
-			if (found != std::string::npos)
-			{
-				// ok 
-				Result = found;
-			}
-			else
-			{
-				found = Result;
-				return;
-			}
-		}
-
-	}
-
+	static void FindEnd(const std::string &str, const std::string &str2, int & found);
 };
+
 
 class CFindImpl
 {
