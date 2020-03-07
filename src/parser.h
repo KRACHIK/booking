@@ -17,8 +17,8 @@ public:
 public:
 	static void GetNameAndPrice(std::string sFileHTML, client::CSeting Seting, CSave & Save, std::string sResult);
 
-private:
 	static std::string GetTotalHome(std::string sFileHTML);
+private:
 
 	static std::vector<int> GetArrPrice(std::string sFileHTML);
 

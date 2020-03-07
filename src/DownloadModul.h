@@ -11,58 +11,83 @@
 #include <string>
 #include <regex>
 
+namespace Java {
+
+	#define PROPERTIES "props.properties"
+
+	class CProperties
+	{
+	public:
+		CProperties();
+
+		CProperties(
+			int startDay
+			, int  startMonth
+			, int  startYear
+			, int  endDay
+			, int  endMonth
+			, int  endYear
+			, const std::string & outputDirectory
+		);
+	public:
+
+		void CreateProperties(std::string sFileName);
+
+	private:
+		int _startDay;
+		int _startMonth;
+		int _startYear;
+		int _endDay;
+		int _endMonth;
+		int _endYear;
+		std::string _outputDirectory;
+
+	};
+
+}
+ 
+namespace client
+{
+	class CTask
+	{
+	public:
+
+		CTask();
+
+		CTask(Java::CProperties Properties, const std::string & sFullPath, const std::string  & sDirProp);
+		CTask(const std::string & sFullPath, const std::string  & sDirProp);
+
+		std::string GetFullPath();
+		std::string GetDirProp();
+
+	private:
+		Java::CProperties	_Properties;
+		std::string			_sFullPath;
+		std::string			_sDirProp;
+
+	};
+
+	class CDwn
+	{
+	public:
+		CDwn();
+		CDwn(const std::string & WantFile, CTask  Task);
+
+	public:
+		std::string _WantFile;
+		CTask _Task;
+	};
+}
+ 
 class CDownload
 {
 
 public:
+	 
+	static bool VozobnovitPrervonuizagruzku(client::CSeting Seting);
 
-	static bool IsPropuskDwnFile(const std::string & sDir)
-	{
-		/* input D:\Development\booking\prod2
-
-		get All File
-					booking0.html  booking1.html booking10.html booking11.html booking12.html booking13.html
-					booking14.html booking15.html booking16.html booking17.html booking18.html ..
-			see number 1,2,3,4,5,6
-		*/
-
-		std::vector<std::experimental::filesystem::path> Arr = CFileSystem::directory_iterator(sDir);
-		std::vector<std::string> HTMLArr = CFileSystem::Filter(Arr, ".html");
-
-		if (HTMLArr.empty())
-		{
-			return true; // подтверждаю пропуск файлов
-		}
-
-		std::vector<int> ArrNum;
-		for (auto it : HTMLArr)
-		{
-			// it=       D:\Development\booking\prod2\booking14.html
-			// booking =                              booking14
-			std::string booking = CFileSystem::GetStemByPath(it);
-			std::string sNum = Str::rENAME::do_replace(booking, "booking", " ");
-			int Num = std::stoi(sNum);
-			ArrNum.push_back(Num);
-		}
-
-
-		std::sort(ArrNum.begin(), ArrNum.end());
-		for (int i = 0; i < ArrNum.size() - 1; i++)
-		{
-			int Num = ArrNum[i];
-			int NumNext = ArrNum[i + 1];
-			int diff = NumNext - Num;
-
-			if (diff != 1)
-			{
-				// propusk files
-				return true;
-			}
-		} 
-
-		return false; //ok
-	}
-
+	static bool IsPropuskDwnFile(const std::string & sDir, std::vector<client::CTask> & TaskArr);
+	 
 
 };
 

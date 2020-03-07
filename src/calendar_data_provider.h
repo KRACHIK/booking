@@ -29,20 +29,20 @@
 
 #include <regex>
 
- 
+
 namespace Level2
-{ 
+{
 	class CMyString
 	{
 	public:
-		static std::string do_replace(const std::string & in, const std::string &from, const std::string & to) ;
+		static std::string do_replace(const std::string & in, const std::string &from, const std::string & to);
 	};
 
 	class CDataUtil
 	{
 
 	public:
-		static std::vector <int> Parse_DayMotherYear_DayMotherYear(const std::string & sPredDir, const std::string & sData); 
+		static std::vector <int> Parse_DayMotherYear_DayMotherYear(const std::string & sPredDir, const std::string & sData);
 
 	};
 
@@ -52,22 +52,40 @@ namespace Level2
 		CIteratirDir(const std::string & sRootDir) : _sRootDir(sRootDir) { }
 
 		void Init();
+
 		bool Get_Next_Intresting_Iterator_Dir(std::string & Result);
+
+		std::vector<std::string> get_all_file_in_dir(const std::string & sDir, const std::string & sMask);
+	  
+		bool Get_Next_Diapozon_Dir(std::string & Result)
+		{
+			if (_Index >= _DayArr.size())
+			{
+				_Index = 0;
+				return false;
+			}
+
+			Result = _DayArr[_Index ].string();
+			_Index++;
+
+			return true;
+		}
+
 		bool Parse_DayMotherYear_DayMotherYear(std::experimental::filesystem::path Path, std::string & Result);
-		 
+
 	private:
 		std::string _sRootDir;
 		std::vector<std::experimental::filesystem::path> _DayArr;
 		int _Index = 0;
 	};
-	 
+
 
 	class CDataProvider
 	{
 	public:
 		static ArrHomeName GetAllNameHotelInCurDir(std::string sRootDir);
-		  
-		static ArrHomeNameAndCostAndData_ GetArrHomeNameAndCostAndData(std::string sIntrestingDir);  
+
+		static ArrHomeNameAndCostAndData_ GetArrHomeNameAndCostAndData(std::string sIntrestingDir);
 	};
 
 }

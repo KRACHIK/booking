@@ -48,11 +48,13 @@ bool CFileSystem::create_directories(const std::string & sMask)
 	return bRet;
 }
 
-std::vector<std::string>
-CFileSystem::Filter(
-	std::vector<std::experimental::filesystem::path> Arr
-	, const std::string & sMask
-)
+
+ 
+
+
+
+std::vector<std::string> CFileSystem::Filter(
+	std::vector<std::experimental::filesystem::path> Arr, const std::string & sMask)
 {
 	std::vector<std::string> NewArr;
 
@@ -70,14 +72,14 @@ CFileSystem::Filter(
 
 	return NewArr;
 }
-  
+
 std::vector<std::experimental::filesystem::path>
 CFileSystem::directory_iterator(const std::string & path)
 {
 	//std::string path = "D:\\Development\\booking\\bin";
 
 	std::vector<std::experimental::filesystem::path> Arr;
- 
+
 	for (auto & p : std::experimental::filesystem::directory_iterator(path))
 	{
 

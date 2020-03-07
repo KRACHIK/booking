@@ -39,7 +39,11 @@ int main(int argc, const char** argv)
 
 	for (auto it : HTMLArr)
 	{
+#if 0
 		IHotelParser::GetNameAndPrice(it, Seting, ResultObject, sResult);
+#else
+		std::string sTotalHome = IHotelParser::GetTotalHome(it);
+#endif
 	}
 
 	ResultObject.SaveAllName(Base::CUtil::GetDirByFilePath(HTMLArr[0]) + ALL_NAME_HOTEL_BY_ALL_FILE_IN_THIS_DIR + FILE_FORMAT);

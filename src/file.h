@@ -55,13 +55,11 @@ public:
 	}
 
 
-
 	static std::vector<std::string> GetFileByMask(const std::string & sPath, const std::string & sMask);
 
 	static bool create_directories(const std::string & sMask);
 
-	static std::vector<std::string> Filter(
-		std::vector<std::experimental::filesystem::path> Arr
+	static std::vector<std::string> Filter(std::vector<std::experimental::filesystem::path> Arr
 		, const std::string & sMask
 	);
 

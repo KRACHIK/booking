@@ -5,49 +5,19 @@
 #include "common.h"
 #include "DownloadModul.h"
 
-namespace Java {
-
-#define PROPERTIES "props.properties"
-
-	class CProperties
-	{
-	public:
-		CProperties();
-
-		CProperties(
-			int startDay
-			, int  startMonth
-			, int  startYear
-			, int  endDay
-			, int  endMonth
-			, int  endYear
-			, const std::string & outputDirectory
-		);
-	public:
-
-		void CreateProperties(std::string sFileName); 
-
-	private:
-		int _startDay;
-		int _startMonth;
-		int _startYear;
-		int _endDay;
-		int _endMonth;
-		int _endYear;
-		std::string _outputDirectory;
-
-	};
-
-}
 
 namespace client
 {
+#if 0
 	class CTask
 	{
 	public:
 
 		CTask();
+
 		CTask(Java::CProperties Properties, const std::string & sFullPath, const std::string  & sDirProp);
+		CTask(const std::string & sFullPath, const std::string  & sDirProp);
+
 		std::string GetFullPath();
 		std::string GetDirProp();
 
@@ -68,16 +38,21 @@ namespace client
 		std::string _WantFile;
 		CTask _Task;
 	};
-
+#endif 
 
 	class CLogic
 	{
 	public:
-		static bool IsWork();
+		static bool IsWork(std::vector<client::CTask> & TaskArr);
 		static bool  Work();
+		static bool  IsPropuskDwnFile(std::vector<client::CTask> & TaskArr);
+		static bool DwnPropuskFile(std::vector<client::CTask> & TaskArr);
+
 	private:
+		static bool VozobnovitPrervonuizagruzku(CSeting Seting);
 		static bool RunUtilParse(const std::vector<CTask> & TaskArr, CSeting Seting);
 		static std::vector<CTask> CreateTask(CSeting Seting);
+		static std::vector<CTask> CreateTask_v2_temp(CSeting Seting);
 		static bool CreateWorkDir(const std::string & sDirPath);
 		static bool UpdateFileProperties(std::string WantFile, std::string  GetFullPath, std::string  GetProgaDir);
 		static bool Download(std::string WantFile, CTask it, CDwn & ErrDwnArr);

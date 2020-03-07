@@ -14,13 +14,15 @@
 #define NAME_AND_COST							"FILE_NAME_AND_COST_DB"
 #define FILE_FORMAT								".kr4"
 
-#define LOG_CALENDAR		"LOG_CALENDAR.log"
-#define LOG_PARSER			"LOG_PARSER.log"
-#define LOG_LOGIC			"LOG_LOGIC.log"
+#define LOG_CALENDAR							"LOG_CALENDAR.log"
+#define LOG_PARSER								"LOG_PARSER.log"
+#define LOG_LOGIC								"LOG_LOGIC.log"
+#define LOG_TOTAL_HOME_PARSER					"LOG_TOTAL_HOME_PARSER.log"
 
-#define LOG_CALENDAR_ERR	"LOG_CALENDAR_ERR.log"
-#define LOG_PARSER_ERR		"LOG_PARSER_ERR.log"
-#define LOG_LOGIC_ERR		"LOG_LOGIC_ERR.log"
+#define LOG_CALENDAR_ERR						"LOG_CALENDAR_ERR.log"
+#define LOG_PARSER_ERR							"LOG_PARSER_ERR.log"
+#define LOG_LOGIC_ERR							"LOG_LOGIC_ERR.log"
+#define LOG_TOTAL_HOME_PARSER_ERR				"LOG_TOTAL_HOME_PARSER_ERR.log"
 
 namespace Log {
 
@@ -53,7 +55,29 @@ namespace Base
 				startYear == right.startYear
 				);
 		}
-		 
+
+		static bool create_data_by_vector_int(const std::vector <int > & Arr, CData & OutPutStart, CData & OutPutEnd)
+		{
+			if (Arr.size() != 6)
+			{
+				return false;
+			}
+
+			OutPutStart = CData(Arr[0], Arr[1], Arr[2]);
+			OutPutEnd = CData(Arr[3], Arr[4], Arr[5]);
+
+			return  true;
+		}
+
+		static std::string get_str_for_excel(const CData & Start, const CData & End)
+		{
+			return std::string(
+				std::to_string(Start.startDay) + "." + std::to_string(Start.startMonth) + "." + std::to_string(Start.startYear)
+				+ " " +
+				std::to_string(End.startDay) + "." + std::to_string(End.startMonth) + "." + std::to_string(End.startYear)
+			);
+
+		}
 
 	public:
 		int startDay;

@@ -40,7 +40,14 @@ int main()
 
 	while (true)
 	{
-		if (client::CLogic::IsWork())
+		std::vector<client::CTask>   TaskArr;
+
+		if (client::CLogic::IsPropuskDwnFile(TaskArr))
+		{
+			bool bDwn = client::CLogic::DwnPropuskFile(TaskArr);
+		}
+
+		else  if (client::CLogic::IsWork(TaskArr))
 		{
 			Log::CFileLog::Log("[main] : zapusjai zadachu.", LOG_LOGIC);
 			client::CLogic::Work();
@@ -50,9 +57,11 @@ int main()
 			Log::CFileLog::Log("[main] : Vse TARGET OK.", LOG_LOGIC);
 		}
 
+		TaskArr.clear();
+
 		std::this_thread::sleep_for(std::chrono::seconds(160));
 	}
-		 
+
 	// 1 если нужно работаь
 	// 2 сформировать рабочие каталоги
 			// получить задание

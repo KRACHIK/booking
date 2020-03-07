@@ -3,76 +3,41 @@
 
 namespace Level2
 {
-	std::string CMyString::do_replace(const std::string & in, const std::string &from, const std::string & to)
-	{
-		return std::regex_replace(in, std::regex(from), to);
-	}
-	 
-	std::vector <int> CDataUtil::Parse_DayMotherYear_DayMotherYear(const std::string & sPredDir, const std::string & sData)
-	{
-		Log::CFileLog::Log(sPredDir + "   " + sData, LOG_CALENDAR);
-
-		/*
-		input:  sData = D:\Development\booking\bin2\Debug\db\01.03.2020\02.03.2020-03.03.2020
-		input: sPredDir D:\Development\booking\bin2\Debug\db\01.03.2020\
-		target get int arr {2 3 2020 3 3 2020}
-		*/
-
-		if (sData.size() < sPredDir.size())
-			return {};
-
-		std::string buf0 = std::string(sData, sPredDir.size() + 1);
-
-
-		if (buf0.size() != 21)
-		{
-			return  {};
-		}
-
-		//want 02.03.2020-04.03.2020
-		std::string buf1 = buf0;// ("02.03.2020-04.03.2020");
-
-		std::string buf;
-
-		buf = CMyString::do_replace(buf1, "\\.", " ");
-		buf = CMyString::do_replace(buf, "-", " ");
-
-		std::list<std::string> words;
-		std::istringstream ist(buf);
-		std::string tmp;
-
-		while (ist >> tmp)
-		{
-			words.push_back(tmp);
-		}
-
-
-		std::vector <int> numArr;
-		for (auto it : words)
-			numArr.push_back(std::stoi(it));
-
-		return  numArr;
-	}
-	 
 	void CIteratirDir::Init()
 	{
 		client::CSeting Seting;
 
-		for (auto & p : std::experimental::filesystem::directory_iterator(Seting.GetWorkDir()))
+		//for (auto & p : std::experimental::filesystem::directory_iterator(Seting.GetWorkDir()))//old
+			for (auto & p : std::experimental::filesystem::directory_iterator(_sRootDir ))
 		{
-			//   01.03.2020				// <- Want
-			//   02.03.2020				// <- Want
-			//   03.03.2020				// <- Want
-			//   29.02.2020				// <- Want
+			/*
+			01.03.2020				// <- Want
+			02.03.2020				// <- Want
+			03.03.2020				// <- Want
+			29.02.2020				// <- Want
+				 or
+			01.01.2021 - 08.01.2021
+			01.02.2021 - 08.02.2021
+			01.03.2021 - 08.03.2021
+			01.04.2020 - 08.04.2020
+			01.05.2020 - 08.05.2020*/
+
 			_DayArr.push_back(p);
 		}
 	}
-		  
+
 	bool CIteratirDir::Get_Next_Intresting_Iterator_Dir(std::string & Result)
 	{
 		client::CSeting Seting;
 
 		return  Parse_DayMotherYear_DayMotherYear(_DayArr[_Index++], Result);
+	}
+
+	std::vector<std::string> CIteratirDir::get_all_file_in_dir(const std::string & sDir, const std::string & sMask)
+	{
+		std::vector<std::experimental::filesystem::path> Arr = CFileSystem::directory_iterator(sDir);
+		std::vector<std::string> HTMLArr = CFileSystem::Filter(Arr, sMask);
+		return HTMLArr;
 	}
 
 	bool CIteratirDir::Parse_DayMotherYear_DayMotherYear(std::experimental::filesystem::path Path, std::string & Result)
@@ -118,6 +83,58 @@ namespace Level2
 		}
 
 		return false;
+	}
+
+
+	std::string CMyString::do_replace(const std::string & in, const std::string &from, const std::string & to)
+	{
+		return std::regex_replace(in, std::regex(from), to);
+	}
+	 
+	std::vector <int> CDataUtil::Parse_DayMotherYear_DayMotherYear(const std::string & sPredDir, const std::string & sData)
+	{
+		Log::CFileLog::Log("[CDataUtil::Parse_DayMotherYear_DayMotherYear] : sPredDir= "  + sPredDir + " sData=" + sData, LOG_CALENDAR);
+
+		/*
+		input:  sData = D:\Development\booking\bin2\Debug\db\01.03.2020\02.03.2020-03.03.2020
+		input: sPredDir D:\Development\booking\bin2\Debug\db\01.03.2020\
+		target get int arr {2 3 2020 3 3 2020}
+		*/
+
+		if (sData.size() < sPredDir.size())
+			return {};
+
+		std::string buf0 = std::string(sData, sPredDir.size() + 1);
+
+
+		if (buf0.size() != 21)
+		{
+			return  {};
+		}
+
+		//want 02.03.2020-04.03.2020
+		std::string buf1 = buf0;// ("02.03.2020-04.03.2020");
+
+		std::string buf;
+
+		buf = CMyString::do_replace(buf1, "\\.", " ");
+		buf = CMyString::do_replace(buf, "-", " ");
+
+		std::list<std::string> words;
+		std::istringstream ist(buf);
+		std::string tmp;
+
+		while (ist >> tmp)
+		{
+			words.push_back(tmp);
+		}
+
+
+		std::vector <int> numArr;
+		for (auto it : words)
+			numArr.push_back(std::stoi(it));
+
+		return  numArr;
 	}
 	 
 	ArrHomeName CDataProvider::GetAllNameHotelInCurDir(std::string sRootDir)
