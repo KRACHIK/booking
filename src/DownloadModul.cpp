@@ -13,6 +13,7 @@ namespace Java {
 		, int  endMonth
 		, int  endYear
 		, const std::string & outputDirectory
+		, const std::string & sDestination /*= ""*/
 	) : _startDay(startDay)
 		, _startMonth(startMonth)
 		, _startYear(startYear)
@@ -20,9 +21,10 @@ namespace Java {
 		, _endMonth(endMonth)
 		, _endYear(endYear)
 		, _outputDirectory(outputDirectory)
+		, _sDestination(sDestination)
 	{
 	}
- 
+
 	void CProperties::CreateProperties(std::string sFileName)
 	{
 		std::stringstream ss;
@@ -34,13 +36,14 @@ namespace Java {
 		ss << "endMonth=" << _endMonth << "\n";
 		ss << "endYear=" << _endYear << "\n";
 		ss << "outputDirectory=" << _outputDirectory << "\n";
+		ss << "destination=" << _sDestination << "\n";
 
 		std::ofstream outFile(sFileName);
 		outFile << ss.rdbuf();
 		outFile.close();
 	}
 }
- 
+
 namespace client
 {
 	CTask::CTask()
@@ -59,11 +62,13 @@ namespace client
 
 	CTask::CTask(Java::CProperties Properties
 		, const std::string & sFullPath,
-		const std::string  & sDirProp
+		const std::string  & sDirProp,
+		const std::string & sDirDest /*= ""*/
 	)
 		: _Properties(Properties)
 		, _sFullPath(sFullPath)
 		, _sDirProp(sDirProp)
+		, _sDirDest(sDirDest)
 	{
 
 	}
@@ -79,7 +84,7 @@ namespace client
 		return _sDirProp;
 	}
 
-	 
+
 	CDwn::CDwn() {}
 
 	CDwn::CDwn(const std::string & WantFile, CTask  Task)
@@ -90,7 +95,7 @@ namespace client
 
 }
 
- 
+
 bool CDownload::VozobnovitPrervonuizagruzku(client::CSeting Seting)
 {
 	// получить линк на корень в день в который прервалась загрузка
@@ -102,7 +107,7 @@ bool CDownload::VozobnovitPrervonuizagruzku(client::CSeting Seting)
 	return false;
 }
 
-bool CDownload::IsPropuskDwnFile(const std::string & sDir, std::vector<client::CTask> & TaskArr)
+bool CDownload::IsPropuskDwnFile(const std::string & sDir, std::vector<client::CTask> & OutPutTaskArr)
 {
 	/* input D:\Development\booking\prod2
 
@@ -113,35 +118,48 @@ bool CDownload::IsPropuskDwnFile(const std::string & sDir, std::vector<client::C
 	*/
 
 	std::vector<std::experimental::filesystem::path> Arr = CFileSystem::directory_iterator(sDir);
+	std::vector<std::string> JavaDwnPropFile = CFileSystem::Filter(Arr, ".properties");
 	std::vector<std::string> HTMLArr = CFileSystem::Filter(Arr, ".html");
 
-	
+
 	if (HTMLArr.empty())
 	{
-
-		std::vector<std::string> JavaDwnPropFile = CFileSystem::Filter(Arr, ".properties");
-
 		if (JavaDwnPropFile.size() == 1)
-		{ 
-			Log::CFileLog::Log("[CDownload::IsPropuskDwnFile] : PropDir" + Arr[0].parent_path().string(), LOG_LOGIC);
-			Log::CFileLog::Log("[CDownload::IsPropuskDwnFile] : JavaDwnPropFile: " + JavaDwnPropFile[0],  LOG_LOGIC);
+		{
+			//Log::CFileLog::Log("[CDownload::IsPropuskDwnFile] : PropDir" + Arr[0].parent_path().string(), LOG_LOGIC);
+			//Log::CFileLog::Log("[CDownload::IsPropuskDwnFile] : JavaDwnPropFile: " + JavaDwnPropFile[0], LOG_LOGIC);
 
-			TaskArr.push_back(client::CTask(JavaDwnPropFile[0], Arr[0].parent_path().string()));
+			OutPutTaskArr.push_back(client::CTask(JavaDwnPropFile[0], Arr[0].parent_path().string()));
 		}
-			  
+
 		return true; // подтверждаю пропуск файлов
 	}
+
+
+	for (auto it : HTMLArr)
+	{
+		if (std::experimental::filesystem::file_size(it) == 0)
+		{
+			OutPutTaskArr.push_back(client::CTask(JavaDwnPropFile[0], Arr[0].parent_path().string()));
+
+			Log::CFileLog::Log(" file size = " + std::to_string(std::experimental::filesystem::file_size(it)) + it, LOG_COMMON_ENGINE);
+			return true;
+		}
+	}
+
 
 	std::vector<int> ArrNum;
 	for (auto it : HTMLArr)
 	{
 		// it=       D:\Development\booking\prod2\booking14.html
 		// booking =                              booking14
+
 		std::string booking = CFileSystem::GetStemByPath(it);
 		std::string sNum = Str::rENAME::do_replace(booking, "booking", " ");
 		int Num = std::stoi(sNum);
 		ArrNum.push_back(Num);
 	}
+
 
 
 	std::sort(ArrNum.begin(), ArrNum.end());
@@ -153,11 +171,74 @@ bool CDownload::IsPropuskDwnFile(const std::string & sDir, std::vector<client::C
 
 		if (diff != 1)
 		{
+			//Log::CFileLog::Log("[CDownload::IsPropuskDwnFile] : PropDir diff != 1" + Arr[0].parent_path().string(), LOG_LOGIC);
+			//Log::CFileLog::Log("[CDownload::IsPropuskDwnFile] : JavaDwnPropFile: diff != 1" + JavaDwnPropFile[0], LOG_LOGIC);
+
+			OutPutTaskArr.push_back(client::CTask(JavaDwnPropFile[0], Arr[0].parent_path().string()));
+
 			// propusk files
 			return true;
 		}
 	}
 
 	return false; //ok
+}
+
+
+bool CDownLoadList::isNumber(std::string str)
+{
+	int d;
+	std::istringstream is(str);
+	is >> d;
+	return !is.fail() && is.eof();
+}
+
+CDownLoadList::CDownLoadList()
+{
+
+	Init();
+}
+
+bool CDownLoadList::get_dest_by_link(const std::string & sLink, std::string & sOutPutDest)
+{
+	std::string sResult = CFileRead::FindOneTokenInText(sLink, CToken("dest_id=", "&dest_type"));
+	sOutPutDest = sResult;
+
+
+	if (isNumber(sResult))
+	{
+		std::cout << "[main] ok: " << sResult << "\n";
+		return true;
+	}
+	return false;
+}
+
+
+
+
+std::vector<std::string> CDownLoadList::get_valid_link() {
+	return  _sValidLink;
+}
+
+
+void CDownLoadList::Init()
+{
+	client::CSeting Seting;
+
+	_sDwnList = CFileRead::open_file(Seting.get_download_list_file_path());
+
+	for (std::string it : _sDwnList)
+	{
+		std::string sResult = CFileRead::FindOneTokenInText(it, CToken("dest_id=", "&dest_type"));
+
+		if (isNumber(sResult))
+		{
+			_sValidLink.push_back(it);
+		}
+		else
+		{
+			Log::CFileLog::Log("[main] bad LInk: " + sResult, LOG_LOGIC_ERR);
+		}
+	}
 }
 

@@ -5,19 +5,19 @@
 #include <string>
 
 
-extern class CHotelManager;
-class CHome;
-extern class CHomeNameAndCostAndData;
+//extern class CHotelManager;
+//class CHome;
+//extern class CHomeNameAndCostAndData;
 
 
 
-typedef	std::vector<std::string>  ArrHomeName;
-typedef	CHotelManager HotelForCalendar;
-typedef	std::vector <int>  MyData;
-typedef	std::string CStr;
-typedef	std::vector <CHome> tip;
-typedef	std::vector <int> dati;
-typedef	std::vector<CHomeNameAndCostAndData> ArrHomeNameAndCostAndData_;
+//typedef	std::vector<std::string>  ArrHomeName;
+////typedef	CHotelManager HotelForCalendar;
+ typedef	std::vector <int>  MyData;
+ typedef	std::string CStr;
+ //typedef	std::vector <CHome> tip;
+ typedef	std::vector <int> dati;
+//typedef	std::vector<CHomeNameAndCostAndData> ArrHomeNameAndCostAndData_;
 
 
 

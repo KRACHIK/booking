@@ -42,8 +42,22 @@ int main(int argc, const char** argv)
 {
 	client::CSeting Seting;
 
+	if (argc != 3)
+	{
+		Log::CFileLog::Log("Bad Input argc, Want  \db\29.02.2020\01.03.2020-04.03.2020 FILE_NAME_FOR_SAVE_RES_WORK", LOG_PARSER_ERR);
+		return 1;
+	}
 
-	std::string sTarget = "D:\\Development\\booking\\bin2\\Debug\\db\\All-db-06.03.2020-1Year";//argv[1];
+	std::string sTarget = argv[1];
+	std::string sResult = argv[2];
+
+	Log::CFileLog::Log("Dir Target" + sTarget, LOG_PARSER);
+	Log::CFileLog::Log("parse result" + sResult, LOG_PARSER);
+
+
+	 
+	 //std::string sTarget = "D:\\Development\\booking\\bin2\\Debug\\db\\20017156\\07.03.2020";//argv[1];
+	//std::string sTarget = "D:\\Development\\booking\\bin2\\Debug\\db\\All-db-06.03.2020-1Year";//argv[1];
 	Level2::CIteratirDir it(sTarget);
 	it.Init();
 	std::string sDirDiapozon;

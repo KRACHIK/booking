@@ -61,6 +61,7 @@ public:
 
 	static int GetPositionPosledneNaideniToken(const std::string & sText, CToken Tokken);
 
+	static std::vector<std::string>open_file(const std::string & sFileName);
 	static std::string OpenFileAndReplaceCRLF(const std::string & sFileName);
 	static std::string ReplaceCRLF(const std::string & sText);
 	static std::string CFileRead::ReplaceSpace(std::string s);

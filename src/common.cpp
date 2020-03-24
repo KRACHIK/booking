@@ -22,9 +22,17 @@ namespace Log {
 		std::cout << s1 << Str << "\n";
 	}
 
-
+	void CFileLog::raw_log(const std::string & Str, const std::string & sFileName)
+	{
+		std::stringstream ss;
+ 
+		ss << Str << "\n";
+		std::ofstream outFile(sFileName, std::ios::app);
+		outFile << ss.rdbuf();
+		outFile.close();
+	}
 }
-
+		  
 namespace Base
 {
 #if 1
@@ -205,6 +213,13 @@ namespace client
 		_sProgaDir = "D://Development//booking//bin2//Debug";
 	}
 
+
+	void CSeting::set_work_country_dir(const std::string & sPrefixDir)
+	{
+		_sWorkCountryDir = _sWorkDir + OS::CSystyem::GetSlash() + sPrefixDir;
+	}
+
+
 	std::string CSeting::GetProgaDir() const
 	{
 		return _sProgaDir;
@@ -217,7 +232,11 @@ namespace client
 
 	std::string CSeting::GetWorkDir() const
 	{
-		return _sWorkDir;
+		if (_sWorkCountryDir.empty())
+			return _sWorkDir;
+		else
+			return _sWorkCountryDir;
+
 	}
 
 	std::string CSeting::GetWorkDirAndCurrentDay() const
@@ -256,14 +275,18 @@ namespace client
 	}
 
 
+	std::vector<std::string> CFileManager::get_all_uniq_key_fom_file(std::string sPath)
+	{ 
+		return CFileSystem::GetFileByMask(sPath, FILE_UNIQ_APART_KEY);
+	}
 
-	ArrHomeName  CFileManager::GetAllHotelName(std::string sPath)
+	std::vector<std::string>  CFileManager::GetAllHotelName(std::string sPath)
 	{
 		//std::vector<std::string>  
 		return  CFileSystem::GetFileByMask(sPath, ALL_NAME_HOTEL_BY_ALL_FILE_IN_THIS_DIR);
 	}
 
-	ArrHomeName CFileManager::GetArrHomeNameAndCost(std::string sPath)
+	std::vector<std::string> CFileManager::GetArrHomeNameAndCost(std::string sPath)
 	{
 		//std::vector<std::string>  
 		return  CFileSystem::GetFileByMask(sPath, NAME_AND_COST);

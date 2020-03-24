@@ -72,14 +72,14 @@ private:
 
 namespace Level1
 {
-	class CMapDataBase : public CObjectStringContainerMap <HotelForCalendar>
+	class CMapDataBase : public CObjectStringContainerMap <CHotelManager>
 	{
 	public:
 		CMapDataBase() { }
 
 		void RenderStat();
 
-		void AddKey(ArrHomeName NameHomes);
+		void AddKey(std::vector<std::string> NameHomes);
 
 		void AddValue(client::CHotel Hotel);
 

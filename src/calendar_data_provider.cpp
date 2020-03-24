@@ -8,7 +8,7 @@ namespace Level2
 		client::CSeting Seting;
 
 		//for (auto & p : std::experimental::filesystem::directory_iterator(Seting.GetWorkDir()))//old
-			for (auto & p : std::experimental::filesystem::directory_iterator(_sRootDir ))
+		for (auto & p : std::experimental::filesystem::directory_iterator(_sRootDir))
 		{
 			/*
 			01.03.2020				// <- Want
@@ -90,10 +90,10 @@ namespace Level2
 	{
 		return std::regex_replace(in, std::regex(from), to);
 	}
-	 
+
 	std::vector <int> CDataUtil::Parse_DayMotherYear_DayMotherYear(const std::string & sPredDir, const std::string & sData)
 	{
-		Log::CFileLog::Log("[CDataUtil::Parse_DayMotherYear_DayMotherYear] : sPredDir= "  + sPredDir + " sData=" + sData, LOG_CALENDAR);
+		Log::CFileLog::Log("[CDataUtil::Parse_DayMotherYear_DayMotherYear] : sPredDir= " + sPredDir + " sData=" + sData, LOG_CALENDAR);
 
 		/*
 		input:  sData = D:\Development\booking\bin2\Debug\db\01.03.2020\02.03.2020-03.03.2020
@@ -136,10 +136,31 @@ namespace Level2
 
 		return  numArr;
 	}
-	 
-	ArrHomeName CDataProvider::GetAllNameHotelInCurDir(std::string sRootDir)
+
+
+
+	std::vector<std::string> CDataProvider::get_all_uniq_key_fom_file(std::string sRootDir)
 	{
-		ArrHomeName ArrName = client::CFileManager::GetAllHotelName(sRootDir);
+		std::vector<std::string> ArrName = client::CFileManager::get_all_uniq_key_fom_file(sRootDir);
+
+		if (ArrName.size() != 1)
+		{
+			Log::CFileLog::Log(
+				"[GetAllNameHotelInCurDir::CDataProvider] : Error, HeMojet bit > 1 files: " + std::to_string(ArrName.size())
+				+ " " + sRootDir
+				, LOG_CALENDAR_ERR);
+			return {};
+		}
+
+		client::CAllNameFile File_(ArrName[0]);
+
+		//return  { "ALPINA", "GUDAURI404" };
+		return File_.GetArrName();
+	}
+
+	std::vector<std::string> CDataProvider::GetAllNameHotelInCurDir(std::string sRootDir)
+	{
+		std::vector<std::string> ArrName = client::CFileManager::GetAllHotelName(sRootDir);
 
 		if (ArrName.size() != 1)
 		{
@@ -152,10 +173,35 @@ namespace Level2
 		//return  { "ALPINA", "GUDAURI404" };
 		return File_.GetArrName();
 	}
-	 
-	ArrHomeNameAndCostAndData_ CDataProvider::GetArrHomeNameAndCostAndData(std::string sIntrestingDir)
+
+
+	void CDataProvider::FindAsocDataByHomeName(const std::string & sRootDir, const std::string & sHotelName)
 	{
-		ArrHomeName ArrName = client::CFileManager::GetArrHomeNameAndCost(sIntrestingDir);
+		std::vector<CHomeNameAndCostAndData> Objects = CDataProvider::GetArrHomeNameAndCostAndData(sRootDir);
+
+		for (int i = 0; i < Objects.size(); i++)
+		{
+
+			if (Objects[i].GetHome().create_qniq_key() == sHotelName)
+			{
+				std::string sFileSave = dir_path::CParse::get_path_to_contry(sRootDir) + OS::CSystyem::GetSlash() + FILE_NAME_SPY + "_" + Objects[i].GetHome().GetName() + FILE_FORMAT;
+
+				Log::CFileLog::raw_log("[FindAsocDataByHomeName] "
+					+ Objects[i].GetHome().GetName()
+					+ " key " + sHotelName
+					+ " " + sRootDir
+					+ " cost "
+					+ std::to_string(Objects[i].GetHome().GetCost())
+					, sFileSave);
+
+			}
+		}
+	}
+
+
+	std::vector<CHomeNameAndCostAndData> CDataProvider::GetArrHomeNameAndCostAndData(std::string sIntrestingDir)
+	{
+		std::vector<std::string> ArrName = client::CFileManager::GetArrHomeNameAndCost(sIntrestingDir);
 		//ArrHomeName ArrName = client::CFileManager::GetArrHomeNameAndCost("D:\\Development\\booking\\bin2\\Debug\\db\\29.02.2020\\01.03.2020-04.03.2020");
 
 

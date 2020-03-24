@@ -17,7 +17,7 @@
 //class CSave;
 //class CLogic;
 
-  
+
 class CHomeArr
 {
 public:
@@ -25,6 +25,16 @@ public:
 	void AddHome(CHome  Home);
 
 	void Save(const std::string & sFileName);
+
+	void save_apart_name_andurl(const std::string & sFileName)
+	{
+		for (auto it : _Arr)
+		{
+			std::string s = it.create_qniq_key();
+
+			Log::CFileLog::raw_log(s, sFileName);
+		}
+	}
 
 private:
 	std::vector<CHome> _Arr;

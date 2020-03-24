@@ -1,9 +1,11 @@
 #ifndef	CLIENT_BASE_TYPE_H
 #define	CLIENT_BASE_TYPE_H
 
-#include "parser_impl.h"
-#include "calendar_def.h"
 #include "def.h"
+#include "parser_impl.h"
+#include "fix_compilate.h"// NEW
+
+//#include "calendar_def.h"
 //#include "common.h" // bad!
 
 #include <filesystem>
@@ -19,6 +21,8 @@
 class CHomeNameAndCostAndData
 {
 public:
+	CHomeNameAndCostAndData(){}
+
 	CHomeNameAndCostAndData(
 		CHome & Home
 		, Base::CData & Start

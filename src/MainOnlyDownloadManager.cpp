@@ -8,9 +8,13 @@
 #include <thread>
 
 
+
+
 int main()
 {
 	Log::CFileLog::Log("[main]", LOG_LOGIC);
+
+	
 
 	while (true)
 	{
@@ -28,7 +32,7 @@ int main()
 		}
 		else
 		{
-		Log::CFileLog::Log("[main] : Vse TARGET OK.", LOG_LOGIC);
+			Log::CFileLog::Log("[main] : Vse TARGET OK.", LOG_LOGIC);
 		}
 
 		TaskArr.clear();

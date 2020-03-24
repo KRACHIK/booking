@@ -19,6 +19,70 @@ void IHotelParser::Parse(std::string sFileHTML, CSave & Save)
 
 
 
+std::string IHotelParser::get_url_IMGMini(CToken tokenFindIMG, std::string & Text)
+{
+	// get hotel name 
+	std::string sIMG_url = CFileRead::FindOneTokenInText(Text, tokenFindIMG);
+	return sIMG_url;
+}
+
+
+
+
+std::string IHotelParser::get_name_impl(const std::string & Text)
+{
+	// get hotel name 
+	std::string Name = CFileRead::FindOneTokenInText(Text, CToken("=|alt=|", "|data-google-track="));
+	return Name;
+}
+
+
+
+
+int IHotelParser::get_price_Impl(const  std::string & Text)
+{
+	std::vector<int> Price = GetArrPriceByText(Text);
+
+	if (Price.size() > 1)
+	{
+		// takogo bit nemojet 
+		assert(false);
+	}
+	else if (Price.size() == 0)
+	{
+		//assert(false);
+		Price.push_back(-1);
+		// zapusti proceduru ybejdenia 4to nomer zan9t
+	}
+
+	return 	Price[0];
+}
+
+
+
+
+void IHotelParser::create_object_name_and_cost_and_url(
+	std::string & sFileHTML
+	, CSave & Save
+	, CHomeArr & homeArr
+	, std::string & Text
+	, int i
+	, CToken tokenURL
+)
+{
+
+	int price = get_price_Impl(Text);
+	std::string sName = get_name_impl(Text);
+	std::string url = get_url_IMGMini(tokenURL, Text);
+
+	CHome Home(sName, url, price);
+ 
+	homeArr.AddHome(Home);
+	Save.AddHomeName(sName);
+
+}
+
+/* 
 void IHotelParser::GetNameAndPrice_Impl(
 	std::string & sFileHTML
 	, CSave & Save
@@ -49,14 +113,18 @@ void IHotelParser::GetNameAndPrice_Impl(
 	// get hotel name 
 	std::string Name = CFileRead::FindOneTokenInText(Text, CToken("=|alt=|", "|data-google-track="));
 
-	CHome Home(Name, Price[0]);
+	//
+
+	std::string url = get_url_IMGMini(CToken("<imgclass=|hotel_image|src=|", "|data-highres=|"), sFileHTML, Save, homeArr, Text, i);
+
+
 	//Home.SaveBySelfName("Object_" );
 	Save.AddHomeName(Name);
 	homeArr.AddHome(Home);
 }
- 
+*/
 
-void IHotelParser::GetNameAndPrice(std::string sFileHTML, client::CSeting Seting, CSave & Save, std::string sResult)
+void IHotelParser::GetNameAndPrice(std::string sFileHTML, client::CSeting Seting, CSave & Save, std::string sResult, CHomeArr & homeArr )
 {
 	std::string sWorkDirAndCurrentDay = Seting.GetWorkDirAndCurrentDay();
 
@@ -72,16 +140,23 @@ void IHotelParser::GetNameAndPrice(std::string sFileHTML, client::CSeting Seting
 	CToken Token("<imgclass=|hotel_image|src=", "<imgclass=|hotel_image|src="); //   class="hotel_image"src="
 	//CToken Token("<imgclass=|hotel_image|src=", "bui-button__text"); // bad
 	std::vector <std::string> TokenArr = CFileRead::GetArrTokenRaw_NOT_MOVE_CARRETKA(sFileText, Token);
-	 
+
+
 	if (TokenArr.empty())
-		Log::CFileLog::Log("[IHotelParser::GetNameAndPrice] : " + sFileHTML + " HE CODERJIT BLOCKOV TokenArr.empty()", LOG_PARSER_ERR);
-	 
+	{
+		Log::CFileLog::Log("[IHotelParser::GetNameAndPrice] : " + sFileHTML + " HE CODERJIT BLOCKOV TokenArr.empty() or block vsego odin. Error faith Ahtung ", LOG_PARSER_ERR);
+		return;
+	}
+
 	int i = 0;
-	CHomeArr homeArr;
+
 	 
 	// get pervie N-1 blockov
 	for (auto Text : TokenArr)
-		GetNameAndPrice_Impl(sFileHTML, Save, homeArr, Text, i++);
+	{
+		create_object_name_and_cost_and_url(sFileHTML, Save, homeArr, Text, i++, CToken("|", "|data-highres=|"));
+	}
+
 	  
 	{ 
 		// get posledniq block number N
@@ -99,14 +174,11 @@ void IHotelParser::GetNameAndPrice(std::string sFileHTML, client::CSeting Seting
 			TextEnd = sFileText.size() - 1;
 
 		std::string Block(sFileText, TextStart, sFileText.size());
-		GetNameAndPrice_Impl(sFileHTML, Save, homeArr, Block, i++);
+		//GetNameAndPrice_Impl(sFileHTML, Save, homeArr, Block, i++);
+
+		create_object_name_and_cost_and_url(sFileHTML, Save, homeArr, Block, i++ , CToken("<imgclass=|hotel_image|src=|", "|data-highres=|"));
 	}
 
-	// Save Result Parse
-	{
-		std::string Path = Base::CUtil::GetDirByFilePath(sFileHTML, NAME_AND_COST);
-		homeArr.Save(Path);
-	}
 }
 
 

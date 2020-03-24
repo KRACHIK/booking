@@ -1,55 +1,163 @@
 
 #include "logic_impl.h"
 
+#include <chrono>
+#include <thread>
+
 
 namespace client
 {
 
-
-	bool  CLogic::IsPropuskDwnFile(std::vector<client::CTask> & TaskArr)
+	std::vector<std::experimental::filesystem::path>
+		CLogic::get_all_level3_dir(CDownLoadList & DownLoadList
+			, std::vector<std::experimental::filesystem::path> level2dir
+			, CSeting  & Seting)
 	{
-		CSeting  Seting;
+		/*-------D:\Development\booking\bin2\Debug\db\-2326178\08.03.2020\09.03.2020-11.03.2020
+		----------------------------------------------Levle-1----Levle-2---------Levle-3   */
 
-		std::string ActualWorkDir = GetActualWorkDir(Seting.GetWorkDir()); //D:\Development\booking\bin2\Debug\db\04.03.2020
-
-		std::vector<std::experimental::filesystem::path> arrDir = CFileSystem::directory_iterator(ActualWorkDir);
+		std::vector<std::experimental::filesystem::path> ArrIntrestingDir;
 
 
-		if (arrDir.empty())
+		for (auto it : level2dir)
 		{
-			Log::CFileLog::Log("[CLogic::IsPropuskDwnFile] : files property not created, and request dir diapozon to created", LOG_LOGIC);
-			return false;
-		}
+			std::vector<std::experimental::filesystem::path> arrDir = CFileSystem::directory_iterator(it.string());
 
-		std::vector<std::string> ArrIntrestingDir;
-
-		for (auto it : arrDir)
-		{
-			std::string dir(it.string(), ActualWorkDir.size());
-
-			if (dir.size() == 22)
-				ArrIntrestingDir.push_back(it.string());
-		}
-
-
-		for (auto it : ArrIntrestingDir)
-		{
-			bool b = CDownload::IsPropuskDwnFile(it, TaskArr);
-
-			if (b == true)
+			for (auto j : arrDir)
 			{
-				Log::CFileLog::Log("[CLogic::IsWork] : ne vse faili skacheni", LOG_LOGIC);
-				//return true;
+				std::string dir(j.string(), it.string().size());
+				int sfd;
+
+				if (dir.size() == 22)
+					ArrIntrestingDir.push_back(  j  );
 			}
 		}
 
 
-		if (TaskArr.size() > 0)
+		return ArrIntrestingDir;
+	}
+
+
+	std::vector<std::string> CLogic::get_all_level1_dir(CDownLoadList & DownLoadList, CSeting  & Seting)
+	{
+		/*-------D:\Development\booking\bin2\Debug\db\-2326178\08.03.2020\09.03.2020-11.03.2020
+		----------------------------------------------Levle-1----Levle-2---------Levle-3   */
+		 
+		std::vector<std::string> arrDir;
+		// Xodit po stranam
+		for (auto it : DownLoadList.get_valid_link())
+		{
+
+			// set current country for setting object
+			std::string  sCountryIndex;
+			bool bRet = DownLoadList.get_dest_by_link(it, sCountryIndex);
+			Seting.set_work_country_dir(sCountryIndex);
+			Seting.set_country(sCountryIndex);
+
+			std::string ActualWorkDir = Seting.GetWorkDir(); //D:\Development\booking\bin2\Debug\db\-2327363
+			arrDir.push_back(ActualWorkDir);
+				 
+		}
+
+		return arrDir;
+	}
+
+
+	std::vector<std::experimental::filesystem::path> CLogic::get_all_level2_dir(CDownLoadList & DownLoadList, CSeting  & Seting)
+	{
+		/*-------D:\Development\booking\bin2\Debug\db\-2326178\08.03.2020\09.03.2020-11.03.2020
+		----------------------------------------------Levle-1----Levle-2---------Levle-3   */
+
+		std::vector<std::experimental::filesystem::path> Ret;
+
+		// Xodit po stranam
+		for (auto it : DownLoadList.get_valid_link())
+		{
+
+			// set current country for setting object
+			std::string  sCountryIndex;
+			bool bRet = DownLoadList.get_dest_by_link(it, sCountryIndex);
+			Seting.set_work_country_dir(sCountryIndex);
+			Seting.set_country(sCountryIndex);
+
+			std::string ActualWorkDir = Seting.GetWorkDir(); //D:\Development\booking\bin2\Debug\db\-2327363
+
+			std::vector<std::experimental::filesystem::path> arrDir = CFileSystem::directory_iterator(ActualWorkDir);
+
+			///filter get only tru dir
+			for (auto t : arrDir)
+			{
+				std::string tru = std::string(t.string(), ActualWorkDir.size());
+
+				if (tru.size() != 11) // target ---------------> "/08.03.2020"
+				{
+					continue;
+				}
+				else
+				{
+					//grab
+					Ret.push_back(t);
+				}
+			}
+
+		}
+
+		return Ret;
+	}
+
+	bool  CLogic::IsPropuskDwnFile(CDownLoadList & DownLoadList, std::vector<client::CTask> & ReDownloadTaskArr, CSeting  & Seting)
+	{
+
+		// Xodit po stranam
+		for (auto it : DownLoadList.get_valid_link())
+		{
+
+			// set current country for setting object
+			std::string  sCountryIndex;
+			bool bRet = DownLoadList.get_dest_by_link(it, sCountryIndex);
+			Seting.set_work_country_dir(sCountryIndex);
+			Seting.set_country(sCountryIndex);
+
+
+			std::string ActualWorkDir = GetActualWorkDir(Seting.GetWorkDir()); //D:\Development\booking\bin2\Debug\db\04.03.2020
+
+			std::vector<std::experimental::filesystem::path> arrDir = CFileSystem::directory_iterator(ActualWorkDir);
+
+
+			if (arrDir.empty())
+			{
+				Log::CFileLog::Log("[CLogic::IsPropuskDwnFile] : files property not created, and request dir diapozon to created", LOG_LOGIC);
+				return false;
+			}
+
+			std::vector<std::string> ArrIntrestingDir;
+
+			for (auto it : arrDir)
+			{
+				std::string dir(it.string(), ActualWorkDir.size());
+
+				if (dir.size() == 22)
+					ArrIntrestingDir.push_back(it.string());
+			}
+
+
+			for (auto it : ArrIntrestingDir)
+			{
+				if (CDownload::IsPropuskDwnFile(it, ReDownloadTaskArr))
+				{
+					Log::CFileLog::Log("[CLogic::IsWork] : ne vse faili skacheni in dir " + it, LOG_LOGIC);
+					//return true;
+				}
+			}
+		}
+
+		if (ReDownloadTaskArr.size() > 0)
 			return true;
 		else
 			return false;
 
 	}
+
 
 	bool  CLogic::DwnPropuskFile(std::vector<client::CTask> & TaskArr)
 	{
@@ -101,6 +209,36 @@ namespace client
 		return false;
 	}
 
+
+
+
+	bool CLogic::CreateTaskForMoreCountry(CDownLoadList & DownLoadList, std::vector<client::CTask> & TaskArr, CSeting & Seting)
+	{
+		for (auto it : DownLoadList.get_valid_link())
+		{
+			std::string  sCountryIndex;
+
+			bool bRet = DownLoadList.get_dest_by_link(it, sCountryIndex);
+
+			Seting.set_work_country_dir(sCountryIndex);
+
+			Seting.set_country(sCountryIndex);
+
+			bool bCreateDir = client::CLogic::CreateWorkDir(Seting.get_work_country_dir());
+
+			std::vector<CTask> LocalTaskArr = client::CLogic::CreateTask(Seting);
+
+			TaskArr.insert(TaskArr.begin(), LocalTaskArr.begin(), LocalTaskArr.end());
+		}
+
+		//bool bRunUtil = client::CLogic::RunUtilDownload(TaskArr, Seting);
+		if (TaskArr.empty())
+			return false;
+
+		return true;
+	}
+
+
 	bool  CLogic::Work()
 	{
 		CSeting  Seting;
@@ -126,7 +264,7 @@ namespace client
 		return true;
 	}
 
-	bool CLogic::RunUtilParse(const std::vector<CTask> & TaskArr, CSeting Seting)
+	bool CLogic::RunUtilParse(const std::vector<CTask> & TaskArr, CSeting & Seting)
 	{
 
 		std::string sUtilName = "booking_html_parser.exe";
@@ -142,7 +280,7 @@ namespace client
 
 		return true;
 	}
-
+	 
 	std::vector<CTask> CLogic::CreateTask_v2_temp(CSeting Seting)
 	{
 		/*
@@ -225,8 +363,9 @@ namespace client
 
 			std::string sPathProperies = sPropDir + OS::CSystyem::GetSlash() + "props.properties";
 
-			Java::CProperties Properties(dat.startDay, dat.startMonth, dat.startYear, nextdat.startDay, nextdat.startMonth, nextdat.startYear, sPropDir);
+			Java::CProperties Properties(dat.startDay, dat.startMonth, dat.startYear, nextdat.startDay, nextdat.startMonth, nextdat.startYear, sPropDir, Seting.get_country());
 			Properties.CreateProperties(sPathProperies);
+
 
 			TaskArr.push_back(CTask(Properties, sPathProperies, sPropDir));
 
@@ -262,9 +401,12 @@ namespace client
 		// save imprintn before dwnload
 		std::vector<std::experimental::filesystem::path> file_before = CFileSystem::directory_iterator(it.GetDirProp());
 
+		int tRand = rand() % 5 + 1;
+		Log::CFileLog::Log("[CLogic::RunUtilDownload] : java -jar PARSER_x86.jar this_thread::sleep_for " + std::to_string(tRand), LOG_LOGIC);
+
+		std::this_thread::sleep_for(std::chrono::seconds(tRand));
 		{
 			// call java util
-			std::cout << "[CLogic::RunUtilDownload] : java -jar PARSER_x86.jar \n";
 			system("java -jar PARSER_x86.jar");
 		}
 
@@ -272,7 +414,7 @@ namespace client
 		// if download
 		std::vector<std::experimental::filesystem::path> file_after = CFileSystem::directory_iterator(it.GetDirProp());
 
-		Log::CFileLog::Log("[CLogic::RunUtilDownload] : : after" + std::to_string(file_after.size()) + " before " + std::to_string(file_before.size()), LOG_LOGIC);
+		//Log::CFileLog::Log("[CLogic::RunUtilDownload] : : after" + std::to_string(file_after.size()) + " before " + std::to_string(file_before.size()), LOG_LOGIC);
 
 		if (file_after.size() > file_before.size())
 		{
@@ -283,9 +425,13 @@ namespace client
 		{
 			CDwn dwn(WantFile, it);
 			ErrDwnArr = dwn;
-			std::cout << "[CLogic::RunUtilDownload] : not download by script: " << WantFile << ", Add this to replace dwn \n";
+
+			Log::CFileLog::Log("[CLogic::RunUtilDownload] : not download by script: " + WantFile + ", Add this to replace dwn " + it.GetFullPath(), LOG_LOGIC);
+
 			return false;
 		}
+
+
 
 		return true;
 	}
@@ -341,7 +487,7 @@ namespace client
 		return true;
 	}
 
-	bool CLogic::RunUtilDownload(const std::vector<CTask> & TaskArr, CSeting Seting)
+	bool CLogic::RunUtilDownload(const std::vector<CTask> & TaskArr, CSeting & Seting)
 	{
 		std::vector <std::string> ErrDwnByScriptArr;
 		int i = 0;
@@ -352,7 +498,7 @@ namespace client
 
 			UpdateFileProperties(WantFile, it.GetFullPath(), Seting.GetProgaDir());
 
-			Log::CFileLog::Log("[CLogic::Thread_download] : Task Number: " + std::to_string(i++) + " All Task " + std::to_string(TaskArr.size()) , LOG_LOGIC);
+			Log::CFileLog::Log("[CLogic::Thread_download] : Task Number: " + std::to_string(i++) + " All Task " + std::to_string(TaskArr.size()), LOG_LOGIC);
 
 			bool bDwn = Thread_download(WantFile, it);
 

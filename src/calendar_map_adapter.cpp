@@ -23,17 +23,16 @@ namespace Level1
 	}
 
 
-	void CMapDataBase::AddKey(ArrHomeName NameHomes)
+	void CMapDataBase::AddKey(std::vector<std::string> NameHomes)
 	{
-		Log::CFileLog::Log("AddKey: Start", LOG_CALENDAR);
-
+		//Log::CFileLog::Log("AddKey: Start", LOG_CALENDAR);
 		for (auto it : NameHomes)
 		{
-			Log::CFileLog::Log("AddKey: " + it, LOG_CALENDAR);
-			Insert(it, HotelForCalendar());
+			//Log::CFileLog::Log("AddKey: " + it, LOG_CALENDAR);
+			Insert(it, CHotelManager());
 		}
 	}
-
+		 
 
 	void CMapDataBase::AddValue(client::CHotel Hotel)
 	{

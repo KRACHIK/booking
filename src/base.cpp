@@ -159,12 +159,8 @@ std::string CFindImpl::Find(const std::string & line, std::string str2, std::str
 		//std::cout << "->[" << sResult << "]\n";
 		return sResult;
 	}
-	else
-	{
-		std::cout << "Error Open file \n";
-	}
 
-	std::cout << "End" << std::endl;
+	Log::CFileLog::Log("[CFindImpl::Find] : Not Find token1: " + str2 + " token2: " + str3, LOG_COMMON_ENGINE);
 
 	return "";
 }
@@ -247,6 +243,32 @@ std::string CFileRead::FindOneTokenInFile(const std::string & sFileName, CToken 
 std::string CFileRead::FindOneTokenInText(const std::string & sFileName, CToken Tokken)
 {
 	std::string sResult = CFindImpl::Find(sFileName, Tokken.GetTegStart(), Tokken.GetTegEnd());
+	return sResult;
+}
+
+
+
+std::vector<std::string> CFileRead::open_file(const std::string & sFileName)
+{
+	std::string line;
+	std::vector<std::string> sResult;
+
+	std::ifstream in(sFileName); // окрываем файл для чтения
+
+	if (in.is_open())
+	{
+		while (getline(in, line))
+		{
+			sResult.push_back(line);
+		}
+	}
+	else
+	{
+		Log::CFileLog::Log("[CFileRead::OpenFile] : Error Open file ", LOG_COMMON_ENGINE);
+	}
+
+	in.close();     // закрываем файл
+
 	return sResult;
 }
 

@@ -1,37 +1,35 @@
 #ifndef CALENDAR_DATA_PROVIDER_H
 #define CALENDAR_DATA_PROVIDER_H
 
-#include "common.h"
 
+#include "Client_Base_type.h"
+//#include "parser_impl.h"
+//#include "foreach_dir.h"
+//#include "common.h"
+//#include "file.h"
+//#include "calendar_def.h"
+
+#include <functional>
+#include <algorithm>
+#include <iterator>
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include <string>
-
-#include "foreach_dir.h"
-
-
-#include "calendar_def.h"
-#include "file.h"
-
-#include "parser_impl.h"
-#include "Client_Base_type.h"
-
-
-#include <list>
-#include <algorithm>
-#include <functional>
-#include <iterator>
-#include <sstream>
 #include <vector>
-
-
 #include <regex>
+#include <list>
+
+
+
+class CHomeNameAndCostAndData;
 
 
 namespace Level2
 {
+
 	class CMyString
 	{
 	public:
@@ -56,7 +54,7 @@ namespace Level2
 		bool Get_Next_Intresting_Iterator_Dir(std::string & Result);
 
 		std::vector<std::string> get_all_file_in_dir(const std::string & sDir, const std::string & sMask);
-	  
+
 		bool Get_Next_Diapozon_Dir(std::string & Result)
 		{
 			if (_Index >= _DayArr.size())
@@ -65,7 +63,7 @@ namespace Level2
 				return false;
 			}
 
-			Result = _DayArr[_Index ].string();
+			Result = _DayArr[_Index].string();
 			_Index++;
 
 			return true;
@@ -83,9 +81,13 @@ namespace Level2
 	class CDataProvider
 	{
 	public:
-		static ArrHomeName GetAllNameHotelInCurDir(std::string sRootDir);
+		static std::vector<std::string> GetAllNameHotelInCurDir(std::string sRootDir);
 
-		static ArrHomeNameAndCostAndData_ GetArrHomeNameAndCostAndData(std::string sIntrestingDir);
+		static std::vector<CHomeNameAndCostAndData> GetArrHomeNameAndCostAndData(std::string sIntrestingDir);
+
+		static void FindAsocDataByHomeName(const std::string & sRootDir, const std::string & sHotelName);
+		 
+		static std::vector<std::string>  get_all_uniq_key_fom_file(std::string sRootDir);
 	};
 
 }

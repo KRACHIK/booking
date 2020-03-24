@@ -12,7 +12,11 @@
 #define FILE_DBG								"FILE_DBG"
 #define ALL_NAME_HOTEL_BY_ALL_FILE_IN_THIS_DIR	"FILE_HOTEL_NAME_DB"
 #define NAME_AND_COST							"FILE_NAME_AND_COST_DB"
+#define FILE_NAME_SPY							"FILE_NAME_SPY"
+//#define FILE_UNIQ_APART_KEY						"FILE_UNIQ_APART_KEY"
+#define FILE_UNIQ_APART_KEY						"FILE_UNIQ_APART_KEY"
 #define FILE_FORMAT								".kr4"
+
 
 #define LOG_CALENDAR							"LOG_CALENDAR.log"
 #define LOG_PARSER								"LOG_PARSER.log"
@@ -24,13 +28,20 @@
 #define LOG_LOGIC_ERR							"LOG_LOGIC_ERR.log"
 #define LOG_TOTAL_HOME_PARSER_ERR				"LOG_TOTAL_HOME_PARSER_ERR.log"
 
+#define LOG_COMMON_ENGINE						"LOG_COMMON_ENGINE.log"
+
+#define LOG_MAIN_PROD_PARSER					"LOG_MAIN_PROD_PARSER.log"
+#define LOG_MAIN_DATA_OB_ODNOM_OTELE			"LOG_MAIN_DATA_OB_ODNOM_OTELE.log"
+
+
+
 namespace Log {
 
 	class CFileLog
 	{
 	public:
 		static void Log(const std::string & Str, const std::string & sFileName);
-
+		static void raw_log(const std::string & Str, const std::string & sFileName);
 	};
 
 }
@@ -96,7 +107,6 @@ namespace Base
 
 	};
 
-
 }
 
 namespace L2
@@ -156,11 +166,28 @@ namespace client
 
 		std::string GetWorkDirAndCurrentDay() const;
 
+
+		void set_work_country_dir(const std::string & sPrefixDir);
+		std::string get_work_country_dir() const { return  _sWorkCountryDir; }
+
+
+		std::string get_download_list_file_path() const
+		{
+			return  GetProgaDir() + OS::CSystyem::GetSlash() + "DownloadList.ini";
+		}
+
+		void set_country(const std::string & sCountry) { _sCountry = sCountry; }
+		std::string get_country() const { return _sCountry; }
+
+
 	private:
 		std::string _sWorkDir;
 		std::string _sProgaDir;
+		std::string _sWorkCountryDir; //vichisl9emoe
+		std::string _sCountry; //vichisl9emoe
 
-		int _Day = 3;
+
+		int _Day = 7;
 	};
 
 	class CHotel
@@ -185,10 +212,11 @@ namespace client
 	{
 	public:
 
-		static ArrHomeName  GetAllHotelName(std::string sPath);
+		static std::vector<std::string>  get_all_uniq_key_fom_file(std::string sPath);
 
-		static ArrHomeName GetArrHomeNameAndCost(std::string sPath);
+		static std::vector<std::string>  GetAllHotelName(std::string sPath);
 
+		static std::vector<std::string> GetArrHomeNameAndCost(std::string sPath);
 
 	};
 
@@ -208,6 +236,46 @@ namespace Str
 	};
 }
 #endif 
+
+
+namespace dir_path {
+
+	class CParse
+	{
+	public:
+		static std::string get_path_to_contry(const std::string & sDirDir)
+		{
+			client::CSeting  Seting;
+			std::string  db = Seting.GetWorkDir();
+			 
+			db += OS::CSystyem::GetSlash() + get_contry(sDirDir);
+			return db;
+		}
+
+		static std::string get_contry(const std::string & sDirDir)
+		{
+			// INPUT
+			//		sDirDir = D:\Development\booking\bin2\Debug\db\20017156\08.03.2020\09.03.2020-11.03.2020
+			//		OR sDirDir = D:\Development\booking\bin2\Debug\db\20017156\08.03.2020
+			//		OR sDirDir = D:\Development\booking\bin2\Debug\db\20017156\
+			// OUTPUT
+			//		20017156
+
+			client::CSeting  Seting;
+
+			std::string db = Seting.GetWorkDir(); //  D:\\Development\\booking\\bin2\\Debug\\db
+
+			std::string  contry(sDirDir, db.size() + 2);
+
+			std::string PathAndSpace = Str::Util::do_replace(contry, "\\\\", " ");
+			std::vector <CStr> Arr = Str::Util::Parse_Space(PathAndSpace);
+
+			return  Arr[0];
+		}
+
+	};
+
+}
 
 
 #endif /* COMMON_H */

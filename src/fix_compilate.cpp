@@ -10,7 +10,9 @@ CHome CHome::Deserealize(const CStr & Str)
 	CStr Name = Arr[0];
 	int Cost = std::stoi(Arr[1]);
 
-	return  CHome(Name, Cost);
+	std::string sURL = Arr[2];
+
+	return  CHome(Name, sURL, Cost);
 }
 
 void CHome::SaveBySelfName(const std::string & Prefix)
@@ -24,6 +26,7 @@ void CHome::Save(const std::string & sFileName)
 	std::stringstream ss;
 	ss << "Name " << _sName << "\n";
 	ss << "Cost " << _Cost << "\n";
+	ss << "UrlMiniIMG " << _sUrlMiniIMG << "\n";
 
 	std::ofstream outFile(sFileName);
 	outFile << ss.rdbuf();
@@ -32,6 +35,6 @@ void CHome::Save(const std::string & sFileName)
 
 std::string CHome::GetSerialize()
 {
-	std::string ss = _sName + " " + std::to_string(_Cost) + "\n";
+	std::string ss = _sName + " " + std::to_string(_Cost) + " " + _sUrlMiniIMG + "\n";
 	return ss;
 }
