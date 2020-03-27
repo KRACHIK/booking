@@ -25,6 +25,9 @@ namespace Str
 		static std::string do_replace(const std::string & in, const std::string &from, const std::string & to);
 
 		static dati Parse_GetDataByPath(const std::string & Src);
+
+		static dati Parse_day_mother_year(const std::string & Src);
+
 	};
 }
  

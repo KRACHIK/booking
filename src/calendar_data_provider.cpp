@@ -205,13 +205,19 @@ namespace Level2
 		//ArrHomeName ArrName = client::CFileManager::GetArrHomeNameAndCost("D:\\Development\\booking\\bin2\\Debug\\db\\29.02.2020\\01.03.2020-04.03.2020");
 
 
-		Base::CData Start, End;
+		Base::CData Start, End, DataLevel2;
 		bool bRes = Str::Util::Parse_GetDataByPath(sIntrestingDir, Start, End);
-
 		if (bRes == false)
 		{
-			Log::CFileLog::Log("[::GetArrHomeNameAndCostAndData] : Error. Not parse data by str = " + sIntrestingDir, LOG_CALENDAR_ERR);
+			Log::CFileLog::Log("[::GetArrHomeNameAndCostAndData] : Parse_GetDataByPath Error. Not parse data by str = " + sIntrestingDir, LOG_CALENDAR_ERR);
 		}
+		
+		bRes = Str::Util::get_level2_data_obj (sIntrestingDir, DataLevel2);
+		if (bRes == false)
+		{
+			Log::CFileLog::Log("[::GetArrHomeNameAndCostAndData] : get_level2_data_obj Error. Not parse data by str = " + sIntrestingDir, LOG_CALENDAR_ERR);
+		}
+
 
 		std::vector <CHomeNameAndCostAndData> Arr;
 
@@ -221,7 +227,7 @@ namespace Level2
 			for (CStr Line : FileData.GetArrLine())
 			{
 				CHome Home = CHome::Deserealize(Line);
-				CHomeNameAndCostAndData HomeNameAndCostAndData(Home, Start, End);
+				CHomeNameAndCostAndData HomeNameAndCostAndData(Home, Start, End, DataLevel2);
 				Arr.push_back(HomeNameAndCostAndData);
 			}
 		}

@@ -25,14 +25,14 @@ namespace Log {
 	void CFileLog::raw_log(const std::string & Str, const std::string & sFileName)
 	{
 		std::stringstream ss;
- 
+
 		ss << Str << "\n";
 		std::ofstream outFile(sFileName, std::ios::app);
 		outFile << ss.rdbuf();
 		outFile.close();
 	}
 }
-		  
+
 namespace Base
 {
 #if 1
@@ -58,6 +58,21 @@ namespace Base
 
 		Start = CData(d[0], d[1], d[2]);
 		End = CData(d[3], d[4], d[5]);
+
+		return  true;
+	}
+
+
+	bool CData::Parse(const std::string & Src, CData & OutPutData)
+	{
+		dati d = Str::rENAME::Parse_day_mother_year (Src);
+
+		if (d.size() != 3)
+		{
+			return false;
+		}
+
+		OutPutData = CData(d[0], d[1], d[2]);
 
 		return  true;
 	}
@@ -276,7 +291,7 @@ namespace client
 
 
 	std::vector<std::string> CFileManager::get_all_uniq_key_fom_file(std::string sPath)
-	{ 
+	{
 		return CFileSystem::GetFileByMask(sPath, FILE_UNIQ_APART_KEY);
 	}
 
@@ -316,6 +331,35 @@ namespace Str {
 	{
 		return std::regex_replace(in, std::regex(from), to);
 	}
+
+	//std::vector<std::string> ArrName = client::CFileManager::GetArrHomeNameAndCost(sIntrestingDir);
+		//ArrHomeName ArrName = client::CFileManager::GetArrHomeNameAndCost("D:\\Development\\booking\\bin2\\Debug\\db\\29.02.2020\\01.03.2020-04.03.2020");
+
+	std::string Util::get_level2_name(const std::string & Path)
+	{
+		/*-------D:\Development\booking\bin2\Debug\db\-2326178\08.03.2020\09.03.2020-11.03.2020
+		----------------------------------------------Levle-1----Levle-2---------Levle-3   */
+
+		//input  D:\\Development\\booking\\bin2\\Debug\\db\\29.02.2020\\01.03.2020-04.03.2020
+		//target 29.02.2020
+		int AllSize = Path.size();
+		int StartSym = AllSize - 32;
+
+		std::string Result = std::string(Path, StartSym, 10);
+
+		return Result;
+	}
+
+	bool Util::get_level2_data_obj(const std::string & sData, Base::CData & OutPutPresult)
+	{
+		//input  D:\\Development\\booking\\bin2\\Debug\\db\\29.02.2020\\01.03.2020-04.03.2020
+		//target Base::CData
+
+		std::string StrLevel2 = Util::get_level2_name(sData); //29.02.2020	
+		  
+		return Base::CData::Parse(StrLevel2, OutPutPresult);
+	}
+
 
 	bool Util::Parse_GetDataByPath(const std::string & buf, Base::CData & Start, Base::CData & End)
 	{

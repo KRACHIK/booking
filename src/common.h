@@ -56,7 +56,15 @@ namespace Base
 		CData();
 		CData(int startDay_, int startMonth_, int startYear_);
 
+		std::string Serialize()
+		{
+			return  std::to_string(startDay) + "." + std::to_string(startMonth) + "." + std::to_string(startYear);
+		}
+
 		static bool Parse(const std::string & Src, CData & Start, CData & End);
+
+		static bool Parse(const std::string & Src, CData & OutPutData);
+
 
 		bool operator == (const Base::CData & right)
 		{
@@ -88,6 +96,13 @@ namespace Base
 				std::to_string(End.startDay) + "." + std::to_string(End.startMonth) + "." + std::to_string(End.startYear)
 			);
 
+		}
+
+		bool operator ==(CData & d) 
+		{
+			return d.startYear == startYear
+				&& d.startMonth == startMonth
+				&& d.startDay == startDay;
 		}
 
 	public:
@@ -233,6 +248,10 @@ namespace Str
 		static std::vector <CStr> Parse_Space(const std::string & buf);
 		static std::string do_replace(const std::string & in, const std::string &from, const std::string & to);
 		static bool Parse_GetDataByPath(const std::string & buf, Base::CData & Start, Base::CData & End);
+		static std::string get_level2_name(const std::string & Path);
+		static bool get_level2_data_obj(const std::string & Path, Base::CData & OutPutPresult);
+
+
 	};
 }
 #endif 
@@ -247,7 +266,7 @@ namespace dir_path {
 		{
 			client::CSeting  Seting;
 			std::string  db = Seting.GetWorkDir();
-			 
+
 			db += OS::CSystyem::GetSlash() + get_contry(sDirDir);
 			return db;
 		}

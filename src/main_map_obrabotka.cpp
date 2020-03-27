@@ -12,19 +12,49 @@
 #include <iostream>
 
 
-int main()
+void Write_Hotel_to_DB()
 {
-	std::cout << " dsd\n";
-
 	std::vector<client::CTask> ReDownloadTaskArr;
 	CDownLoadList  DownLoadList;
 	client::CSeting  Seting;
 	std::vector<std::experimental::filesystem::path> level2dir = client::CLogic::get_all_level2_dir(DownLoadList, Seting);
 	std::vector<std::experimental::filesystem::path> level3dir = client::CLogic::get_all_level3_dir(DownLoadList, level2dir, Seting);
-	  
+
+
 	client::IDataBase db;
-	db.Init(level3dir);
-	db.RenderStat();
+	db.Init_all_name(level3dir);
+
+	db.Write_All_Hotel_to_db(level3dir);
+}
+
+
+void Read_Hotel_from_db()
+{
+	client::IDataBase db;
+	std::vector<client::CTask> ReDownloadTaskArr;
+	CDownLoadList  DownLoadList;
+	client::CSeting  Seting;
+	std::vector<std::experimental::filesystem::path> level2dir = client::CLogic::get_all_level2_dir(DownLoadList, Seting);
+	std::vector<std::experimental::filesystem::path> level3dir = client::CLogic::get_all_level3_dir(DownLoadList, level2dir, Seting);
+
+
+	db.Init_all_name(level3dir);
+
+	db.Deserealize("yeah.txt");
+	int dfs234 = 23;
+}
+
+
+int main()
+{
+	CCalendar  Calendar;
+	Calendar.CreateCalendar(300);
+
+	if (0)
+		Write_Hotel_to_DB();
+
+	if (0)
+		Read_Hotel_from_db();
 
 	return 0;
 }
