@@ -175,6 +175,24 @@ namespace Level2
 	}
 
 
+	void CDataProvider::get_assoc_data_by_quniq_key(
+		std::vector<CHomeNameAndCostAndData> & Result 
+		,const std::string & sRootDir
+		, const std::string & sHotelName
+	)
+	{
+		 
+		std::vector<CHomeNameAndCostAndData> Objects = CDataProvider::GetArrHomeNameAndCostAndData(sRootDir);
+
+		for (int i = 0; i < Objects.size(); i++)
+		{
+			if (Objects[i].GetHome().create_qniq_key() == sHotelName)
+			{
+				Result.emplace_back(Objects[i]);
+			}
+		}
+	}
+
 	void CDataProvider::FindAsocDataByHomeName(const std::string & sRootDir, const std::string & sHotelName)
 	{
 		std::vector<CHomeNameAndCostAndData> Objects = CDataProvider::GetArrHomeNameAndCostAndData(sRootDir);

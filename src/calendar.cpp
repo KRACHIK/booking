@@ -22,6 +22,28 @@ namespace client {
 		//outFile.close();
 	}
 
+	void IDataBase::create_db_for_vital()
+	{
+		std::vector<std::string> Homes = get_all_name_by_init_map();
+
+		int i = 0, size = _MapDataBase.GetMap().size();
+
+		for (auto it = _MapDataBase.GetMap().begin(); it != _MapDataBase.GetMap().end(); ++it)
+		{
+			 
+			if (it->second.is_init() )
+			{
+				Log::CFileLog::Log("Calendar Task: " + std::to_string(++i) + "/" + std::to_string(size), LOG_MAIN_DATA_OB_ODNOM_OTELE);
+				it->second.Compute();
+				it->second.save_result_compute("assoc_data.txt");
+			}
+			else
+				Log::CFileLog::Log("Calendar error: " + std::to_string(++i) + "/" + std::to_string(size), LOG_MAIN_DATA_OB_ODNOM_OTELE);
+
+		}
+	}
+
+
 	void IDataBase::Deserealize(std::string sFilePatth)
 	{
 
@@ -29,28 +51,26 @@ namespace client {
 
 		int count_line_in_one_raw_object = 2;
 
-		int CountObject = File_.GetArrName().size() / CHomeNameAndCostAndData::count_line_in_one_raw_object();
+		std::vector<std::string> pFileDataLine = File_.GetArrName();
+
+		int CountObject = pFileDataLine.size() / CHomeNameAndCostAndData::count_line_in_one_raw_object();
 
 
 		//
 		int Index = 0;
 		for (int i = 0; i < CountObject; i++)
 		{
-			std::string sLine_1 = File_.GetArrName()[Index];
-			Index++;
-			std::string sLine_2 = File_.GetArrName()[Index];
+			const std::string & sLine_1 = pFileDataLine[Index];
 			Index++;
 
-			std::vector<std::string> sRawObject;
-			sRawObject.push_back(sLine_1);
-			sRawObject.push_back(sLine_2);
+			const std::string & sLine_2 = pFileDataLine[Index];
+			Index++;
+			 
+			CHomeNameAndCostAndData Object = CHomeNameAndCostAndData::Derialize(sLine_1, sLine_2);
+			Log::CFileLog::Log(" object: " + std::to_string(i) + "/" + std::to_string(CountObject), LOG_CALENDAR);
 
-			CHomeNameAndCostAndData Object = CHomeNameAndCostAndData::Derialize(sRawObject);
-			
-			Log::CFileLog::Log(" object: " + std::to_string(i) + "/" + std::to_string(CountObject) , LOG_CALENDAR);
- 
 			_MapDataBase.AddValue(Object);
-		} 
+		}
 	}
 
 	void IDataBase::Write_All_Hotel_to_db(std::vector<std::experimental::filesystem::path> level3dir)
@@ -70,7 +90,7 @@ namespace client {
 			{
 				Serialize(itHotel);
 			}
-				 
+
 			/*for (auto sName : Homes) {
 			}*/
 			Log::CFileLog::Log(" HomesID: " + std::to_string(++NumHomes) + "/" + std::to_string(Homes.size()) + " Dir: " + std::to_string(dir_num) + "/" + std::to_string(level3dir.size()), LOG_MAIN_PROD_PARSER);

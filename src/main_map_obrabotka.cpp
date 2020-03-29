@@ -41,19 +41,20 @@ void Read_Hotel_from_db()
 	db.Init_all_name(level3dir);
 
 	db.Deserealize("yeah.txt");
+
+	db.create_db_for_vital();
+
 	int dfs234 = 23;
 }
 
 
 int main()
 {
-	CCalendar  Calendar;
-	Calendar.CreateCalendar(300);
-
+  
 	if (0)
 		Write_Hotel_to_DB();
 
-	if (0)
+	if (1)
 		Read_Hotel_from_db();
 
 	return 0;

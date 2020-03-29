@@ -36,6 +36,11 @@ public:
 		return 2;
 	}
 
+	int get_cost() const 
+	{
+		return GetHome().GetCost();
+	}
+
 	CHome GetHome() const;
 	Base::CData GetDataStart() const;
 	Base::CData GetDataEnd() const;
@@ -52,24 +57,22 @@ public:
 	}
 
 
-	static CHomeNameAndCostAndData Derialize(std::vector<std::string> LineArr)
+	static CHomeNameAndCostAndData Derialize(const std::string  & LineArr, const std::string  & LineArr2  )
 	{
-		if (LineArr.size() != 2)
+		if (LineArr.empty() || LineArr2.empty())
 		{
 			assert(false);
 		}
 
-		CHome home = CHome::Deserealize(LineArr[0]);
+		CHome home = CHome::Deserealize(LineArr );
 
-		std::vector<std::string> ArrData = Str::rENAME::Parse_Space(LineArr[1]);
+		std::vector<std::string> ArrData = Str::rENAME::Parse_Space(LineArr2 );
 
 		if (ArrData.size() != 3)
 		{
 			assert(false);
 		}
-
-
-
+		 
 		Base::CData DataInDayRequest, Data_day_start, Data_day_end;
 
 		if (!Base::CData::Parse(ArrData[0], DataInDayRequest))

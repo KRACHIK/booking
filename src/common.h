@@ -158,7 +158,7 @@ namespace client
 	public:
 		CAllNameFile(const std::string & sFileName);
 
-		std::vector<std::string> GetArrName() const { return _ArrName; }
+		std::vector<std::string> & GetArrName()  { return  _ArrName; }
 
 	private:
 

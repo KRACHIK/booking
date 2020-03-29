@@ -87,6 +87,13 @@ namespace Level2
 
 		static void FindAsocDataByHomeName(const std::string & sRootDir, const std::string & sHotelName);
 		 
+
+		static void CDataProvider::get_assoc_data_by_quniq_key(
+			std::vector<CHomeNameAndCostAndData> & Result
+			, const std::string & sRootDir
+			, const std::string & sHotelName
+		);
+
 		static std::vector<std::string>  get_all_uniq_key_fom_file(std::string sRootDir);
 	};
 

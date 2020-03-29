@@ -20,6 +20,7 @@ namespace client {
 	class IDataBase
 	{
 	public:
+		void create_db_for_vital();
 		 
 		void Init_all_name(std::vector<std::experimental::filesystem::path> level3dir);
 
