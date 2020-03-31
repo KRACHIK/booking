@@ -98,7 +98,7 @@ namespace Base
 
 		}
 
-		bool operator ==(CData & d) 
+		bool operator ==(CData & d)
 		{
 			return d.startYear == startYear
 				&& d.startMonth == startMonth
@@ -158,7 +158,7 @@ namespace client
 	public:
 		CAllNameFile(const std::string & sFileName);
 
-		std::vector<std::string> & GetArrName()  { return  _ArrName; }
+		std::vector<std::string> & GetArrName() { return  _ArrName; }
 
 	private:
 
@@ -188,7 +188,14 @@ namespace client
 
 		std::string get_download_list_file_path() const
 		{
-			return  GetProgaDir() + OS::CSystyem::GetSlash() + "DownloadList.ini";
+			std::string sRet;
+
+			if (GetProgaDir().empty())
+				sRet = "DownloadList.ini";
+			else
+				sRet = GetProgaDir() + OS::CSystyem::GetSlash() + "DownloadList.ini";
+
+			return sRet;
 		}
 
 		void set_country(const std::string & sCountry) { _sCountry = sCountry; }

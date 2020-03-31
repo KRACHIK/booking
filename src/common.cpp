@@ -224,8 +224,11 @@ namespace client
 
 	CSeting::CSeting()
 	{
-		_sWorkDir = "D://Development//booking//bin2//Debug//db";
-		_sProgaDir = "D://Development//booking//bin2//Debug";
+		 _sWorkDir = "D://Development//booking//bin2//Debug//db";
+		 _sProgaDir = "D://Development//booking//bin2//Debug";
+
+		//_sWorkDir = "db";
+		//_sProgaDir = "";
 	}
 
 
