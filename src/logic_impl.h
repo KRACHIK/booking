@@ -8,37 +8,6 @@
 
 namespace client
 {
-#if 0
-	class CTask
-	{
-	public:
-
-		CTask();
-
-		CTask(Java::CProperties Properties, const std::string & sFullPath, const std::string  & sDirProp);
-		CTask(const std::string & sFullPath, const std::string  & sDirProp);
-
-		std::string GetFullPath();
-		std::string GetDirProp();
-
-	private:
-		Java::CProperties	_Properties;
-		std::string			_sFullPath;
-		std::string			_sDirProp;
-
-	};
-
-	class CDwn
-	{
-	public:
-		CDwn();
-		CDwn(const std::string & WantFile, CTask  Task);
-
-	public:
-		std::string _WantFile;
-		CTask _Task;
-	};
-#endif 
 
 	class CLogic
 	{
@@ -62,35 +31,7 @@ namespace client
 		static bool IsPropuskDwnFile(CDownLoadList & DownLoadList, std::vector<client::CTask> & TaskArr, CSeting & Seting);
 		static bool CreateTaskForMoreCountry(CDownLoadList & DownLoadList, std::vector<client::CTask> & TaskArr, CSeting & Seting);
 
-		static bool IsCurrentDirCreated(CDownLoadList & DownLoadList, CSeting & Seting)
-		{
-			// Xodit po stranam
-			for (auto it : DownLoadList.get_valid_link())
-			{
-
-				// set current country for setting object
-				std::string  sCountryIndex;
-				bool bRet = DownLoadList.get_dest_by_link(it, sCountryIndex);
-				Seting.set_work_country_dir(sCountryIndex);
-				Seting.set_country(sCountryIndex);
-
-
-				std::string ActualWorkDir = GetActualWorkDir(Seting.GetWorkDir()); //D:\Development\booking\bin2\Debug\db\04.03.2020
-
-				if (std::experimental::filesystem::exists(ActualWorkDir))
-				{
-
-					Log::CFileLog::Log("estb" + ActualWorkDir, LOG_LOGIC);
-				}
-				else
-				{
-					Log::CFileLog::Log("Nety" + ActualWorkDir, LOG_LOGIC);
-
-					return false;
-				}
-			}
-			return true;
-		}
+        static bool IsCurrentDirCreated(CDownLoadList & DownLoadList, CSeting & Seting);
 
 		static bool RunUtilDownload(const std::vector<CTask> & TaskArr, CSeting & Seting);
 

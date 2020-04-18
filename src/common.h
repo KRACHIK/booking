@@ -75,30 +75,11 @@ namespace Base
 				);
 		}
 
-		static bool create_data_by_vector_int(const std::vector <int > & Arr, CData & OutPutStart, CData & OutPutEnd)
-		{
-			if (Arr.size() != 6)
-			{
-				return false;
-			}
+        static bool create_data_by_vector_int(const std::vector <int > & Arr, CData & OutPutStart, CData & OutPutEnd);
 
-			OutPutStart = CData(Arr[0], Arr[1], Arr[2]);
-			OutPutEnd = CData(Arr[3], Arr[4], Arr[5]);
+        static std::string get_str_for_excel(const CData & Start, const CData & End);
 
-			return  true;
-		}
-
-		static std::string get_str_for_excel(const CData & Start, const CData & End)
-		{
-			return std::string(
-				std::to_string(Start.startDay) + "." + std::to_string(Start.startMonth) + "." + std::to_string(Start.startYear)
-				+ " " +
-				std::to_string(End.startDay) + "." + std::to_string(End.startMonth) + "." + std::to_string(End.startYear)
-			);
-
-		}
-
-		bool operator ==(CData & d)
+		bool operator ==(CData & d) 
 		{
 			return d.startYear == startYear
 				&& d.startMonth == startMonth
@@ -126,6 +107,19 @@ namespace Base
 
 namespace L2
 {
+
+    class CTime
+    {
+    public:
+        CTime(){}
+        CTime(int  Hour,int  Min) : _Hour(Hour), _Min(Min) { }
+
+    public:
+        int _Hour;
+        int _Min;
+    };
+
+
 	class CData
 	{
 	public:
@@ -136,7 +130,12 @@ namespace L2
 
 		static Base::CData GetCurData();
 
-	};
+        static void Time(int &Hour, int &Min);
+
+
+        static CTime GetTime( );
+
+    };
 }
 
 namespace OS {
@@ -158,7 +157,7 @@ namespace client
 	public:
 		CAllNameFile(const std::string & sFileName);
 
-		std::vector<std::string> & GetArrName() { return  _ArrName; }
+		std::vector<std::string> & GetArrName()  { return  _ArrName; }
 
 	private:
 
@@ -186,30 +185,25 @@ namespace client
 		std::string get_work_country_dir() const { return  _sWorkCountryDir; }
 
 
-		std::string get_download_list_file_path() const
-		{
-			std::string sRet;
-
-			if (GetProgaDir().empty())
-				sRet = "DownloadList.ini";
-			else
-				sRet = GetProgaDir() + OS::CSystyem::GetSlash() + "DownloadList.ini";
-
-			return sRet;
-		}
+        std::string get_download_list_file_path() const;
 
 		void set_country(const std::string & sCountry) { _sCountry = sCountry; }
 		std::string get_country() const { return _sCountry; }
 
+        static bool IsTimeWork(CSeting &Seting);
 
-	private:
-		std::string _sWorkDir;
-		std::string _sProgaDir;
+
+        L2::CTime GetRunProgaInTime() const;
+
+    private:
+        std::string _sWorkDir;
+        std::string _sProgaDir;
 		std::string _sWorkCountryDir; //vichisl9emoe
 		std::string _sCountry; //vichisl9emoe
+        int _Day = 7;
 
 
-		int _Day = 7;
+        L2::CTime _RunProgaInTime = L2::CTime(10, 0);
 	};
 
 	class CHotel
@@ -269,35 +263,9 @@ namespace dir_path {
 	class CParse
 	{
 	public:
-		static std::string get_path_to_contry(const std::string & sDirDir)
-		{
-			client::CSeting  Seting;
-			std::string  db = Seting.GetWorkDir();
+        static std::string get_path_to_contry(const std::string & sDirDir);
 
-			db += OS::CSystyem::GetSlash() + get_contry(sDirDir);
-			return db;
-		}
-
-		static std::string get_contry(const std::string & sDirDir)
-		{
-			// INPUT
-			//		sDirDir = D:\Development\booking\bin2\Debug\db\20017156\08.03.2020\09.03.2020-11.03.2020
-			//		OR sDirDir = D:\Development\booking\bin2\Debug\db\20017156\08.03.2020
-			//		OR sDirDir = D:\Development\booking\bin2\Debug\db\20017156\
-			// OUTPUT
-			//		20017156
-
-			client::CSeting  Seting;
-
-			std::string db = Seting.GetWorkDir(); //  D:\\Development\\booking\\bin2\\Debug\\db
-
-			std::string  contry(sDirDir, db.size() + 2);
-
-			std::string PathAndSpace = Str::Util::do_replace(contry, "\\\\", " ");
-			std::vector <CStr> Arr = Str::Util::Parse_Space(PathAndSpace);
-
-			return  Arr[0];
-		}
+        static std::string get_contry(const std::string & sDirDir);
 
 	};
 

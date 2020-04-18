@@ -1,4 +1,4 @@
-
+﻿
 #include "common.h"
 
 namespace Log {
@@ -75,22 +75,45 @@ namespace Base
 		OutPutData = CData(d[0], d[1], d[2]);
 
 		return  true;
-	}
+    }
+
+    bool CData::create_data_by_vector_int(const std::vector<int> &Arr, CData &OutPutStart, CData &OutPutEnd)
+    {
+        if (Arr.size() != 6)
+        {
+            return false;
+        }
+
+        OutPutStart = CData(Arr[0], Arr[1], Arr[2]);
+        OutPutEnd = CData(Arr[3], Arr[4], Arr[5]);
+
+        return  true;
+    }
+
+    std::string CData::get_str_for_excel(const CData &Start, const CData &End)
+    {
+        return std::string(
+                    std::to_string(Start.startDay) + "." + std::to_string(Start.startMonth) + "." + std::to_string(Start.startYear)
+                    + " " +
+                    std::to_string(End.startDay) + "." + std::to_string(End.startMonth) + "." + std::to_string(End.startYear)
+                    );
+
+    }
 
 #endif 
 
-	std::string CUtil::GetDirByFilePath(const std::string & sGrabDirByFilePath, const CStr & sFileName)
-	{
-		struct tm *u;
-		char s1[40] = { 0 }, s2[40] = { 0 };
-		const time_t timer = time(NULL);
-		u = localtime(&timer);
-		strftime(s1, 80, "%d.%m.%Y_%H-%M-%S", u);
+    std::string CUtil::GetDirByFilePath(const std::string & sGrabDirByFilePath, const CStr & sFileName)
+    {
+        struct tm *u;
+        char s1[40] = { 0 }, s2[40] = { 0 };
+        const time_t timer = time(NULL);
+        u = localtime(&timer);
+        strftime(s1, 80, "%d.%m.%Y_%H-%M-%S", u);
 
-		std::size_t found = sGrabDirByFilePath.find(".html");
+        std::size_t found = sGrabDirByFilePath.find(".html");
 
-		std::string Path;
-		if (found != std::string::npos)
+        std::string Path;
+        if (found != std::string::npos)
 		{
 			Path = std::string(sGrabDirByFilePath, 0, found) + "_" + sFileName + "_" + s1 + FILE_FORMAT;
 		}
@@ -120,6 +143,27 @@ namespace Base
 
 namespace L2
 {
+
+
+void CData::Time(int &Hour, int &Min)
+{
+    struct tm *u;
+    char m[4] = { 0 }, h[4] = { 0 } ;
+    const time_t timer = time(NULL);
+    u = localtime(&timer);
+    strftime(h, 80, "%H", u);
+    strftime(m, 80, "%M", u);
+
+    Min =   std::atoi(m);
+    Hour =   std::atoi(h);
+}
+
+CTime CData::GetTime()
+{
+    int  Hour,  Min;
+    CData::Time(   Hour,   Min);
+    return  CTime(Hour,   Min);
+}
 
 
 	std::string CData::GetStringCurrentDaraAndOffsetDay(int ADD_DAYS)
@@ -224,40 +268,83 @@ namespace client
 
 	CSeting::CSeting()
 	{
-		 _sWorkDir = "D://Development//booking//bin2//Debug//db";
-		 _sProgaDir = "D://Development//booking//bin2//Debug";
+        #if defined(_WIN32) || defined(_WIN32_WCE) || defined(__WIN32__)
+            _sWorkDir = "D://Development//booking//bin2//Debug//db";
+            _sProgaDir = "D://Development//booking//bin2//Debug";
 
-		//_sWorkDir = "db";
-		//_sProgaDir = "";
+          #else
+                _sWorkDir = "db";
+                _sProgaDir = "";
+                //_sProgaDir = "/home/LEASON/booking/booking-master/bin_debug";
+        #endif
+
 	}
 
 
 	void CSeting::set_work_country_dir(const std::string & sPrefixDir)
 	{
 		_sWorkCountryDir = _sWorkDir + OS::CSystyem::GetSlash() + sPrefixDir;
-	}
+    }
+
+    std::string CSeting::get_download_list_file_path() const
+    {
 
 
-	std::string CSeting::GetProgaDir() const
-	{
-		return _sProgaDir;
-	}
+#if defined(_WIN32) || defined(_WIN32_WCE) || defined(__WIN32__)
+        std::string ret = GetProgaDir() + OS::CSystyem::GetSlash() + "DownloadList.ini";
+        return ret;
 
-	int CSeting::GetDay() const
-	{
-		return _Day;
-	}
+#else
+        std::string ret = "DownloadList.ini";
+        return ret;
 
-	std::string CSeting::GetWorkDir() const
-	{
-		if (_sWorkCountryDir.empty())
-			return _sWorkDir;
-		else
-			return _sWorkCountryDir;
+#endif
+    }
 
-	}
+    bool CSeting::IsTimeWork(CSeting &Seting)
+    {
 
-	std::string CSeting::GetWorkDirAndCurrentDay() const
+        if ( L2::CData::GetTime()._Hour >= Seting.GetRunProgaInTime()._Hour
+             && L2::CData::GetTime()._Min >= Seting.GetRunProgaInTime()._Min
+             )
+        {
+            return  true;
+        }
+
+
+        return  false;
+    }
+
+    L2::CTime CSeting::GetRunProgaInTime() const
+    {
+        return _RunProgaInTime;
+    }
+
+
+    std::string CSeting::GetProgaDir() const
+    {
+        if (_sProgaDir.size() == 0)
+        {
+            return ".";
+        }
+        return _sProgaDir;
+    }
+
+    int CSeting::GetDay() const
+    {
+        return _Day;
+    }
+
+    std::string CSeting::GetWorkDir() const
+    {
+        if (_sWorkCountryDir.empty())
+            return _sWorkDir;
+        else
+            return _sWorkCountryDir;
+
+    }
+
+    std::string CSeting::GetWorkDirAndCurrentDay() const
 	{
 		std::string sPropDirName = GetWorkDir() + OS::CSystyem::GetSlash() + L2::CData::GetStringCurrentDaraAndOffsetDay(0);
 		return sPropDirName;
@@ -380,3 +467,33 @@ namespace Str {
 }
 
 #endif
+
+std::string dir_path::CParse::get_path_to_contry(const std::string &sDirDir)
+{
+    client::CSeting  Seting;
+    std::string  db = Seting.GetWorkDir();
+
+    db += OS::CSystyem::GetSlash() + get_contry(sDirDir);
+    return db;
+}
+
+std::string dir_path::CParse::get_contry(const std::string &sDirDir)
+{
+    // INPUT
+    //		sDirDir = D:\Development\booking\bin2\Debug\db\20017156\08.03.2020\09.03.2020-11.03.2020
+    //		OR sDirDir = D:\Development\booking\bin2\Debug\db\20017156\08.03.2020
+    //		OR sDirDir = D:\Development\booking\bin2\Debug\db\20017156\
+    // OUTPUT
+    //		20017156
+
+    client::CSeting  Seting;
+
+    std::string db = Seting.GetWorkDir(); //  D:\\Development\\booking\\bin2\\Debug\\db
+
+    std::string  contry(sDirDir, db.size() + 2);
+
+    std::string PathAndSpace = Str::Util::do_replace(contry, "\\\\", " ");
+    std::vector <CStr> Arr = Str::Util::Parse_Space(PathAndSpace);
+
+    return  Arr[0];
+}
