@@ -162,6 +162,33 @@ class CCalendar
 {
 public:
 
+	static void Deserialize(std::vector<std::string> & Tokens)
+	{
+
+		std::string    sKey = Tokens[0];
+		std::string     sCountry = Tokens[1];
+		std::string     sName = Tokens[2];
+		std::string     sDate = Tokens[3];
+		std::string     sCostType = Tokens[4];
+		std::string     sCost = Tokens[5];
+		std::string     sStatus = Tokens[6];
+
+		CHome d(sName,sKey, std::atoi(sCost.c_str()));
+		Base::CData day;
+		Base::CData::Parse(sDate, day);
+		int ssdf = 234;
+	}
+
+
+	static std::string GetStatus(std::vector<std::string> & Tokens)
+	{	 
+		// Input Atrium432_https://q-cf.bstatic.com/xdata/images/hotel/square200/244215887.jpg?k=833576b71e08c85f5cfe8c4c9333374825f5f86484228e755fac3d5ad9bd2a73&o= Country Atrium432 10.3.2020 BYN 13688 3
+		// Output: status  
+		std::string sStatus = Tokens[6];
+		return sStatus;
+	}
+	 
+
 	void save_result_compute(CHomeNameAndCostAndData  assoc_apart, const std::string & sFilePath)
 	{
 		for (int i = 0; i < _Days.size(); i++)
@@ -204,6 +231,8 @@ public:
 				+ " " + sStatus;
 
 			Log::CFileLog::raw_log(sResult, sFilePath);
+			Log::CFileLog::raw_log(sResult, sFilePath + FILE_PROCESSING_INFO_RESULT + "_" + sName + FILE_FORMAT);
+
 		}
 	}
 
@@ -330,7 +359,7 @@ public:
 	{
 		_ArrHomeNameAndCostAndData.push_back(Hotel);
 	}
-	 
+
 	bool is_init()
 	{
 		bool pusto = _ArrHomeNameAndCostAndData.empty();
@@ -396,7 +425,7 @@ public:
 
 
 	void save_result_compute(std::string sFilePath)
-	{ 
+	{
 		if (is_init())
 		{
 			_CalendarManager.save_result_compute(_ArrHomeNameAndCostAndData[0], sFilePath);

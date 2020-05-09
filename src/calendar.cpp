@@ -55,9 +55,7 @@ namespace client {
 
 		int CountObject = pFileDataLine.size() / CHomeNameAndCostAndData::count_line_in_one_raw_object();
 
-
-		//
-		int Index = 0;
+ 		int Index = 0;
 		for (int i = 0; i < CountObject; i++)
 		{
 			const std::string & sLine_1 = pFileDataLine[Index];
@@ -70,6 +68,9 @@ namespace client {
 			Log::CFileLog::Log(" object: " + std::to_string(i) + "/" + std::to_string(CountObject), LOG_CALENDAR);
 
 			_MapDataBase.AddValue(Object);
+
+			/*if (Index == 4000)
+				break;*/
 		}
 	}
 

@@ -194,6 +194,51 @@ add_executable(map_abrabotka ${SOURCE_CODE})
 #####################################################################################
   	
 
+project(render_info_by_one_appart)
+file( GLOB SOURCE_CODE  
+	src/render_info_by_one_appart.cpp 
+
+	src/base.cpp
+	src/base.h
+	src/def.h
+	
+	src/file.h
+	src/file.cpp
+ 	 
+	src/common.cpp
+	src/common.h
+	src/calendar_def.h
+	src/calendar.cpp
+	src/calendar.h
+	src/foreach_dir.cpp
+	src/foreach_dir.h
+	src/calendar_data_provider.h
+	src/calendar_data_provider.cpp
+	src/calendar_map_adapter.h
+	src/calendar_map_adapter.cpp
+	src/SrcContainer/BaseDequeObject.cpp
+	src/SrcContainer/BaseDequeObject.h
+	src/SrcContainer/EngineBaseMapObject.h
+	src/fix_compilate.cpp
+	src/fix_compilate.h
+	src/parser_impl.h
+	src/parser_impl.cpp
+	src/Str.h
+	src/Str.cpp
+	src/Client_Base_type.h
+	src/Client_Base_type.cpp
+	src/DownloadModul.cpp
+	src/DownloadModul.h
+	src/logic_impl.h 
+	src/logic_impl.cpp
+	src/StringWrap.h
+	src/StringWrap.cpp
+)
+add_executable(render_info_by_one_appart ${SOURCE_CODE})	 
+#####################################################################################
+  	
+
+
 project(create_calendar_by_asscoc_vector)
 file( GLOB SOURCE_CODE  
 	src/create_calendar_by_asscoc_vector.cpp 
