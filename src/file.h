@@ -9,12 +9,10 @@
 
 
 #if defined(_WIN32) || defined(_WIN32_WCE) || defined(__WIN32__)
-    //#include <filesystem>
     #include <experimental/filesystem>
 
 #else
     #include <experimental/filesystem>
-
 #endif
 
 /*
@@ -26,9 +24,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-
-
-
+ 
 #include "calendar_def.h"
 
 
@@ -46,29 +42,6 @@ private:
 	std::string _sFileName;
 	std::vector<std::string> _ArrName;
 };
-
-class CFileSystem
-{
-public:
-	static bool IsEmptyFile(const std::experimental::filesystem::path & sPath);
-
-    static std::string GetFileNameByPath(const std::string & sPath);
-
-
-    static std::string  GetStemByPath(const std::string & sPath);
-
-
-	static std::vector<std::string> GetFileByMask(const std::string & sPath, const std::string & sMask);
-
-	static bool create_directories(const std::string & sMask);
-
-	static std::vector<std::string> Filter(std::vector<std::experimental::filesystem::path> Arr
-		, const std::string & sMask
-	);
-
-
-	static std::vector<std::experimental::filesystem::path>
-		directory_iterator(const std::string & path);
-};
+ 
 
 #endif 

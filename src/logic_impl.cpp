@@ -14,125 +14,27 @@ namespace client
 		std::vector<client::CTask> ReDownloadTaskArr;
 		CDownLoadList  DownLoadList;
 		client::CSeting  Seting;
-
-		std::vector<std::experimental::filesystem::path> level2dir = client::CLogic::get_all_level2_dir(DownLoadList, Seting);
-		std::vector<std::experimental::filesystem::path> level3dir = client::CLogic::get_all_level3_dir(DownLoadList, level2dir, Seting);
+		
+		std::vector<std::string> level2dir = CWrapPath::get_all_level2_dir(DownLoadList, Seting);
+		std::vector<std::string> level3dir = CWrapPath::get_all_level3_dir(DownLoadList, level2dir, Seting);
 
 		std::vector<std::string> call_self_util_in_this_dir;
 
 		for (auto it : level3dir)
 		{
-			if (client::CFileManager::is_find_file_uniq_key(it.string()))
+			if (client::CFileManager::is_find_file_uniq_key(it ))
 			{
 
 			}
 			else
 			{
-				call_self_util_in_this_dir.push_back(it.string());
+				call_self_util_in_this_dir.push_back(it );
 			}
 		}
 		return call_self_util_in_this_dir;
 	}
 
 
-
-
-	std::vector<std::experimental::filesystem::path>
-		CLogic::get_all_level3_dir(CDownLoadList & DownLoadList
-			, std::vector<std::experimental::filesystem::path> level2dir
-			, CSeting  & Seting)
-	{
-		/*-------D:\Development\booking\bin2\Debug\db\-2326178\08.03.2020\09.03.2020-11.03.2020
-		----------------------------------------------Levle-1----Levle-2---------Levle-3   */
-
-		std::vector<std::experimental::filesystem::path> ArrIntrestingDir;
-
-
-		for (auto it : level2dir)
-		{
-			std::vector<std::experimental::filesystem::path> arrDir = CFileSystem::directory_iterator(it.string());
-
-			for (auto j : arrDir)
-			{
-				std::string dir(j.string(), it.string().size());
-				int sfd;
-
-				if (dir.size() == 22)
-					ArrIntrestingDir.push_back(j);
-			}
-		}
-
-
-		return ArrIntrestingDir;
-	}
-
-
-	std::vector<std::string> CLogic::get_all_level1_dir(CDownLoadList & DownLoadList, CSeting  & Seting)
-	{
-		/*-------D:\Development\booking\bin2\Debug\db\-2326178\08.03.2020\09.03.2020-11.03.2020
-		----------------------------------------------Levle-1----Levle-2---------Levle-3   */
-
-		std::vector<std::string> arrDir;
-		// Xodit po stranam
-		for (auto it : DownLoadList.get_valid_link())
-		{
-
-			// set current country for setting object
-			std::string  sCountryIndex;
-			bool bRet = DownLoadList.get_dest_by_link(it, sCountryIndex);
-			Seting.set_work_country_dir(sCountryIndex);
-			Seting.set_country(sCountryIndex);
-
-			std::string ActualWorkDir = Seting.GetWorkDir(); //D:\Development\booking\bin2\Debug\db\-2327363
-			arrDir.push_back(ActualWorkDir);
-
-		}
-
-		return arrDir;
-	}
-
-
-	std::vector<std::experimental::filesystem::path> CLogic::get_all_level2_dir(CDownLoadList & DownLoadList, CSeting  & Seting)
-	{
-		/*-------D:\Development\booking\bin2\Debug\db\-2326178\08.03.2020\09.03.2020-11.03.2020
-		----------------------------------------------Levle-1----Levle-2---------Levle-3   */
-
-		std::vector<std::experimental::filesystem::path> Ret;
-
-		// Xodit po stranam
-		for (auto it : DownLoadList.get_valid_link())
-		{
-
-			// set current country for setting object
-			std::string  sCountryIndex;
-			bool bRet = DownLoadList.get_dest_by_link(it, sCountryIndex);
-			Seting.set_work_country_dir(sCountryIndex);
-			Seting.set_country(sCountryIndex);
-
-			std::string ActualWorkDir = Seting.GetWorkDir(); //D:\Development\booking\bin2\Debug\db\-2327363
-
-			std::vector<std::experimental::filesystem::path> arrDir = CFileSystem::directory_iterator(ActualWorkDir);
-
-			///filter get only tru dir
-			for (auto t : arrDir)
-			{
-				std::string tru = std::string(t.string(), ActualWorkDir.size());
-
-				if (tru.size() != 11) // target ---------------> "/08.03.2020"
-				{
-					continue;
-				}
-				else
-				{
-					//grab
-					Ret.push_back(t);
-				}
-			}
-
-		}
-
-		return Ret;
-	}
 
 	bool  CLogic::IsPropuskDwnFile(CDownLoadList & DownLoadList, std::vector<client::CTask> & ReDownloadTaskArr, CSeting  & Seting)
 	{
@@ -150,7 +52,7 @@ namespace client
 
 			std::string ActualWorkDir = GetActualWorkDir(Seting.GetWorkDir()); //D:\Development\booking\bin2\Debug\db\04.03.2020
 
-			std::vector<std::experimental::filesystem::path> arrDir = CFileSystem::directory_iterator(ActualWorkDir);
+			std::vector<std::string> arrDir = CFileSystem::get_directory_iterator(ActualWorkDir);
 
 
 			if (arrDir.empty())
@@ -163,10 +65,10 @@ namespace client
 
 			for (auto it : arrDir)
 			{
-				std::string dir(it.string(), ActualWorkDir.size());
+				std::string dir(it, ActualWorkDir.size());
 
 				if (dir.size() == 22)
-					ArrIntrestingDir.push_back(it.string());
+					ArrIntrestingDir.push_back( it );
 			}
 
 
@@ -206,7 +108,7 @@ namespace client
 
 		std::string ActualWorkDir = GetActualWorkDir(Seting.GetWorkDir()); //  D:\Development\booking\bin2\Debug\db\04.03.2020
 
-		std::vector<std::experimental::filesystem::path> arrDir = CFileSystem::directory_iterator(ActualWorkDir);
+		std::vector<std::string> arrDir = CFileSystem::get_directory_iterator(ActualWorkDir);
 
 		if (arrDir.empty())
 		{
@@ -217,10 +119,10 @@ namespace client
 
 		for (auto it : arrDir)
 		{
-			std::string dir(it.string(), ActualWorkDir.size());
+			std::string dir(it , ActualWorkDir.size());
 
 			if (dir.size() == 22)
-				ArrIntrestingDir.push_back(it.string());
+				ArrIntrestingDir.push_back(it );
 		}
 
 
@@ -457,7 +359,7 @@ namespace client
 	bool CLogic::Download(std::string WantFile, CTask it, CDwn & ErrDwnArr)
 	{
 		// save imprintn before dwnload
-		std::vector<std::experimental::filesystem::path> file_before = CFileSystem::directory_iterator(it.GetDirProp());
+		std::vector<std::string> file_before = CFileSystem::get_directory_iterator(it.GetDirProp());
 
 		int tRand = rand() % 5 + 1;
 		Log::CFileLog::Log("[CLogic::RunUtilDownload] : java -jar PARSER_x86.jar this_thread::sleep_for " + std::to_string(tRand), LOG_LOGIC);
@@ -470,14 +372,14 @@ namespace client
 
 
 		// if download
-		std::vector<std::experimental::filesystem::path> file_after = CFileSystem::directory_iterator(it.GetDirProp());
+		std::vector<std::string> file_after = CFileSystem::get_directory_iterator(it.GetDirProp());
 
 		//Log::CFileLog::Log("[CLogic::RunUtilDownload] : : after" + std::to_string(file_after.size()) + " before " + std::to_string(file_before.size()), LOG_LOGIC);
 
 		if (file_after.size() > file_before.size())
 		{
 			for (auto it_dwn : file_after)
-				Log::CFileLog::Log("[CLogic::RunUtilDownload] : BBG download: " + it_dwn.string(), LOG_LOGIC);
+				Log::CFileLog::Log("[CLogic::RunUtilDownload] : BBG download: " + it_dwn, LOG_LOGIC);
 		}
 		else
 		{
@@ -576,6 +478,7 @@ namespace client
 
 		return  sDirPath + OS::CSystyem::GetSlash() + sDirName;
 	}
-
-
 }
+
+ 
+

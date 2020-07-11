@@ -22,15 +22,15 @@ namespace client {
 	public:
 		void create_db_for_vital();
 		 
-		void Init_all_name(std::vector<std::experimental::filesystem::path> level3dir);
+		void Init_all_name(std::vector<std::string> level3dir);
 
-		void Write_All_Hotel_to_db(std::vector<std::experimental::filesystem::path> level3dir);
+		void Write_All_Hotel_to_db(std::vector<std::string> level3dir);
 
 		void Serialize(CHomeNameAndCostAndData Hotel);
 
 		void Deserealize(std::string sFilePatth);
 		  
-		void Init_and_dolgi_obschet_raboti_kajdogo_otel9(std::vector<std::experimental::filesystem::path> level3dir);
+		void Init_and_dolgi_obschet_raboti_kajdogo_otel9(std::vector<std::string> level3dir);
 
 		void Init();
 

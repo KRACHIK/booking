@@ -3,6 +3,8 @@
 
 #include "def.h"
 #include "file.h"
+#include "filesystem.h"
+
 #include "base.h"
 
 #include "parser_impl.h"

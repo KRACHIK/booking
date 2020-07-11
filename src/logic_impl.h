@@ -4,6 +4,7 @@
 #include "def.h"
 #include "common.h"
 #include "DownloadModul.h"
+#include "foreach_dir.h"
 
 
 namespace client
@@ -13,16 +14,6 @@ namespace client
 	{
 	public:
 
-		static  std::vector<std::string>
-			get_all_level1_dir(CDownLoadList & DownLoadList, CSeting  & Seting);
-
-
-		static std::vector<std::experimental::filesystem::path> 
-			get_all_level2_dir(CDownLoadList & DownLoadList, CSeting  & Seting);
-
-		static std::vector<std::experimental::filesystem::path>
-			get_all_level3_dir(CDownLoadList & DownLoadList, std::vector<std::experimental::filesystem::path> level2dir, CSeting  & Seting);
-		 
 		static std::vector<std::string> get_path_for_run_utils();
 
 		static bool IsWork(std::vector<client::CTask> & TaskArr);

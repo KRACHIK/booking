@@ -8,6 +8,8 @@
 #include "common.h"
 #include "calendar.h"
 
+#include "foreach_dir.h"
+
 
 #include <chrono>
 #include <thread>
@@ -35,8 +37,9 @@ int main()
 	std::vector<client::CTask> ReDownloadTaskArr;
 	CDownLoadList  DownLoadList;
 	client::CSeting  Seting;
-	std::vector<std::experimental::filesystem::path> level2dir = client::CLogic::get_all_level2_dir(DownLoadList, Seting);
-	std::vector<std::experimental::filesystem::path> level3dir = client::CLogic::get_all_level3_dir(DownLoadList, level2dir, Seting);
+	std::vector<std::string> level2dir = CWrapPath::get_all_level2_dir(DownLoadList, Seting);
+	std::vector<std::string> level3dir = CWrapPath::get_all_level3_dir(DownLoadList, level2dir, Seting);
+	
 	int i = 0;
 
 
@@ -51,7 +54,7 @@ int main()
 
 			Log::CFileLog::Log("Task parse: " + std::to_string(i) + "/" + std::to_string(level3dir.size()) + " call ", LOG_MAIN_DATA_OB_ODNOM_OTELE);
 
-			Level2::CDataProvider::get_assoc_data_by_quniq_key(Result, it.string(),
+			Level2::CDataProvider::get_assoc_data_by_quniq_key(Result, it,
 				"ApartmentALPINEbyAtrium,NewGudauri_https://r-cf.bstatic.com/xdata/images/hotel/square200/235025924.jpg?k=4720c6a2b75fdad1f2b1c6e171df6455148bbd44301640f893a3361b3e04b587&o="
 			);
 		}
@@ -68,9 +71,8 @@ int main()
 
 	HotelManager.Compute();
 	HotelManager.save_result_compute("assoc_data.txt");
-
+	
 	return 0;
 }
 
-
-
+ 

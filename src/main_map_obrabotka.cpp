@@ -17,8 +17,8 @@ void Write_Hotel_to_DB()
 	std::vector<client::CTask> ReDownloadTaskArr;
 	CDownLoadList  DownLoadList;
 	client::CSeting  Seting;
-	std::vector<std::experimental::filesystem::path> level2dir = client::CLogic::get_all_level2_dir(DownLoadList, Seting);
-	std::vector<std::experimental::filesystem::path> level3dir = client::CLogic::get_all_level3_dir(DownLoadList, level2dir, Seting);
+	std::vector<std::string> level2dir = CWrapPath::get_all_level2_dir(DownLoadList, Seting);
+	std::vector<std::string> level3dir = CWrapPath::get_all_level3_dir(DownLoadList, level2dir, Seting);
 
 
 	client::IDataBase db;
@@ -34,9 +34,9 @@ void Read_Hotel_from_db()
 	std::vector<client::CTask> ReDownloadTaskArr;
 	CDownLoadList  DownLoadList;
 	client::CSeting  Seting;
-	std::vector<std::experimental::filesystem::path> level2dir = client::CLogic::get_all_level2_dir(DownLoadList, Seting);
-	std::vector<std::experimental::filesystem::path> level3dir = client::CLogic::get_all_level3_dir(DownLoadList, level2dir, Seting);
-
+	std::vector<std::string> level2dir = CWrapPath::get_all_level2_dir(DownLoadList, Seting);
+	std::vector<std::string> level3dir = CWrapPath::get_all_level3_dir(DownLoadList, level2dir, Seting);
+	
 
 	db.Init_all_name(level3dir);
 

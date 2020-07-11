@@ -4,11 +4,9 @@
 #include "def.h"
 #include "parser_impl.h"
 #include "fix_compilate.h"// NEW
-
-//#include "calendar_def.h"
+ 
 //#include "common.h" // bad!
-
-#include <filesystem>
+ 
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -43,9 +41,7 @@ public:
 
 	std::string Serialize();
 
-
 	static CHomeNameAndCostAndData Derialize(const std::string  & LineArr, const std::string  & LineArr2);
-
 
 private:
 	CHome _Home;

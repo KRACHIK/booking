@@ -19,8 +19,8 @@ int main()
 	std::vector<client::CTask> ReDownloadTaskArr;
 	CDownLoadList  DownLoadList;
 	client::CSeting  Seting;
-	std::vector<std::experimental::filesystem::path> level2dir = client::CLogic::get_all_level2_dir(DownLoadList, Seting);
-	std::vector<std::experimental::filesystem::path> level3dir = client::CLogic::get_all_level3_dir(DownLoadList, level2dir, Seting);
+	std::vector<std::string> level2dir = CWrapPath::get_all_level2_dir(DownLoadList, Seting);
+	std::vector<std::string> level3dir = CWrapPath::get_all_level3_dir(DownLoadList, level2dir, Seting);
 	int i = 0;
 
 	for (auto it : level3dir)
@@ -28,7 +28,7 @@ int main()
 		Log::CFileLog::Log("Task parse: " + std::to_string(i) + "/" + std::to_string(level3dir.size()) + " call ", LOG_MAIN_DATA_OB_ODNOM_OTELE);
 		i++;
 		 
-		std::vector<CHomeNameAndCostAndData> Arr = Level2::CDataProvider::get_array_HomeNameAndCostAndData_by_file(it.string());
+		std::vector<CHomeNameAndCostAndData> Arr = Level2::CDataProvider::get_array_HomeNameAndCostAndData_by_file( it );
 
 		if (i >= 287)
 		{
@@ -54,7 +54,7 @@ int main()
 				" " "\"" + DATA_REQ + "\""
 				" " "\"" + DATA_START + "\""
 				" " "\"" + DATA_END + "\"" 
-				" " "\"" + it.string() + "\"";
+				" " "\"" + it  + "\"";
 			  
 			Log::CFileLog::Log("Task parse: <" + std::to_string(i) +"|" +std::to_string(level3dir.size()) + ">"
 				+ " <" + std::to_string(Arr.size()) + "|" + std::to_string(++k) + ">   "

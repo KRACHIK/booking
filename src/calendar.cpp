@@ -1,13 +1,8 @@
 
 #include "calendar.h"
-
-
-
-
+ 
 namespace client {
-
-
-
+	 
 	void IDataBase::Serialize(CHomeNameAndCostAndData Hotel)
 	{
 		std::string Serialize = Hotel.Serialize();
@@ -74,7 +69,7 @@ namespace client {
 		}
 	}
 
-	void IDataBase::Write_All_Hotel_to_db(std::vector<std::experimental::filesystem::path> level3dir)
+	void IDataBase::Write_All_Hotel_to_db(std::vector<std::string> level3dir)
 	{
 		std::vector<std::string> Homes = get_all_name_by_init_map();
 
@@ -85,7 +80,7 @@ namespace client {
 		{
 
 			// get all full info ob hotele
-			std::vector<CHomeNameAndCostAndData> Arr = Level2::CDataProvider::get_array_HomeNameAndCostAndData_by_file(dir_it.string());
+			std::vector<CHomeNameAndCostAndData> Arr = Level2::CDataProvider::get_array_HomeNameAndCostAndData_by_file(dir_it);
 
 			for (auto itHotel : Arr)
 			{
@@ -103,12 +98,12 @@ namespace client {
 	}
 
 
-	void IDataBase::Init_all_name(std::vector<std::experimental::filesystem::path> level3dir)
+	void IDataBase::Init_all_name(std::vector<std::string> level3dir)
 	{
 		int r = 0;
 		for (auto it : level3dir)
 		{
-			std::vector<std::string> Homes = Level2::CDataProvider::get_all_uniq_key_fom_file(it.string());
+			std::vector<std::string> Homes = Level2::CDataProvider::get_all_uniq_key_fom_file(it );
 			_MapDataBase.AddKey(Homes);
 
 			Log::CFileLog::Log(" HomesID: " + std::to_string(r++) + "/" + std::to_string(level3dir.size()) + " ", LOG_MAIN_PROD_PARSER);
@@ -116,12 +111,12 @@ namespace client {
 		}
 	}
 
-	void IDataBase::Init_and_dolgi_obschet_raboti_kajdogo_otel9(std::vector<std::experimental::filesystem::path> level3dir)
+	void IDataBase::Init_and_dolgi_obschet_raboti_kajdogo_otel9(std::vector<std::string> level3dir)
 	{
 		int r = 0;
 		for (auto it : level3dir)
 		{
-			std::vector<std::string> Homes = Level2::CDataProvider::get_all_uniq_key_fom_file(it.string());
+			std::vector<std::string> Homes = Level2::CDataProvider::get_all_uniq_key_fom_file(it);
 			_MapDataBase.AddKey(Homes);
 
 			Log::CFileLog::Log(
@@ -144,7 +139,7 @@ namespace client {
 					" sName " + sName
 					, LOG_MAIN_PROD_PARSER);
 
-				Level2::CDataProvider::FindAsocDataByHomeName(dir_it.string(), sName);
+				Level2::CDataProvider::FindAsocDataByHomeName(dir_it, sName);
 			}
 			NumHomes = 0;
 			++dir_num;
@@ -215,5 +210,4 @@ namespace client {
 
 }
 
-
-
+ 

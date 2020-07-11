@@ -6,8 +6,10 @@
 #include "common.h"
 #include "parser.h"
 #include "file.h"
+#include "filesystem.h"
 
 #include "calendar_data_provider.h"
+#include "DownloadModul.h"
 
 
 class CIteratorForTotalHome
@@ -30,8 +32,6 @@ public:
 		, _totalHome(total_home)
 	{
 	}
-
-
 
 public:
 	std::string _sDirDiapozon;
@@ -143,3 +143,5 @@ int main(int argc, const char** argv)
 	return 0;
 }
 
+
+ 

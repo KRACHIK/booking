@@ -36,7 +36,10 @@ file( GLOB SOURCE_CODE
 	   
 	src/calendar_def.h
 	 
-	  
+	src/filesystem.h
+	src/filesystem.cpp
+	src/DownloadModul.cpp
+	src/DownloadModul.h
 	src/foreach_dir.cpp
 	src/foreach_dir.h
 
@@ -74,9 +77,12 @@ file( GLOB SOURCE_CODE
 	src/file.h
 	src/file.cpp
 	  
+	src/filesystem.h
+	src/filesystem.cpp
 	src/DownloadModul.cpp
-	 
 	src/DownloadModul.h
+	src/foreach_dir.cpp
+	src/foreach_dir.h 
 
 	src/common.cpp
 	src/common.h
@@ -96,8 +102,6 @@ project(get_data_ob_odnom_otele)
 file( GLOB SOURCE_CODE  
 	src/main_data_ob_odnom_otele.cpp 
 
-	src/DownloadModul.cpp
-	src/DownloadModul.h
 	 
 	src/base.cpp
 	src/base.h
@@ -115,6 +119,10 @@ file( GLOB SOURCE_CODE
 	src/calendar.cpp
 	src/calendar.h
 	 
+	src/filesystem.h
+	src/filesystem.cpp
+	src/DownloadModul.cpp
+	src/DownloadModul.h
 	src/foreach_dir.cpp
 	src/foreach_dir.h
 
@@ -168,8 +176,14 @@ file( GLOB SOURCE_CODE
 	src/calendar_def.h
 	src/calendar.cpp
 	src/calendar.h
+	
+	src/filesystem.h
+	src/filesystem.cpp
 	src/foreach_dir.cpp
 	src/foreach_dir.h
+	src/DownloadModul.cpp
+	src/DownloadModul.h
+
 	src/calendar_data_provider.h
 	src/calendar_data_provider.cpp
 	src/calendar_map_adapter.h
@@ -185,8 +199,6 @@ file( GLOB SOURCE_CODE
 	src/Str.cpp
 	src/Client_Base_type.h
 	src/Client_Base_type.cpp
-	src/DownloadModul.cpp
-	src/DownloadModul.h
 	src/logic_impl.h 
 	src/logic_impl.cpp
 )
@@ -210,8 +222,15 @@ file( GLOB SOURCE_CODE
 	src/calendar_def.h
 	src/calendar.cpp
 	src/calendar.h
+
 	src/foreach_dir.cpp
 	src/foreach_dir.h
+	src/DownloadModul.cpp
+	src/DownloadModul.h
+	src/filesystem.h
+	src/filesystem.cpp
+	
+
 	src/calendar_data_provider.h
 	src/calendar_data_provider.cpp
 	src/calendar_map_adapter.h
@@ -227,8 +246,6 @@ file( GLOB SOURCE_CODE
 	src/Str.cpp
 	src/Client_Base_type.h
 	src/Client_Base_type.cpp
-	src/DownloadModul.cpp
-	src/DownloadModul.h
 	src/logic_impl.h 
 	src/logic_impl.cpp
 	src/StringWrap.h
@@ -255,8 +272,14 @@ file( GLOB SOURCE_CODE
 	src/calendar_def.h
 	src/calendar.cpp
 	src/calendar.h
+	
+	src/filesystem.h
+	src/filesystem.cpp
 	src/foreach_dir.cpp
 	src/foreach_dir.h
+	src/DownloadModul.cpp
+	src/DownloadModul.h
+
 	src/calendar_data_provider.h
 	src/calendar_data_provider.cpp
 	src/calendar_map_adapter.h
@@ -272,8 +295,6 @@ file( GLOB SOURCE_CODE
 	src/Str.cpp
 	src/Client_Base_type.h
 	src/Client_Base_type.cpp
-	src/DownloadModul.cpp
-	src/DownloadModul.h
 	src/logic_impl.h 
 	src/logic_impl.cpp
 )
@@ -296,8 +317,14 @@ file( GLOB SOURCE_CODE
 	src/calendar_def.h
 	src/calendar.cpp
 	src/calendar.h
+	
+	src/filesystem.h
+	src/filesystem.cpp
 	src/foreach_dir.cpp
 	src/foreach_dir.h
+	src/DownloadModul.cpp
+	src/DownloadModul.h
+
 	src/calendar_data_provider.h
 	src/calendar_data_provider.cpp
 	src/calendar_map_adapter.h
@@ -313,8 +340,6 @@ file( GLOB SOURCE_CODE
 	src/Str.cpp
 	src/Client_Base_type.h
 	src/Client_Base_type.cpp
-	src/DownloadModul.cpp
-	src/DownloadModul.h
 	src/logic_impl.h 
 	src/logic_impl.cpp
 )
@@ -344,8 +369,14 @@ file( GLOB SOURCE_CODE
 	src/fix_compilate.cpp
 	src/fix_compilate.h
 	src/calendar_def.h
+	
+	src/filesystem.h
+	src/filesystem.cpp 
 	src/foreach_dir.cpp
 	src/foreach_dir.h
+	src/DownloadModul.cpp
+	src/DownloadModul.h
+
 	src/calendar_data_provider.h
 	src/calendar_data_provider.cpp
 	src/calendar_map_adapter.h
@@ -382,8 +413,6 @@ project(logic)
 file( GLOB SOURCE_CODE2 
 	src/logic.cpp
 
-src/DownloadModul.cpp
-src/DownloadModul.h
 src/logic_impl.h 
 src/logic_impl.cpp
 src/base.cpp
@@ -396,6 +425,10 @@ src/common.h
 src/calendar_def.h
 src/calendar.cpp
 src/calendar.h
+src/filesystem.h
+src/filesystem.cpp
+src/DownloadModul.cpp
+src/DownloadModul.h
 src/foreach_dir.cpp
 src/foreach_dir.h
 src/calendar_data_provider.h
@@ -427,13 +460,15 @@ file( GLOB SOURCE_CODE2
 	
 	src/file.h
 	src/file.cpp
-	 
 	src/MainOnlyDownloadManager.cpp
-
+	
+	src/filesystem.h
+	src/filesystem.cpp
 	src/DownloadModul.cpp
-	 
 	src/DownloadModul.h
-
+	src/foreach_dir.cpp
+	src/foreach_dir.h
+	 
 	src/common.cpp
 	src/common.h
 	 
@@ -458,8 +493,14 @@ file( GLOB SOURCE_CODE2
 	src/file.h
 	src/file.cpp
 	src//MainDownloadManagerByFileList.cpp
+	
+	src/filesystem.h
+	src/filesystem.cpp
 	src/DownloadModul.cpp
 	src/DownloadModul.h
+	src/foreach_dir.cpp
+	src/foreach_dir.h
+	
 	src/common.cpp
 	src/common.h
 	src/logic_impl.h
@@ -491,8 +532,13 @@ file( GLOB SOURCE_CODE2
 	src/calendar.cpp
 	src/calendar.h
 	 
+	
+	src/filesystem.h
+	src/filesystem.cpp
 	src/foreach_dir.cpp
 	src/foreach_dir.h
+	src/DownloadModul.cpp
+	src/DownloadModul.h
 
 	src/calendar_data_provider.h
 	src/calendar_data_provider.cpp
@@ -525,8 +571,13 @@ project(add_sql_full_raw_info_by_appart)
 file( GLOB SOURCE_CODE2 
 	src/add_sql_full_raw_info_by_appart.cpp
 	          
+src/filesystem.h
+src/filesystem.cpp
 src/DownloadModul.cpp
 src/DownloadModul.h
+src/foreach_dir.cpp
+src/foreach_dir.h
+
 src/logic_impl.h 
 src/logic_impl.cpp
 src/base.cpp
@@ -539,8 +590,6 @@ src/common.h
 src/calendar_def.h
 src/calendar.cpp
 src/calendar.h
-src/foreach_dir.cpp
-src/foreach_dir.h
 src/calendar_data_provider.h
 src/calendar_data_provider.cpp
 src/calendar_map_adapter.h

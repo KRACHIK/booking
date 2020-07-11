@@ -3,11 +3,8 @@
 
 
 #include "Client_Base_type.h"
-//#include "parser_impl.h"
-//#include "foreach_dir.h"
-//#include "common.h"
-//#include "file.h"
-//#include "calendar_def.h"
+#include "filesystem.h"
+
 
 #include <functional>
 #include <algorithm>
@@ -57,11 +54,11 @@ namespace Level2
 
 		bool Get_Next_Diapozon_Dir(std::string & Result);
 
-		bool Parse_DayMotherYear_DayMotherYear(std::experimental::filesystem::path Path, std::string & Result);
+		bool Parse_DayMotherYear_DayMotherYear(std::string Path, std::string & Result);
 
 	private:
 		std::string _sRootDir;
-		std::vector<std::experimental::filesystem::path> _DayArr;
+		std::vector<std::string> _DayArr; // path
 		int _Index = 0;
 	};
 

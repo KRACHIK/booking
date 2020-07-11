@@ -8,7 +8,8 @@ namespace Level2
 		client::CSeting Seting;
 
 		//for (auto & p : std::experimental::filesystem::directory_iterator(Seting.GetWorkDir()))//old
-		for (auto & p : std::experimental::filesystem::directory_iterator(_sRootDir))
+		 
+		for (auto & p : CFileSystem::get_directory_iterator(_sRootDir))
 		{
 			/*
 			01.03.2020				// <- Want
@@ -40,14 +41,12 @@ namespace Level2
 		return HTMLArr;
 	}
 
-	bool CIteratirDir::Parse_DayMotherYear_DayMotherYear(std::experimental::filesystem::path Path, std::string & Result)
 	{
 
 		std::vector<std::experimental::filesystem::path> RequestInterval;
 
 		std::vector<MyData> RasparseArr;
 
-		for (auto p : std::experimental::filesystem::directory_iterator(Path))
 		{
 			RequestInterval.push_back(p);
 
@@ -60,7 +59,6 @@ namespace Level2
 
 		for (auto it : RequestInterval)
 		{
-			MyData rasparse = CDataUtil::Parse_DayMotherYear_DayMotherYear(Path.string(), it.string());
 
 			if (rasparse.empty())
 			{
@@ -73,10 +71,6 @@ namespace Level2
 
 			if (abs(DayEnd - DayStart) == 1)
 			{
-				Log::CFileLog::Log(" return" + it.string(), LOG_CALENDAR);
-
-				Result = it.string();
-
 				return true;
 			}
 
@@ -176,12 +170,9 @@ namespace Level2
 
 
 	void CDataProvider::get_assoc_data_by_quniq_key(
-		std::vector<CHomeNameAndCostAndData> & Result 
-		,const std::string & sRootDir
 		, const std::string & sHotelName
 	)
 	{
-		 
 		std::vector<CHomeNameAndCostAndData> Objects = CDataProvider::get_array_HomeNameAndCostAndData_by_file(sRootDir);
 
 		for (int i = 0; i < Objects.size(); i++)
@@ -216,10 +207,8 @@ namespace Level2
 		}
 	}
 
-	/* 
 	GetArrHomeNameAndCostAndData
 	get_array_HomeNameAndCostAndData_by_file
-	*/ 
 	std::vector<CHomeNameAndCostAndData> CDataProvider::get_array_HomeNameAndCostAndData_by_file(std::string sIntrestingDir)
 	{
 		std::vector<std::string> ArrName = client::CFileManager::get_files_name_and_cost(sIntrestingDir);
@@ -232,8 +221,6 @@ namespace Level2
 		{
 			Log::CFileLog::Log("[::GetArrHomeNameAndCostAndData] : Parse_GetDataByPath Error. Not parse data by str = " + sIntrestingDir, LOG_CALENDAR_ERR);
 		}
-		
-		bRes = Str::Util::get_level2_data_obj (sIntrestingDir, DataLevel2);
 		if (bRes == false)
 		{
 			Log::CFileLog::Log("[::GetArrHomeNameAndCostAndData] : get_level2_data_obj Error. Not parse data by str = " + sIntrestingDir, LOG_CALENDAR_ERR);

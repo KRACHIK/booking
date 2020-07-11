@@ -5,8 +5,8 @@ void CHotelManager::Add(client::CHotel Hotel)
 	_Arr.push_back(Hotel);
 }
 
-CHotelManager::CHotelManager() 
-{ 
+CHotelManager::CHotelManager()
+{
 }
 
 std::string CHotelManager::CreateCalendarNoPeopleInHotel() const
@@ -47,6 +47,85 @@ bool CHotelManager::FindData(Base::CData DayStart, Base::CData DayEnd)
 }
 
 int CHotelManager::Size() { return _Arr.size(); }
+
+void CHotelManager::push_back(CHomeNameAndCostAndData Hotel)
+{
+	_ArrHomeNameAndCostAndData.push_back(Hotel);
+}
+
+bool CHotelManager::is_init()
+{
+	bool pusto = _ArrHomeNameAndCostAndData.empty();
+	return !pusto;
+}
+
+void CHotelManager::Compute()
+{
+	_CalendarManager.CreateCalendar(180);
+
+	for (CHomeNameAndCostAndData Apart : _ArrHomeNameAndCostAndData)
+	{
+		Base::CData cur_day = Apart.get_Level2_data();
+		float Cost = Apart.get_cost();
+		EHOTEL_STATUS STARI_STATUS = _CalendarManager.get_status_zalenia(cur_day);
+
+		if (STARI_STATUS == EHOTEL_STATUS::NONE)
+		{
+			Log::CFileLog::Log("[Compute] : STRASHNAI9 ERROR", LOG_CALENDAR_ERR);
+			assert(false);
+		}
+
+
+		EHOTEL_STATUS NEW_STATUS;
+
+		if (Apart.get_cost() > 0)
+		{
+			NEW_STATUS = EHOTEL_STATUS::SVOBODEN_DL9_ZASELENIA;
+		}
+		else if (Apart.get_cost() == -1)
+		{
+			NEW_STATUS = EHOTEL_STATUS::BOOKING_SKAZAL_4TO_MEST_HETY;
+		}
+
+		if (STARI_STATUS == EHOTEL_STATUS::BOOKING_SKAZAL_4TO_MEST_HETY)
+		{
+			if (NEW_STATUS == EHOTEL_STATUS::SVOBODEN_DL9_ZASELENIA)
+			{
+				NEW_STATUS = EHOTEL_STATUS::SVOBODEN_DL9_ZASELENIA_AND_ZAN9T_V_DRUGOM_DIAPOZONE;
+			}
+		}
+
+		if (STARI_STATUS == EHOTEL_STATUS::SVOBODEN_DL9_ZASELENIA)
+		{
+			if (NEW_STATUS == EHOTEL_STATUS::BOOKING_SKAZAL_4TO_MEST_HETY)
+			{
+				NEW_STATUS = EHOTEL_STATUS::SVOBODEN_DL9_ZASELENIA_AND_ZAN9T_V_DRUGOM_DIAPOZONE;
+			}
+		}
+
+		if (STARI_STATUS == EHOTEL_STATUS::HETY_V_POISKOVOE_VIDACHI)
+		{
+			if (NEW_STATUS == EHOTEL_STATUS::BOOKING_SKAZAL_4TO_MEST_HETY)
+			{
+				NEW_STATUS = EHOTEL_STATUS::OTSYTSTVUET_V_VIDA4I_AND_BOOKING_SKAZAL_4TO_MEST_HETY;
+			}
+		}
+
+		_CalendarManager.set_status(cur_day, NEW_STATUS, Cost);
+	}
+}
+
+void CHotelManager::save_result_compute(std::string sFilePath)
+{
+	if (is_init())
+	{
+		_CalendarManager.save_result_compute(_ArrHomeNameAndCostAndData[0], sFilePath);
+	}
+	else
+	{
+		Log::CFileLog::Log("[save_result_compute] : is_init() = false. Error.", LOG_CALENDAR_ERR);
+	}
+}
 
 
 namespace Level1
@@ -117,4 +196,169 @@ namespace Level1
 		}
 	}
 
+	void CMapDataBase::AddValue(CHomeNameAndCostAndData Hotel)
+	{
+		/*	Это второй этап. предполагается что все возможные имена отелей уже добавлены.
+		теперь будет создана структура, из < лень расписывать..>	*/
+		std::string sKey = Hotel.GetHome().create_qniq_key();
+
+		bool bFind = FindObjectByKey(sKey);
+
+		if (bFind)
+		{
+			auto & it = GetIteratorObject(sKey);
+			it->second.push_back(Hotel);
+		}
+		else
+		{
+			Log::CFileLog::Log("STRASHNAIA OSHIBKBKA. IM9 OTEL9: " + sKey + "HE HAIDENO V BD", LOG_CALENDAR);
+			assert(false);
+		}
+	}
+
+}
+
+cforum::Date::Date(size_t y, size_t m, size_t d)
+{
+	date.year = y;
+	date.month = m;
+	date.day = d;
+}
+
+cforum::Date::Date(std::string str)
+{
+	std::vector<std::string> result;
+	size_t pos = 0;
+	while (1)
+	{
+		size_t end = str.find('.', pos);
+		if (end == str.npos)
+		{
+			result.push_back(str.substr(pos));
+			break;
+		}
+		else
+		{
+			result.push_back(str.substr(pos, end - pos));
+			pos = end + 1;
+		}
+	}
+	date.year = atoi(result[0].c_str());
+	date.month = atoi(result[1].c_str());
+	date.day = atoi(result[2].c_str());
+}
+
+cforum::Date::Date(const Date & d)
+{
+	date.year = d.getElemDate().year;
+	date.month = d.getElemDate().month;
+	date.day = d.getElemDate().day;
+}
+
+bool cforum::Date::isLeapYear()
+{
+	if (date.year % 100 == 0)
+	{
+		if (date.year % 4 == 0 || date.year % 400 == 0)
+			return  true;
+		return false;
+	}
+
+}
+
+
+
+Base::CData CCalendar::get_data_by_offset(int year, int month, int day, int offset)
+{
+
+	struct tm date = { 0, 0, 12 };  // nominal time midday (arbitrary).
+									//int year = 2010;
+									//int month = 2;  // February
+									//int day = 26;   // 26th
+
+									// Set up the date structure
+	date.tm_year = year - 1900;
+	date.tm_mon = month;  // note: zero indexed
+	date.tm_mday = day;       // note: not zero indexed
+
+							  // Date, less 100 days
+	DatePlusDays(&date, offset);
+
+	//std::cout << asctime(&date) << std::endl;
+	//std::cout << " " << date.tm_year + 1900 << " " << date.tm_mon << " " << date.tm_mday;
+
+	Base::CData Result(
+		date.tm_mday
+		, date.tm_mon
+		, date.tm_year + 1900
+	);
+
+	//CData(int startDay_, int startMonth_, int startYear_);
+
+	return Result;
+}
+
+void CCalendar::CreateCalendar(int DayRequest)
+{
+	_Status.reserve(DayRequest);
+	_Days.reserve(DayRequest);
+	_Cost.reserve(DayRequest);
+
+	for (int i = 1; i < DayRequest; i++)
+	{
+		Base::CData Day = get_data_by_offset(2020, 2, 1, i);
+
+		_Days.push_back(Day);
+
+		_Status.push_back(EHOTEL_STATUS::HETY_V_POISKOVOE_VIDACHI);
+
+		_Cost.push_back(0);
+	}
+}
+
+EHOTEL_STATUS CCalendar::get_status_zalenia(Base::CData Data)
+{
+	for (int i = 0; i < _Days.size(); i++)
+	{
+		if (_Days[i] == Data)
+		{
+			return  _Status[i];
+		}
+	}
+
+	return EHOTEL_STATUS::NONE;
+}
+
+void CCalendar::set_status(Base::CData Data, EHOTEL_STATUS status, float Cost)
+{
+	for (int i = 0; i < _Days.size(); i++)
+	{
+		if (_Days[i] == Data)
+		{
+			_Status[i] = status;
+			_Cost[i] = Cost;
+
+			return;
+		}
+	}
+
+	{
+		int df = 234; // HASHLA APART, NO NE NASHLA, CLETKY V KALENDARE
+	}
+
+	//assert(false);
+}
+
+// Adjust date by a number of days +/-
+
+void CCalendar::DatePlusDays(tm * date, int days)
+{
+	const time_t ONE_DAY = 24 * 60 * 60;
+
+	// Seconds since start of epoch
+	time_t date_seconds = mktime(date) + (days * ONE_DAY);
+
+	// Update caller date
+	// Use localtime because mktime converts to UTC so may change date
+	*date = *localtime(&date_seconds);
 }
