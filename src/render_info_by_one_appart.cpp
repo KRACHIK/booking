@@ -15,12 +15,12 @@ public:
 class CBuilder {
 public:
 	 
-	inline std::vector<std::string> CBuilder::deserialize_status(const std::string & sFilePatth);
+	  std::vector<std::string> CBuilder::deserialize_status(const std::string & sFilePatth);
 
 };
 
 
-inline std::vector<std::string>  CBuilder::deserialize_status(const std::string & sFilePatth)
+std::vector<std::string>  CBuilder::deserialize_status(const std::string & sFilePatth)
 {
 	client::CAllNameFile File_(sFilePatth);
 	 

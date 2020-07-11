@@ -57,10 +57,7 @@ namespace Base
 		CData();
 		CData(int startDay_, int startMonth_, int startYear_);
 
-		std::string Serialize()
-		{
-			return  std::to_string(startDay) + "." + std::to_string(startMonth) + "." + std::to_string(startYear);
-		}
+		std::string Serialize();
 
 		static bool Parse(const std::string & Src, CData & Start, CData & End);
 

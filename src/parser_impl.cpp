@@ -25,6 +25,16 @@ void CHomeArr::Save(const std::string & sFileName)
 	outFile.close();
 }
 
+void CHomeArr::save_apart_name_andurl(const std::string & sFileName)
+{
+	for (auto it : _Arr)
+	{
+		std::string s = it.create_qniq_key();
+
+		Log::CFileLog::raw_log(s, sFileName);
+	}
+}
+
 
 void CFile::Save(const std::string & sText, const std::string & sFileSave)
 {

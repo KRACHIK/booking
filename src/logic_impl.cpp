@@ -58,7 +58,7 @@ namespace client
 				int sfd;
 
 				if (dir.size() == 22)
-					ArrIntrestingDir.push_back(  j  );
+					ArrIntrestingDir.push_back(j);
 			}
 		}
 
@@ -71,7 +71,7 @@ namespace client
 	{
 		/*-------D:\Development\booking\bin2\Debug\db\-2326178\08.03.2020\09.03.2020-11.03.2020
 		----------------------------------------------Levle-1----Levle-2---------Levle-3   */
-		 
+
 		std::vector<std::string> arrDir;
 		// Xodit po stranam
 		for (auto it : DownLoadList.get_valid_link())
@@ -85,7 +85,7 @@ namespace client
 
 			std::string ActualWorkDir = Seting.GetWorkDir(); //D:\Development\booking\bin2\Debug\db\-2327363
 			arrDir.push_back(ActualWorkDir);
-				 
+
 		}
 
 		return arrDir;
@@ -139,7 +139,7 @@ namespace client
 
 		// Xodit po stranam
 		for (auto it : DownLoadList.get_valid_link())
-		{	
+		{
 
 			// set current country for setting object
 			std::string  sCountryIndex;
@@ -265,65 +265,65 @@ namespace client
 			return false;
 
 		return true;
-    }
+	}
 
-    bool CLogic::IsCurrentDirCreated(CDownLoadList &DownLoadList, CSeting &Seting)
-    {
-        // Xodit po stranam
-        for (auto it : DownLoadList.get_valid_link())
-        {
+	bool CLogic::IsCurrentDirCreated(CDownLoadList &DownLoadList, CSeting &Seting)
+	{
+		// Xodit po stranam
+		for (auto it : DownLoadList.get_valid_link())
+		{
 
-            // set current country for setting object
-            std::string  sCountryIndex;
-            bool bRet = DownLoadList.get_dest_by_link(it, sCountryIndex);
-            Seting.set_work_country_dir(sCountryIndex);
-            Seting.set_country(sCountryIndex);
-
-
-            std::string ActualWorkDir = GetActualWorkDir(Seting.GetWorkDir()); //D:\Development\booking\bin2\Debug\db\04.03.2020
-
-            if (std::experimental::filesystem::exists(ActualWorkDir))
-            {
-                // Log::CFileLog::Log("estb " + ActualWorkDir, LOG_LOGIC);
-            }
-            else
-            {
-                Log::CFileLog::Log("Nety " + ActualWorkDir, LOG_LOGIC);
-
-                return false;
-            }
-        }
-        return true;
-    }
+			// set current country for setting object
+			std::string  sCountryIndex;
+			bool bRet = DownLoadList.get_dest_by_link(it, sCountryIndex);
+			Seting.set_work_country_dir(sCountryIndex);
+			Seting.set_country(sCountryIndex);
 
 
-    bool  CLogic::Work()
-    {
-        CSeting  Seting;
+			std::string ActualWorkDir = GetActualWorkDir(Seting.GetWorkDir()); //D:\Development\booking\bin2\Debug\db\04.03.2020
 
-        bool bCreateDir = client::CLogic::CreateWorkDir(Seting.GetWorkDir());
+			if (std::experimental::filesystem::exists(ActualWorkDir))
+			{
+				// Log::CFileLog::Log("estb " + ActualWorkDir, LOG_LOGIC);
+			}
+			else
+			{
+				Log::CFileLog::Log("Nety " + ActualWorkDir, LOG_LOGIC);
+
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+	bool  CLogic::Work()
+	{
+		CSeting  Seting;
+
+		bool bCreateDir = client::CLogic::CreateWorkDir(Seting.GetWorkDir());
 
 #if 0
-        std::vector<CTask> TaskArr = client::CLogic::CreateTask_v2_temp(Seting);
+		std::vector<CTask> TaskArr = client::CLogic::CreateTask_v2_temp(Seting);
 #else
-        std::vector<CTask> TaskArr = client::CLogic::CreateTask(Seting); // old
+		std::vector<CTask> TaskArr = client::CLogic::CreateTask(Seting); // old
 #endif
 
-        client::CLogic::CreateSettingForParser(TaskArr, Seting);
+		client::CLogic::CreateSettingForParser(TaskArr, Seting);
 
-        bool bRunUtil = client::CLogic::RunUtilDownload(TaskArr, Seting);
+		bool bRunUtil = client::CLogic::RunUtilDownload(TaskArr, Seting);
 
-        Log::CFileLog::Log("[CLogic::Work] : client::CLogic::RunUtilDownload = " + std::to_string(bRunUtil), LOG_LOGIC);
+		Log::CFileLog::Log("[CLogic::Work] : client::CLogic::RunUtilDownload = " + std::to_string(bRunUtil), LOG_LOGIC);
 
-        bRunUtil = client::CLogic::RunUtilParse(TaskArr, Seting);
+		bRunUtil = client::CLogic::RunUtilParse(TaskArr, Seting);
 
-        Log::CFileLog::Log("[CLogic::Work] : client::CLogic::RunUtilParse = " + std::to_string(bRunUtil), LOG_LOGIC);
+		Log::CFileLog::Log("[CLogic::Work] : client::CLogic::RunUtilParse = " + std::to_string(bRunUtil), LOG_LOGIC);
 
-        return true;
-    }
+		return true;
+	}
 
-    bool CLogic::RunUtilParse(const std::vector<CTask> & TaskArr, CSeting & Seting)
-    {
+	bool CLogic::RunUtilParse(const std::vector<CTask> & TaskArr, CSeting & Seting)
+	{
 
 		std::string sUtilName = "booking_html_parser.exe";
 
@@ -338,7 +338,7 @@ namespace client
 
 		return true;
 	}
-	 
+
 	std::vector<CTask> CLogic::CreateTask_v2_temp(CSeting Seting)
 	{
 		/*

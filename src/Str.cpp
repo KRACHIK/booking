@@ -1,5 +1,5 @@
 #include "Str.h"
- 
+
 namespace Str {
 
 	std::vector <CStr> rENAME::Parse_Space(const std::string & buf)
@@ -59,10 +59,10 @@ namespace Str {
 			return  {};
 		}
 
-			  
-		 
+
+
 		std::string buf = do_replace(Src, "\\.", " ");
-		 
+
 		std::vector <CStr> ArrStr = Parse_Space(buf);
 
 		std::vector <int> numArr;
@@ -72,4 +72,3 @@ namespace Str {
 		return numArr;
 	}
 }
- 

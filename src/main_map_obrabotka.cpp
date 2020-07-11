@@ -50,7 +50,7 @@ void Read_Hotel_from_db()
 
 int main()
 {
-  
+
 	if (0)
 		Write_Hotel_to_DB();
 

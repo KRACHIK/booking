@@ -31,15 +31,9 @@ public:
 
 	);
 
-	static int count_line_in_one_raw_object()
-	{
-		return 2;
-	}
+	static int count_line_in_one_raw_object();
 
-	int get_cost() const 
-	{
-		return GetHome().GetCost();
-	}
+	int get_cost() const;
 
 	CHome GetHome() const;
 	Base::CData GetDataStart() const;
@@ -47,50 +41,10 @@ public:
 
 	Base::CData get_Level2_data() const;
 
-	std::string Serialize()
-	{
-		std::string SerializeHome = _Home.GetSerialize();
-		std::string SerializeVectorDat = _Level2_data.Serialize() + " " + _Start.Serialize() + " " + _End.Serialize();
-		std::string Result = SerializeHome + SerializeVectorDat;
-
-		return Result;
-	}
+	std::string Serialize();
 
 
-	static CHomeNameAndCostAndData Derialize(const std::string  & LineArr, const std::string  & LineArr2  )
-	{
-		if (LineArr.empty() || LineArr2.empty())
-		{
-			assert(false);
-		}
-
-		CHome home = CHome::Deserealize(LineArr );
-
-		std::vector<std::string> ArrData = Str::rENAME::Parse_Space(LineArr2 );
-
-		if (ArrData.size() != 3)
-		{
-			assert(false);
-		}
-		 
-		Base::CData DataInDayRequest, Data_day_start, Data_day_end;
-
-		if (!Base::CData::Parse(ArrData[0], DataInDayRequest))
-		{
-		}
-
-
-		if (!Base::CData::Parse(ArrData[1], Data_day_start))
-		{
-		}
-
-		if (!Base::CData::Parse(ArrData[2], Data_day_end))
-		{
-		}
-
-		return CHomeNameAndCostAndData(home, Data_day_start, Data_day_end, DataInDayRequest);
-
-	}
+	static CHomeNameAndCostAndData Derialize(const std::string  & LineArr, const std::string  & LineArr2);
 
 
 private:

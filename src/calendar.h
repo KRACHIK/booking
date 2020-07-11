@@ -36,18 +36,7 @@ namespace client {
 
 		void RenderStat();
 
-		std::vector<std::string> get_all_name_by_init_map()
-		{
-			std::vector<std::string> Names;
-			for (auto it = _MapDataBase.GetMap().begin(); it != _MapDataBase.GetMap().end(); ++it)
-			{
-				Names.push_back(
-					it->first
-				);
-			}
-			return Names;
-			//std::vector<std::string>
-		}
+		std::vector<std::string> get_all_name_by_init_map();
 			 
 
 	private:

@@ -3,6 +3,11 @@
 #include "calendar_def.h"
 #include "parser_impl.h"
 
+std::string CHome::create_qniq_key() const
+{
+	return  GetName() + "_" + get_url_mini_img();
+}
+
 CHome CHome::Deserealize(const CStr & Str)
 {
 	std::vector<CStr> Arr = Str::Util::Parse_Space(Str);

@@ -55,19 +55,7 @@ namespace Level2
 
 		std::vector<std::string> get_all_file_in_dir(const std::string & sDir, const std::string & sMask);
 
-		bool Get_Next_Diapozon_Dir(std::string & Result)
-		{
-			if (_Index >= _DayArr.size())
-			{
-				_Index = 0;
-				return false;
-			}
-
-			Result = _DayArr[_Index].string();
-			_Index++;
-
-			return true;
-		}
+		bool Get_Next_Diapozon_Dir(std::string & Result);
 
 		bool Parse_DayMotherYear_DayMotherYear(std::experimental::filesystem::path Path, std::string & Result);
 

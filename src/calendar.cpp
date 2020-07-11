@@ -30,8 +30,8 @@ namespace client {
 
 		for (auto it = _MapDataBase.GetMap().begin(); it != _MapDataBase.GetMap().end(); ++it)
 		{
-			 
-			if (it->second.is_init() )
+
+			if (it->second.is_init())
 			{
 				Log::CFileLog::Log("Calendar Task: " + std::to_string(++i) + "/" + std::to_string(size), LOG_MAIN_DATA_OB_ODNOM_OTELE);
 				it->second.Compute();
@@ -55,7 +55,7 @@ namespace client {
 
 		int CountObject = pFileDataLine.size() / CHomeNameAndCostAndData::count_line_in_one_raw_object();
 
- 		int Index = 0;
+		int Index = 0;
 		for (int i = 0; i < CountObject; i++)
 		{
 			const std::string & sLine_1 = pFileDataLine[Index];
@@ -63,7 +63,7 @@ namespace client {
 
 			const std::string & sLine_2 = pFileDataLine[Index];
 			Index++;
-			 
+
 			CHomeNameAndCostAndData Object = CHomeNameAndCostAndData::Derialize(sLine_1, sLine_2);
 			Log::CFileLog::Log(" object: " + std::to_string(i) + "/" + std::to_string(CountObject), LOG_CALENDAR);
 
@@ -198,6 +198,19 @@ namespace client {
 	{
 		Log::CFileLog::Log("RenderStat", LOG_CALENDAR);
 		_MapDataBase.RenderStat();
+	}
+
+	std::vector<std::string> IDataBase::get_all_name_by_init_map()
+	{
+		std::vector<std::string> Names;
+		for (auto it = _MapDataBase.GetMap().begin(); it != _MapDataBase.GetMap().end(); ++it)
+		{
+			Names.push_back(
+				it->first
+			);
+		}
+		return Names;
+		//std::vector<std::string>
 	}
 
 }

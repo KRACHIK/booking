@@ -19,10 +19,7 @@ public:
 	{
 	}
 
-	std::string create_qniq_key() const
-	{
-		return  GetName() + "_" + get_url_mini_img();
-	}
+	std::string create_qniq_key() const;
 
 	static CHome Deserealize(const CStr & Str);
 	void SaveBySelfName(const std::string & Prefix);
