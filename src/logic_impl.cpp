@@ -8,6 +8,35 @@
 namespace client
 {
 
+
+	std::vector<std::string> CLogic::get_path_for_run_utils()
+	{
+		std::vector<client::CTask> ReDownloadTaskArr;
+		CDownLoadList  DownLoadList;
+		client::CSeting  Seting;
+
+		std::vector<std::experimental::filesystem::path> level2dir = client::CLogic::get_all_level2_dir(DownLoadList, Seting);
+		std::vector<std::experimental::filesystem::path> level3dir = client::CLogic::get_all_level3_dir(DownLoadList, level2dir, Seting);
+
+		std::vector<std::string> call_self_util_in_this_dir;
+
+		for (auto it : level3dir)
+		{
+			if (client::CFileManager::is_find_file_uniq_key(it.string()))
+			{
+
+			}
+			else
+			{
+				call_self_util_in_this_dir.push_back(it.string());
+			}
+		}
+		return call_self_util_in_this_dir;
+	}
+
+
+
+
 	std::vector<std::experimental::filesystem::path>
 		CLogic::get_all_level3_dir(CDownLoadList & DownLoadList
 			, std::vector<std::experimental::filesystem::path> level2dir
@@ -110,7 +139,7 @@ namespace client
 
 		// Xodit po stranam
 		for (auto it : DownLoadList.get_valid_link())
-		{
+		{	
 
 			// set current country for setting object
 			std::string  sCountryIndex;

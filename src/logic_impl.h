@@ -23,6 +23,7 @@ namespace client
 		static std::vector<std::experimental::filesystem::path>
 			get_all_level3_dir(CDownLoadList & DownLoadList, std::vector<std::experimental::filesystem::path> level2dir, CSeting  & Seting);
 		 
+		static std::vector<std::string> get_path_for_run_utils();
 
 		static bool IsWork(std::vector<client::CTask> & TaskArr);
 		static bool Work();

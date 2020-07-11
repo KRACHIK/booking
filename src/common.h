@@ -233,8 +233,15 @@ namespace client
 
 		static std::vector<std::string>  GetAllHotelName(std::string sPath);
 
-		static std::vector<std::string> GetArrHomeNameAndCost(std::string sPath);
-
+		/*
+			input:    path  D:\\Development\\booking\\bin2\\Debug\\db\\29.02.2020\\01.03.2020-04.03.2020"
+			output    
+		    new name get_files_name_and_cost old name GetArrHomeNameAndCost
+		*/
+		static std::vector<std::string> get_files_name_and_cost(std::string sPath);
+		 
+		static bool is_find_file_uniq_key(const std::string & sPath);
+	 
 	};
 
 }

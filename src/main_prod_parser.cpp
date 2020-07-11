@@ -7,33 +7,48 @@
 #include <thread>
 
 
-#if 0
-int main()
+#if 1
+/*
+	new variaan zapuska taskov, pri cotorom odna zadacha zapuskaets9 v fone, a vtora9 v tekuchem potoke.
+*/
+
+void RunInNewThread(const std::string cmd)
 {
+	Log::CFileLog::Log("new thread Task parse:  call: " + cmd, LOG_MAIN_PROD_PARSER);
 
-	std::vector<client::CTask> ReDownloadTaskArr;
-	CDownLoadList  DownLoadList;
-	client::CSeting  Seting;
+	system(cmd.c_str());
+	Log::CFileLog::Log("new thread End work: ", LOG_MAIN_PROD_PARSER);
+}
 
+int main()
+{ 
+	std::vector<std::string> ResultTargetDir = client::CLogic::get_path_for_run_utils();
+	  
+	int i = 0; 
 
-	std::vector<std::experimental::filesystem::path> level2dir = client::CLogic::get_all_level2_dir(DownLoadList, Seting);
-
-	std::vector<std::experimental::filesystem::path> level3dir = client::CLogic::get_all_level3_dir(DownLoadList, level2dir, Seting);
-
-	int i = 0;
-	for (auto it : level3dir)
+	for (int i= 0; i< ResultTargetDir.size(); i++)
 	{
-		std::string cmd = "booking_html_parser.exe " + it.string() + " c";
-
-		Log::CFileLog::Log("Task parse: " + std::to_string(i) + "/" + std::to_string(level3dir.size()) + " call " + cmd, LOG_MAIN_PROD_PARSER);
+		auto it = ResultTargetDir[i];
+		std::string cmd = "booking_html_parser.exe " + it  + " c";		
+		std::thread bckgroundThr(RunInNewThread, cmd);
+		bckgroundThr.detach();
+		Log::CFileLog::Log("Task parse: " + std::to_string(i) + "/" + std::to_string(ResultTargetDir.size()) + " call " + cmd, LOG_MAIN_PROD_PARSER);
+		
 		i++;
+		it = ResultTargetDir[i];
+		cmd = "booking_html_parser.exe " + it  + " c";
+		Log::CFileLog::Log("main thread Task parse: " + std::to_string(i) + "/" + std::to_string(ResultTargetDir.size()) + " call " + cmd, LOG_MAIN_PROD_PARSER);
+		 
 		system(cmd.c_str());
 	}
 	return 0;
 }
 #else
 
-
+ /*
+	old variant zapuska taskov, pri cotorom porojdaets9 beskonechnoe chislo procesov
+ 
+ */
 #include <iostream>
 #include <future>
 #include <vector>
@@ -67,7 +82,7 @@ int main()
 		sTask.push_back(cmd);
 	}
 
-
+	 
 	const unsigned numberOfTask = sTask.size();
 	unsigned n = 0;
 	std::vector<std::future<unsigned long long>> futures(numberOfTask);

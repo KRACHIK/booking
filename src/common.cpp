@@ -231,7 +231,7 @@ namespace OS {
 
 	std::string CSystyem::GetSlash()
 	{
-		//return "\\";
+		//return "\\"; // windows
 		return "//";
 	}
 
@@ -380,6 +380,14 @@ namespace client
 	}
 
 
+	 bool CFileManager::is_find_file_uniq_key(const std::string & sPath) 
+	 {
+		 if ( CFileManager::get_all_uniq_key_fom_file(sPath).empty() )
+			 return false;
+		 
+		 return true;
+	 }
+
 	std::vector<std::string> CFileManager::get_all_uniq_key_fom_file(std::string sPath)
 	{
 		return CFileSystem::GetFileByMask(sPath, FILE_UNIQ_APART_KEY);
@@ -391,9 +399,13 @@ namespace client
 		return  CFileSystem::GetFileByMask(sPath, ALL_NAME_HOTEL_BY_ALL_FILE_IN_THIS_DIR);
 	}
 
-	std::vector<std::string> CFileManager::GetArrHomeNameAndCost(std::string sPath)
-	{
-		//std::vector<std::string>  
+
+	/*
+		CFileManager::get_files_name_and_cost
+		CFileManager::GetArrHomeNameAndCost
+	*/
+	std::vector<std::string> CFileManager::get_files_name_and_cost(std::string sPath)
+	{ 
 		return  CFileSystem::GetFileByMask(sPath, NAME_AND_COST);
 	}
 

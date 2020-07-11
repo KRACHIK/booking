@@ -9,7 +9,9 @@
 
 
 #if defined(_WIN32) || defined(_WIN32_WCE) || defined(__WIN32__)
- 	#include <filesystem>
+    //#include <filesystem>
+    #include <experimental/filesystem>
+
 #else
     #include <experimental/filesystem>
 
@@ -48,7 +50,19 @@ private:
 class CFileSystem
 {
 public:
+	static bool IsEmptyFile(const std::experimental::filesystem::path & sPath)
+	{
+		std::error_code er;
+		uintmax_t size = std::experimental::filesystem::file_size(  sPath, er);
+		
+		if (er)
+			return false;
 
+		if (size)
+			return true;
+
+		return false;
+	}
 
     static std::string GetFileNameByPath(const std::string & sPath);
 

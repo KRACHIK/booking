@@ -182,7 +182,7 @@ namespace Level2
 	)
 	{
 		 
-		std::vector<CHomeNameAndCostAndData> Objects = CDataProvider::GetArrHomeNameAndCostAndData(sRootDir);
+		std::vector<CHomeNameAndCostAndData> Objects = CDataProvider::get_array_HomeNameAndCostAndData_by_file(sRootDir);
 
 		for (int i = 0; i < Objects.size(); i++)
 		{
@@ -195,7 +195,7 @@ namespace Level2
 
 	void CDataProvider::FindAsocDataByHomeName(const std::string & sRootDir, const std::string & sHotelName)
 	{
-		std::vector<CHomeNameAndCostAndData> Objects = CDataProvider::GetArrHomeNameAndCostAndData(sRootDir);
+		std::vector<CHomeNameAndCostAndData> Objects = CDataProvider::get_array_HomeNameAndCostAndData_by_file(sRootDir);
 
 		for (int i = 0; i < Objects.size(); i++)
 		{
@@ -216,10 +216,13 @@ namespace Level2
 		}
 	}
 
-
-	std::vector<CHomeNameAndCostAndData> CDataProvider::GetArrHomeNameAndCostAndData(std::string sIntrestingDir)
+	/* 
+	GetArrHomeNameAndCostAndData
+	get_array_HomeNameAndCostAndData_by_file
+	*/ 
+	std::vector<CHomeNameAndCostAndData> CDataProvider::get_array_HomeNameAndCostAndData_by_file(std::string sIntrestingDir)
 	{
-		std::vector<std::string> ArrName = client::CFileManager::GetArrHomeNameAndCost(sIntrestingDir);
+		std::vector<std::string> ArrName = client::CFileManager::get_files_name_and_cost(sIntrestingDir);
 		//ArrHomeName ArrName = client::CFileManager::GetArrHomeNameAndCost("D:\\Development\\booking\\bin2\\Debug\\db\\29.02.2020\\01.03.2020-04.03.2020");
 
 

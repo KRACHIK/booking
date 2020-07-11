@@ -85,7 +85,7 @@ namespace client {
 		{
 
 			// get all full info ob hotele
-			std::vector<CHomeNameAndCostAndData> Arr = Level2::CDataProvider::GetArrHomeNameAndCostAndData(dir_it.string());
+			std::vector<CHomeNameAndCostAndData> Arr = Level2::CDataProvider::get_array_HomeNameAndCostAndData_by_file(dir_it.string());
 
 			for (auto itHotel : Arr)
 			{
@@ -179,7 +179,7 @@ namespace client {
 			std::string dat;
 			while (IteratirDir.Get_Next_Intresting_Iterator_Dir(dat))
 			{
-				std::vector<CHomeNameAndCostAndData> Arr = Level2::CDataProvider::GetArrHomeNameAndCostAndData(dat);
+				std::vector<CHomeNameAndCostAndData> Arr = Level2::CDataProvider::get_array_HomeNameAndCostAndData_by_file(dat);
 
 				for (CHomeNameAndCostAndData it : Arr)
 				{

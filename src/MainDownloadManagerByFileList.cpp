@@ -7,13 +7,11 @@
 #include <chrono>
 #include <thread>
 
-
-
+ 
 
 int main()
 {
-
-	while (true)
+	for (int i=0; i<13; i++)
 	{
 		std::vector<client::CTask> ReDownloadTaskArr;
 		CDownLoadList  DownLoadList;

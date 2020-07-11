@@ -83,15 +83,17 @@ namespace Level2
 	public:
 		static std::vector<std::string> GetAllNameHotelInCurDir(std::string sRootDir);
 
-		static std::vector<CHomeNameAndCostAndData> GetArrHomeNameAndCostAndData(std::string sIntrestingDir);
+		/*
+			GetArrHomeNameAndCostAndData
+			get_array_HomeNameAndCostAndData_by_file
+		*/
+		static std::vector<CHomeNameAndCostAndData> get_array_HomeNameAndCostAndData_by_file(std::string sIntrestingDir);
 
 		static void FindAsocDataByHomeName(const std::string & sRootDir, const std::string & sHotelName);
-		 
 
-		static void CDataProvider::get_assoc_data_by_quniq_key(
-			std::vector<CHomeNameAndCostAndData> & Result
-			, const std::string & sRootDir
-			, const std::string & sHotelName
+
+		static void get_assoc_data_by_quniq_key(std::vector<CHomeNameAndCostAndData> & Result
+			, const std::string & sRootDir, const std::string & sHotelName
 		);
 
 		static std::vector<std::string>  get_all_uniq_key_fom_file(std::string sRootDir);

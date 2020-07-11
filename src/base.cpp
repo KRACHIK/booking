@@ -1,5 +1,6 @@
 
 #include "base.h"
+#include <string>
 
 CToken::CToken(
 	const std::string   & sTegStart
