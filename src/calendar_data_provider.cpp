@@ -36,17 +36,34 @@ namespace Level2
 
 	std::vector<std::string> CIteratirDir::get_all_file_in_dir(const std::string & sDir, const std::string & sMask)
 	{
+
 		std::vector<std::experimental::filesystem::path> Arr = CFileSystem::directory_iterator(sDir);
 		std::vector<std::string> HTMLArr = CFileSystem::Filter(Arr, sMask);
 		return HTMLArr;
 	}
 
+	bool CIteratirDir::Get_Next_Diapozon_Dir(std::string & Result)
+	{
+		if (_Index >= _DayArr.size())
+		{
+			_Index = 0;
+			return false;
+		}
+
+		Result = _DayArr[_Index];
+		_Index++;
+
+		return true;
+	}
+
+	bool CIteratirDir::Parse_DayMotherYear_DayMotherYear(std::string Path, std::string & Result)
 	{
 
-		std::vector<std::experimental::filesystem::path> RequestInterval;
+		std::vector<std::string> RequestInterval;
 
 		std::vector<MyData> RasparseArr;
 
+		for (auto p : CFileSystem::get_directory_iterator(Path))
 		{
 			RequestInterval.push_back(p);
 
@@ -59,6 +76,7 @@ namespace Level2
 
 		for (auto it : RequestInterval)
 		{
+			MyData rasparse = CDataUtil::Parse_DayMotherYear_DayMotherYear(Path, it);
 
 			if (rasparse.empty())
 			{
@@ -71,6 +89,8 @@ namespace Level2
 
 			if (abs(DayEnd - DayStart) == 1)
 			{
+				Log::CFileLog::Log(" return" + it , LOG_CALENDAR);
+				Result = it;
 				return true;
 			}
 
@@ -170,9 +190,12 @@ namespace Level2
 
 
 	void CDataProvider::get_assoc_data_by_quniq_key(
+		std::vector<CHomeNameAndCostAndData> & Result
+		, const std::string & sRootDir
 		, const std::string & sHotelName
 	)
 	{
+
 		std::vector<CHomeNameAndCostAndData> Objects = CDataProvider::get_array_HomeNameAndCostAndData_by_file(sRootDir);
 
 		for (int i = 0; i < Objects.size(); i++)
@@ -207,8 +230,10 @@ namespace Level2
 		}
 	}
 
+	/*
 	GetArrHomeNameAndCostAndData
 	get_array_HomeNameAndCostAndData_by_file
+	*/
 	std::vector<CHomeNameAndCostAndData> CDataProvider::get_array_HomeNameAndCostAndData_by_file(std::string sIntrestingDir)
 	{
 		std::vector<std::string> ArrName = client::CFileManager::get_files_name_and_cost(sIntrestingDir);
@@ -221,6 +246,8 @@ namespace Level2
 		{
 			Log::CFileLog::Log("[::GetArrHomeNameAndCostAndData] : Parse_GetDataByPath Error. Not parse data by str = " + sIntrestingDir, LOG_CALENDAR_ERR);
 		}
+
+		bRes = Str::Util::get_level2_data_obj(sIntrestingDir, DataLevel2);
 		if (bRes == false)
 		{
 			Log::CFileLog::Log("[::GetArrHomeNameAndCostAndData] : get_level2_data_obj Error. Not parse data by str = " + sIntrestingDir, LOG_CALENDAR_ERR);

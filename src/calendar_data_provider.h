@@ -3,8 +3,16 @@
 
 
 #include "Client_Base_type.h"
-#include "filesystem.h"
 
+
+
+#ifdef QT_COMPILER
+// zero
+#else 
+	#include "filesystem.h"
+#endif  
+
+ 
 
 #include <functional>
 #include <algorithm>

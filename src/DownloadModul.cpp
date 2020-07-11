@@ -120,7 +120,7 @@ bool CDownload::IsPropuskDwnFile(const std::string & sDir, std::vector<client::C
 	std::vector<std::experimental::filesystem::path> Arr = CFileSystem::directory_iterator(sDir);
 	std::vector<std::string> JavaDwnPropFile = CFileSystem::Filter(Arr, ".properties");
 	std::vector<std::string> HTMLArr = CFileSystem::Filter(Arr, ".html");
-
+	  
 
 	if (HTMLArr.empty())
 	{
@@ -241,4 +241,4 @@ void CDownLoadList::Init()
 		}
 	}
 }
-
+  

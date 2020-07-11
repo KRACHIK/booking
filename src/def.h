@@ -10,8 +10,13 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "file.h"
-#include "filesystem.h"
+#ifdef QT_COMPILER
+	// zero
+#else
+	#include "file.h"
+	#include "filesystem.h"
+#endif  
+
 
 #include <fstream>
 #include <sstream>

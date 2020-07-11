@@ -2,8 +2,14 @@
 #define PARSER_H
 
 #include "def.h"
-#include "file.h"
-#include "filesystem.h"
+
+
+#ifdef QT_COMPILER
+// zero
+#else
+	#include "file.h"
+	#include "filesystem.h"
+#endif  
 
 #include "base.h"
 

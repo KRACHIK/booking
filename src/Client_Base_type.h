@@ -3,7 +3,7 @@
 
 #include "def.h"
 #include "parser_impl.h"
-#include "fix_compilate.h"// NEW
+#include "apartament.h"// NEW
  
 //#include "common.h" // bad!
  
@@ -42,6 +42,26 @@ public:
 	std::string Serialize();
 
 	static CHomeNameAndCostAndData Derialize(const std::string  & LineArr, const std::string  & LineArr2);
+
+	static CHomeNameAndCostAndData create_object(
+        const std::string  & date_start,
+		const std::string  & date_end,
+		const std::string  & date_req,
+		const std::string  & cost,
+		const std::string  & name
+	)
+    {
+        CHome  Home(name, "", std::atoi (cost.c_str() ) ) ;		//CHomeNameAndCostAndData
+		Base::CData end;
+		Base::CData start;
+		Base::CData req;
+
+		CHomeNameAndCostAndData obj(Home, end, start, req);
+		return obj;
+	}
+
+		 
+
 
 private:
 	CHome _Home;

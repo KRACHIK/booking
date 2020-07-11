@@ -5,8 +5,14 @@
 
 #include "common.h"
 #include "parser.h"
-#include "file.h"
-#include "filesystem.h"
+
+
+#ifdef QT_COMPILER
+	// zero
+#else
+	#include "file.h"
+	#include "filesystem.h"
+#endif  
 
 #include "calendar_data_provider.h"
 #include "DownloadModul.h"

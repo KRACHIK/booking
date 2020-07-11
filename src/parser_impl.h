@@ -4,10 +4,16 @@
 #include <regex>
 
 #include "def.h"
-#include "file.h"
-#include "filesystem.h"
+
+#ifdef QT_COMPILER
+	// zero
+#else
+	#include "file.h"
+	#include "filesystem.h"
+#endif  
+
 #include "base.h"
-#include "fix_compilate.h"
+#include "apartament.h"
 #include  "calendar_def.h"
 #include  "calendar_data_provider.h"
 

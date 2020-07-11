@@ -31,8 +31,8 @@ file( GLOB SOURCE_CODE
 	src/common.cpp
 	src/common.h
 
-	src/fix_compilate.cpp
-	src/fix_compilate.h
+	src/apartament.cpp
+	src/apartament.h
 	   
 	src/calendar_def.h
 	 
@@ -136,8 +136,8 @@ file( GLOB SOURCE_CODE
 	src/SrcContainer/BaseDequeObject.h
 	src/SrcContainer/EngineBaseMapObject.h
 	 
-	src/fix_compilate.cpp
-	src/fix_compilate.h
+	src/apartament.cpp
+	src/apartament.h
 	  
 	src/parser_impl.h
 	src/parser_impl.cpp
@@ -191,8 +191,8 @@ file( GLOB SOURCE_CODE
 	src/SrcContainer/BaseDequeObject.cpp
 	src/SrcContainer/BaseDequeObject.h
 	src/SrcContainer/EngineBaseMapObject.h
-	src/fix_compilate.cpp
-	src/fix_compilate.h
+	src/apartament.cpp
+	src/apartament.h
 	src/parser_impl.h
 	src/parser_impl.cpp
 	src/Str.h
@@ -238,8 +238,8 @@ file( GLOB SOURCE_CODE
 	src/SrcContainer/BaseDequeObject.cpp
 	src/SrcContainer/BaseDequeObject.h
 	src/SrcContainer/EngineBaseMapObject.h
-	src/fix_compilate.cpp
-	src/fix_compilate.h
+	src/apartament.cpp
+	src/apartament.h
 	src/parser_impl.h
 	src/parser_impl.cpp
 	src/Str.h
@@ -287,8 +287,8 @@ file( GLOB SOURCE_CODE
 	src/SrcContainer/BaseDequeObject.cpp
 	src/SrcContainer/BaseDequeObject.h
 	src/SrcContainer/EngineBaseMapObject.h
-	src/fix_compilate.cpp
-	src/fix_compilate.h
+	src/apartament.cpp
+	src/apartament.h
 	src/parser_impl.h
 	src/parser_impl.cpp
 	src/Str.h
@@ -332,8 +332,8 @@ file( GLOB SOURCE_CODE
 	src/SrcContainer/BaseDequeObject.cpp
 	src/SrcContainer/BaseDequeObject.h
 	src/SrcContainer/EngineBaseMapObject.h
-	src/fix_compilate.cpp
-	src/fix_compilate.h
+	src/apartament.cpp
+	src/apartament.h
 	src/parser_impl.h
 	src/parser_impl.cpp
 	src/Str.h
@@ -366,8 +366,8 @@ file( GLOB SOURCE_CODE
 	src/def.h
 	src/common.cpp
 	src/common.h
-	src/fix_compilate.cpp
-	src/fix_compilate.h
+	src/apartament.cpp
+	src/apartament.h
 	src/calendar_def.h
 	
 	src/filesystem.h
@@ -438,8 +438,8 @@ src/calendar_map_adapter.cpp
 src/SrcContainer/BaseDequeObject.cpp
 src/SrcContainer/BaseDequeObject.h
 src/SrcContainer/EngineBaseMapObject.h
-src/fix_compilate.cpp
-src/fix_compilate.h
+src/apartament.cpp
+src/apartament.h
 src/parser_impl.h
 src/parser_impl.cpp
 src/Str.h
@@ -550,8 +550,8 @@ file( GLOB SOURCE_CODE2
 	src/SrcContainer/BaseDequeObject.h
 	src/SrcContainer/EngineBaseMapObject.h
 	 
-	src/fix_compilate.cpp
-	src/fix_compilate.h
+	src/apartament.cpp
+	src/apartament.h
 	  
 	src/parser_impl.h
 	src/parser_impl.cpp
@@ -597,8 +597,8 @@ src/calendar_map_adapter.cpp
 src/SrcContainer/BaseDequeObject.cpp
 src/SrcContainer/BaseDequeObject.h
 src/SrcContainer/EngineBaseMapObject.h
-src/fix_compilate.cpp
-src/fix_compilate.h
+src/apartament.cpp
+src/apartament.h
 src/parser_impl.h
 src/parser_impl.cpp
 src/Str.h
