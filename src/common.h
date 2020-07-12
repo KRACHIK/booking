@@ -1,12 +1,35 @@
 #ifndef   COMMON_H
 #define   COMMON_H
+ 
 
-#include "def.h"
 #include "calendar_def.h"
 
 
+#ifdef QT_COMPILER
+	// zero
+#else
+	#include "def.h"
+#endif
 #include "Str.h"
 
+
+
+#include <iostream>
+#include <assert.h>
+#include <iomanip>
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <time.h>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
+#include <functional>
+#include <algorithm>
+#include <stdint.h>
+#include <iterator>
+#include <map>
+#include <deque>
 
 
 #define FILE_DBG								"FILE_DBG"

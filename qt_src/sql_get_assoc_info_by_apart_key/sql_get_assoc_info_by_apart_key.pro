@@ -8,7 +8,7 @@ CONFIG -= app_bundle
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
-DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += QT_DEPRECATED_WARNINGS QT_COMPILER
 
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -17,7 +17,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         ../../src/Client_Base_type.cpp \
+        ../../src/Str.cpp \
         ../../src/apartament.cpp \
+        ../../src/common.cpp \
         ../src_sql_engine/database.cpp \
         main.cpp \
         sql_find_get_assoc_info.cpp
@@ -29,6 +31,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     ../../src/Client_Base_type.h \
+    ../../src/Str.h \
     ../../src/apartament.h \
+    ../../src/common.h \
     ../src_sql_engine/database.h \
     sql_find_get_assoc_info.h

@@ -6,7 +6,7 @@ namespace Log {
 	void CFileLog::Log(const std::string & Str, const std::string & sFileName)
 	{
 		struct tm *u;
-		char s1[40] = { 0 }, s2[40] = { 0 };
+        char s1[40] = { 0 };
 		const time_t timer = time(NULL);
 		u = localtime(&timer);
 		strftime(s1, 80, "[%d.%m.%Y %H:%M:%S] ", u);
@@ -110,7 +110,7 @@ namespace Base
 	std::string CUtil::GetDirByFilePath(const std::string & sGrabDirByFilePath, const CStr & sFileName)
 	{
 		struct tm *u;
-		char s1[40] = { 0 }, s2[40] = { 0 };
+        char s1[40] = { 0 } ;
 		const time_t timer = time(NULL);
 		u = localtime(&timer);
 		strftime(s1, 80, "%d.%m.%Y_%H-%M-%S", u);
@@ -128,7 +128,7 @@ namespace Base
 	std::string CUtil::GetDirByFilePath(std::string sFileHTML)
 	{
 		struct tm *u;
-		char s1[40] = { 0 }, s2[40] = { 0 };
+        char s1[40] = { 0 };
 		const time_t timer = time(NULL);
 		u = localtime(&timer);
 		strftime(s1, 80, "%d.%m.%Y_%H-%M-%S ", u);
@@ -385,34 +385,48 @@ namespace client
 	}
 
 
+#ifdef QT_COMPILER
+    // zero
+#else
 	bool CFileManager::is_find_file_uniq_key(const std::string & sPath)
 	{
 		if (CFileManager::get_all_uniq_key_fom_file(sPath).empty())
 			return false;
 
 		return true;
-	}
+	} 
+#endif
 
+#ifdef QT_COMPILER
+        // zero
+#else
 	std::vector<std::string> CFileManager::get_all_uniq_key_fom_file(std::string sPath)
 	{
 		return CFileSystem::GetFileByMask(sPath, FILE_UNIQ_APART_KEY);
 	}
+#endif
 
+
+#ifdef QT_COMPILER
+        // zero
+#else
 	std::vector<std::string>  CFileManager::GetAllHotelName(std::string sPath)
 	{
 		//std::vector<std::string>  
 		return  CFileSystem::GetFileByMask(sPath, ALL_NAME_HOTEL_BY_ALL_FILE_IN_THIS_DIR);
 	}
+#endif
 
 
-	/*
-		CFileManager::get_files_name_and_cost
-		CFileManager::GetArrHomeNameAndCost
-	*/
+
+#ifdef QT_COMPILER
+        // zero
+#else
 	std::vector<std::string> CFileManager::get_files_name_and_cost(std::string sPath)
 	{
 		return  CFileSystem::GetFileByMask(sPath, NAME_AND_COST);
 	}
+#endif
 
 }
 

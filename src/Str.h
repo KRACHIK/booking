@@ -2,7 +2,13 @@
 #define STR_H
 
 #include "calendar_def.h"
-#include "def.h"
+
+#ifdef QT_COMPILER
+	// zero
+#else
+	#include "def.h"
+#endif
+ 
  
 #include <iostream>
 #include <fstream>

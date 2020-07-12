@@ -1,11 +1,17 @@
 #ifndef	CLIENT_BASE_TYPE_H
 #define	CLIENT_BASE_TYPE_H
 
-#include "def.h"
-#include "parser_impl.h"
 #include "apartament.h"// NEW
+
+
+#ifdef QT_COMPILER
+        // zero
+#include "common.h" // bad!
+#else
+    #include "def.h"
+    #include "parser_impl.h"
+#endif
  
-//#include "common.h" // bad!
  
 #include <iostream>
 #include <fstream>

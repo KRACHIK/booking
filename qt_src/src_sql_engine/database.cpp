@@ -117,15 +117,22 @@ void DataBase::Select_apart(std::string UniqApartKey)
     query.exec( cmd.c_str() );
     while (query.next())
     {
-        //QString name = query.value(0).toString();
-
         QString table_apart_name = query.value(0).toString();
-        QString table_apart_cost= query.value(0).toString();
-        QString table_apart_uniq_key= query.value(0).toString();
-        QString table_data_req= query.value(0).toString();
-        QString table_data_start= query.value(0).toString();
-        QString table_data_end= query.value(0).toString();
-        QString table_raw_source_dir= query.value(0).toString();
+        QString table_apart_cost= query.value(1).toString();
+        QString table_apart_uniq_key= query.value(2).toString();
+        QString table_data_req= query.value(3).toString();
+        QString table_data_start= query.value(4).toString();
+        QString table_data_end= query.value(5).toString();
+        QString table_raw_source_dir= query.value(6).toString();
+
+        qDebug() << table_apart_name << " " <<
+                    table_apart_cost << " " <<
+                    table_apart_uniq_key << " " <<
+                    table_data_req << " " <<
+                    table_data_start << " " <<
+                    table_data_end << " " <<
+                    table_raw_source_dir << "\n";
+
 
        CHomeNameAndCostAndData obj = CHomeNameAndCostAndData::create_object(
                     table_data_start.toStdString(), table_data_end.toStdString(), table_data_req.toStdString()

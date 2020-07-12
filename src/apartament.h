@@ -21,7 +21,7 @@ public:
 
 	std::string create_qniq_key() const;
 
-	static CHome Deserealize(const CStr & Str);
+    static CHome Deserealize(const std::string & Str);
 	void SaveBySelfName(const std::string & Prefix);
 	void Save(const std::string & sFileName);
 	std::string GetSerialize();
