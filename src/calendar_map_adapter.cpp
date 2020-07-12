@@ -1,5 +1,124 @@
 #include "calendar_map_adapter.h"
 
+#ifdef QT_COMPILER
+#include<bits/stdc++.h>
+#else
+#endif
+
+
+// Return if year is leap year or not.
+bool isLeap(int y)
+{
+    if (y%100 != 0 && y%4 == 0 || y %400 == 0)
+        return true;
+
+    return false;
+}
+
+// Given a date, returns number of days elapsed
+// from the beginning of the current year (1st
+// jan).
+int offsetDays(int d, int m, int y)
+{
+    int offset = d;
+
+    switch (m - 1)
+    {
+    case 11:
+        offset += 30;
+    case 10:
+        offset += 31;
+    case 9:
+        offset += 30;
+    case 8:
+        offset += 31;
+    case 7:
+        offset += 31;
+    case 6:
+        offset += 30;
+    case 5:
+        offset += 31;
+    case 4:
+        offset += 30;
+    case 3:
+        offset += 31;
+    case 2:
+        offset += 28;
+    case 1:
+        offset += 31;
+    }
+
+    if (isLeap(y) && m > 2)
+        offset += 1;
+
+    return offset;
+}
+
+// Given a year and days elapsed in it, finds
+// date by storing results in d and m.
+void revoffsetDays(int offset, int y, int *d, int *m)
+{
+    int month[13] = { 0, 31, 28, 31, 30, 31, 30,
+                    31, 31, 30, 31, 30, 31 };
+
+    if (isLeap(y))
+        month[2] = 29;
+
+    int i;
+    for (i = 1; i <= 12; i++)
+    {
+        if (offset <= month[i])
+            break;
+        offset = offset - month[i];
+    }
+
+    *d = offset;
+    *m = i;
+}
+
+// Add x days to the given date.
+Base::CData  addDays(int d1, int m1, int y1, int x)
+{
+    int offset1 = offsetDays(d1, m1, y1);
+    int remDays = isLeap(y1)?(366-offset1):(365-offset1);
+
+    // y2 is going to store result year and
+    // offset2 is going to store offset days
+    // in result year.
+    int y2, offset2;
+    if (x <= remDays)
+    {
+        y2 = y1;
+        offset2 = offset1 + x;
+    }
+
+    else
+    {
+        // x may store thousands of days.
+        // We find correct year and offset
+        // in the year.
+        x -= remDays;
+        y2 = y1 + 1;
+        int y2days = isLeap(y2)?366:365;
+        while (x >= y2days)
+        {
+            x -= y2days;
+            y2++;
+            y2days = isLeap(y2)?366:365;
+        }
+        offset2 = x;
+    }
+
+    // Find values of day and month from
+    // offset of result year.
+    int m2, d2;
+    revoffsetDays(offset2, y2, &d2, &m2);
+
+    std::cout << "d2 = " << d2 << ", m2 = " << m2
+        << ", y2 = " << y2 << "\n";
+    return Base::CData (d2, m2, y2);
+}
+
 void CHotelManager::Add(client::CHotel Hotel)
 {
 	_Arr.push_back(Hotel);
@@ -128,6 +247,10 @@ void CHotelManager::save_result_compute(std::string sFilePath)
 }
 
 
+
+#ifdef QT_COMPILER
+    // zero
+#else
 namespace Level1
 {
 	void CMapDataBase::RenderStat()
@@ -167,7 +290,7 @@ namespace Level1
 
 		bool bFind = FindObjectByKey(sKey);
 
-		if (bFind)
+        if (bFind)
 		{
 			auto & it = GetIteratorObject(sKey);
 
@@ -193,7 +316,7 @@ namespace Level1
 		{
 			Log::CFileLog::Log("STRASHNAIA OSHIBKBKA. IM9 OTEL9: " + sKey + "HE HAIDENO V BD", LOG_CALENDAR);
 			assert(false);
-		}
+        }
 	}
 
 	void CMapDataBase::AddValue(CHomeNameAndCostAndData Hotel)
@@ -206,8 +329,8 @@ namespace Level1
 
 		if (bFind)
 		{
-			auto & it = GetIteratorObject(sKey);
-			it->second.push_back(Hotel);
+            auto & it = GetIteratorObject(sKey);
+            it->second.push_back(Hotel);
 		}
 		else
 		{
@@ -217,6 +340,7 @@ namespace Level1
 	}
 
 }
+#endif
 
 cforum::Date::Date(size_t y, size_t m, size_t d)
 {
@@ -306,9 +430,12 @@ void CCalendar::CreateCalendar(int DayRequest)
 
 	for (int i = 1; i < DayRequest; i++)
 	{
-		Base::CData Day = get_data_by_offset(2020, 2, 1, i);
+        /*Base::CData Day = get_data_by_offset(2020, 2, 1, i);
+        v funce  get_data_by_offset error ona vernet he vernuiy daty 30.03.2020 doljno bit 31.03.2020
+        */
+        Base::CData Day2 = addDays(1,2,2020, i);
 
-		_Days.push_back(Day);
+        _Days.push_back(Day2);
 
 		_Status.push_back(EHOTEL_STATUS::HETY_V_POISKOVOE_VIDACHI);
 
@@ -343,7 +470,8 @@ void CCalendar::set_status(Base::CData Data, EHOTEL_STATUS status, float Cost)
 	}
 
 	{
-		int df = 234; // HASHLA APART, NO NE NASHLA, CLETKY V KALENDARE
+        Log::CFileLog::Log("[CCalendar::set_status] : ERROR HASHLA APART, NO NE NASHLA, CLETKY V KALENDARE", LOG_CALENDAR_ERR);
+        assert(false);
 	}
 
 	//assert(false);

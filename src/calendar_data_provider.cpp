@@ -241,12 +241,14 @@ namespace Level2
 
 
 		Base::CData Start, End, DataLevel2;
+		bool bRes = CStringFuncs_2::Parse_GetDataByPath(sIntrestingDir, Start, End);
 		if (bRes == false)
 		{
 			Log::CFileLog::Log("[::GetArrHomeNameAndCostAndData] : Parse_GetDataByPath Error. Not parse data by str = " + sIntrestingDir, LOG_CALENDAR_ERR);
 		}
 
 		
+		bRes = CStringFuncs_2::get_level2_data_obj(sIntrestingDir, DataLevel2);
 		if (bRes == false)
 		{
 			Log::CFileLog::Log("[::GetArrHomeNameAndCostAndData] : get_level2_data_obj Error. Not parse data by str = " + sIntrestingDir, LOG_CALENDAR_ERR);

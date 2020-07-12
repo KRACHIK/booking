@@ -1,8 +1,9 @@
 QT -= gui
 QT += sql
 
-CONFIG += c++11 console
+CONFIG += c++17 console
 CONFIG -= app_bundle
+LIBS += -lstdc++
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -19,6 +20,7 @@ SOURCES += \
         ../../src/Client_Base_type.cpp \
         ../../src/Str.cpp \
         ../../src/apartament.cpp \
+        ../../src/calendar_map_adapter.cpp \
         ../../src/common.cpp \
         ../sql_get_assoc_info_by_apart_key/sql_find_get_assoc_info.cpp \
         ../src_sql_engine/database.cpp \
@@ -34,6 +36,7 @@ HEADERS += \
     ../../src/Client_Base_type.h \
     ../../src/Str.h \
     ../../src/apartament.h \
+    ../../src/calendar_map_adapter.h \
     ../../src/common.h \
     ../sql_get_assoc_info_by_apart_key/sql_find_get_assoc_info.h \
     ../src_sql_engine/database.h \

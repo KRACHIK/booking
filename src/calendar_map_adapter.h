@@ -9,25 +9,24 @@
 #include <vector>
 #include <string>
 
-#include "foreach_dir.h"
-#include "calendar_data_provider.h"
 
+#ifdef QT_COMPILER
+	// zero
+#else
+	#include "calendar_data_provider.h"
+	#include "foreach_dir.h"
+    #include "SrcContainer\EngineBaseMapObject.h"
+#endif
 
 #include "calendar_def.h"
-#include "SrcContainer\EngineBaseMapObject.h"
-
 #include "Client_Base_type.h"
-
+#include "common.h"
 
 
 #include <ctime>
 
 #include <iostream>
 #include <cstdlib>
-//using namespace std;
-
-
-
 
 #include <iostream>
 #include <string>
@@ -251,6 +250,11 @@ private:
 };
 
 
+
+
+#ifdef QT_COMPILER
+    // zero
+#else
 namespace Level1
 {
 	class CMapDataBase : public CObjectStringContainerMap <CHotelManager>
@@ -266,8 +270,8 @@ namespace Level1
 
 		void AddValue(CHomeNameAndCostAndData Hotel);
 	};
-
 }
+#endif
 
 
 #endif /*CALENDAR_MAP_ADAPTER*/

@@ -1,7 +1,6 @@
 #include "database.h"
 #include <string>
 #include <vector>
-#include "../../Src/Client_Base_type.h"
 
 
 DataBase::DataBase(QObject *parent) : QObject(parent) { }
@@ -91,7 +90,8 @@ void DataBase::Select()
     qDebug() <<Keys.size();
 }
 
-void DataBase::Select_apart(std::string UniqApartKey)
+
+std::vector<CHomeNameAndCostAndData>  DataBase::Select_apart(std::string UniqApartKey)
 {
     QSqlQuery query;
 
@@ -112,7 +112,8 @@ void DataBase::Select_apart(std::string UniqApartKey)
 
     qDebug() <<"sql:"  << cmd.c_str() << "\n";
 
-    std::vector<std::string> Keys;
+    std::vector<CHomeNameAndCostAndData> ResultFind;
+
 
     query.exec( cmd.c_str() );
     while (query.next())
@@ -125,34 +126,48 @@ void DataBase::Select_apart(std::string UniqApartKey)
         QString table_data_end= query.value(5).toString();
         QString table_raw_source_dir= query.value(6).toString();
 
-        qDebug() << table_apart_name << " " <<
+        /*qDebug() << table_apart_name << " " <<
                     table_apart_cost << " " <<
                     table_apart_uniq_key << " " <<
                     table_data_req << " " <<
                     table_data_start << " " <<
                     table_data_end << " " <<
-                    table_raw_source_dir << "\n";
+                    table_raw_source_dir << "\n";*/
+
+
+        table_apart_name = CStringFuncs::remove_kovichka_and_slash( table_apart_name.toStdString().c_str() ).c_str();
+        table_apart_cost = CStringFuncs::remove_kovichka_and_slash( table_apart_cost.toStdString().c_str() ).c_str();
+        table_apart_uniq_key = CStringFuncs::remove_kovichka_and_slash( table_apart_uniq_key.toStdString().c_str() ).c_str();
+        table_data_req = CStringFuncs::remove_kovichka_and_slash( table_data_req.toStdString().c_str() ).c_str();
+        table_data_start = CStringFuncs::remove_kovichka_and_slash( table_data_start.toStdString().c_str() ).c_str();
+        table_data_end = CStringFuncs::remove_kovichka_and_slash( table_data_end.toStdString().c_str() ).c_str();
+        table_raw_source_dir = CStringFuncs::remove_kovichka_and_slash( table_raw_source_dir.toStdString().c_str() ).c_str();
+
+       /*qDebug() << table_apart_name << " " <<
+                   table_apart_cost << " " <<
+                   table_apart_uniq_key << " " <<
+                   table_data_req << " " <<
+                   table_data_start << " " <<
+                   table_data_end << " " <<
+                   table_raw_source_dir << "\n";*/
 
 
        CHomeNameAndCostAndData obj = CHomeNameAndCostAndData::create_object(
-                    table_data_start.toStdString(), table_data_end.toStdString(), table_data_req.toStdString()
-                    , table_apart_cost.toStdString()
-                    , table_apart_name.toStdString() );
+                   table_data_start.toStdString()
+                   , table_data_end.toStdString()
+                   , table_data_req.toStdString()
+                   , table_apart_cost.toStdString()
+                   , table_apart_name.toStdString() );
 
-        //const std::string  & date_start,
-        //const std::string  & date_end,
-        //const std::string  & date_req,
-        //const std::string  & cost,
-        //const std::string  & name
 
-        //qDebug() << name;
-       // Keys.push_back(name.toStdString());
+          ResultFind.push_back (obj );
     }
 
 
 
-    qDebug() <<Keys.size();
+    qDebug() <<ResultFind.size();
 
+    return  ResultFind;
 }
 
 
