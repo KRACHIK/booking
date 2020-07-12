@@ -11,7 +11,7 @@
 	#include "def.h"
 #endif
 #include "Str.h"
-
+ 
 
 
 #include <iostream>
@@ -266,25 +266,7 @@ namespace client
 
 }
 
-
-#if  1 
  
-	
-	class CStringFuncs_2
-	{
-	public:
-
-		static std::vector <CStr> Parse_Space(const std::string & buf);
-		static std::string do_replace(const std::string & in, const std::string &from, const std::string & to);
-		static bool Parse_GetDataByPath(const std::string & buf, Base::CData & Start, Base::CData & End);
-		static std::string get_level2_name(const std::string & Path);
-		static bool get_level2_data_obj(const std::string & Path, Base::CData & OutPutPresult);
-
-
-	};
- 
-#endif 
-
 
 namespace dir_path {
 
@@ -299,5 +281,18 @@ namespace dir_path {
 
 }
 
+
+
+
+class CStringFuncs_2
+{
+public:
+
+	static std::vector <CStr> Parse_Space(const std::string & buf);
+	static std::string do_replace(const std::string & in, const std::string &from, const std::string & to);
+	static bool Parse_GetDataByPath(const std::string & buf, Base::CData & Start, Base::CData & End);
+	static std::string get_level2_name(const std::string & Path);
+	static bool get_level2_data_obj(const std::string & Path, Base::CData & OutPutPresult);
+};
 
 #endif /* COMMON_H */

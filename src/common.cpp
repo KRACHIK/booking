@@ -431,71 +431,6 @@ namespace client
 }
 
 
-#if 1 
-
-	std::vector <CStr> CStringFuncs_2::Parse_Space(const std::string & buf)
-	{
-		std::vector<std::string>words;
-
-		std::istringstream ist(buf);
-		std::string tmp;
-
-		while (ist >> tmp)
-			words.push_back(tmp);
-
-		return words;
-	}
-
-
-	std::string CStringFuncs_2::do_replace(const std::string & in, const std::string &from, const std::string & to)
-	{
-		return std::regex_replace(in, std::regex(from), to);
-	}
-
-	//std::vector<std::string> ArrName = client::CFileManager::GetArrHomeNameAndCost(sIntrestingDir);
-		//ArrHomeName ArrName = client::CFileManager::GetArrHomeNameAndCost("D:\\Development\\booking\\bin2\\Debug\\db\\29.02.2020\\01.03.2020-04.03.2020");
-
-	std::string CStringFuncs_2::get_level2_name(const std::string & Path)
-	{
-		/*-------D:\Development\booking\bin2\Debug\db\-2326178\08.03.2020\09.03.2020-11.03.2020
-		----------------------------------------------Levle-1----Levle-2---------Levle-3   */
-
-		//input  D:\\Development\\booking\\bin2\\Debug\\db\\29.02.2020\\01.03.2020-04.03.2020
-		//target 29.02.2020
-		int AllSize = Path.size();
-		int StartSym = AllSize - 32;
-
-		std::string Result = std::string(Path, StartSym, 10);
-
-		return Result;
-	}
-
-	bool CStringFuncs_2::get_level2_data_obj(const std::string & sData, Base::CData & OutPutPresult)
-	{
-		//input  D:\\Development\\booking\\bin2\\Debug\\db\\29.02.2020\\01.03.2020-04.03.2020
-		//target Base::CData
-
-		std::string StrLevel2 = CStringFuncs_2::get_level2_name(sData); //29.02.2020	
-
-		return Base::CData::Parse(StrLevel2, OutPutPresult);
-	}
-
-
-	bool CStringFuncs_2::Parse_GetDataByPath(const std::string & buf, Base::CData & Start, Base::CData & End)
-	{
-		//input  D:\Development\booking\bin2\Debug\db\29.02.2020\01.03.2020-04.03.2020\FILE.TXT
-		//target  01.03.2020 04.03.2020
-
-		std::string PathAndSpace = do_replace(buf, "\\\\", " ");
-		std::vector <CStr> Arr = Parse_Space(PathAndSpace);
-
-		CStr DiapozonDat = Arr[Arr.size() - 1];
-
-		return Base::CData::Parse(DiapozonDat, Start, End);
-	}
-	 
-
-#endif
 
 std::string dir_path::CParse::get_path_to_contry(const std::string &sDirDir)
 {
@@ -526,3 +461,70 @@ std::string dir_path::CParse::get_contry(const std::string &sDirDir)
 
 	return  Arr[0];
 }
+
+
+#if 1 
+
+std::vector <CStr> CStringFuncs_2::Parse_Space(const std::string & buf)
+{
+	std::vector<std::string>words;
+
+	std::istringstream ist(buf);
+	std::string tmp;
+
+	while (ist >> tmp)
+		words.push_back(tmp);
+
+	return words;
+}
+
+
+std::string CStringFuncs_2::do_replace(const std::string & in, const std::string &from, const std::string & to)
+{
+	return std::regex_replace(in, std::regex(from), to);
+}
+
+//std::vector<std::string> ArrName = client::CFileManager::GetArrHomeNameAndCost(sIntrestingDir);
+	//ArrHomeName ArrName = client::CFileManager::GetArrHomeNameAndCost("D:\\Development\\booking\\bin2\\Debug\\db\\29.02.2020\\01.03.2020-04.03.2020");
+
+std::string CStringFuncs_2::get_level2_name(const std::string & Path)
+{
+	/*-------D:\Development\booking\bin2\Debug\db\-2326178\08.03.2020\09.03.2020-11.03.2020
+	----------------------------------------------Levle-1----Levle-2---------Levle-3   */
+
+	//input  D:\\Development\\booking\\bin2\\Debug\\db\\29.02.2020\\01.03.2020-04.03.2020
+	//target 29.02.2020
+	int AllSize = Path.size();
+	int StartSym = AllSize - 32;
+
+	std::string Result = std::string(Path, StartSym, 10);
+
+	return Result;
+}
+
+bool CStringFuncs_2::get_level2_data_obj(const std::string & sData, Base::CData & OutPutPresult)
+{
+	//input  D:\\Development\\booking\\bin2\\Debug\\db\\29.02.2020\\01.03.2020-04.03.2020
+	//target Base::CData
+
+	std::string StrLevel2 = CStringFuncs_2::get_level2_name(sData); //29.02.2020	
+
+	return Base::CData::Parse(StrLevel2, OutPutPresult);
+}
+
+
+bool CStringFuncs_2::Parse_GetDataByPath(const std::string & buf, Base::CData & Start, Base::CData & End)
+{
+	//input  D:\Development\booking\bin2\Debug\db\29.02.2020\01.03.2020-04.03.2020\FILE.TXT
+	//target  01.03.2020 04.03.2020
+
+	std::string PathAndSpace = do_replace(buf, "\\\\", " ");
+	std::vector <CStr> Arr = Parse_Space(PathAndSpace);
+
+	CStr DiapozonDat = Arr[Arr.size() - 1];
+
+	return Base::CData::Parse(DiapozonDat, Start, End);
+}
+
+
+#endif

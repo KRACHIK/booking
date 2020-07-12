@@ -17,7 +17,7 @@ class CUniqKeydbManager
 {
 public:
 
-   static bool sql_select( const CUniqKey &   UniqKey);
+   static std::vector<CHomeNameAndCostAndData> sql_select( const CUniqKey &   UniqKey, std::string sUniq_apart_key);
 };
 
 #endif // APART_RAW_INFO_H

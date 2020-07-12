@@ -1,7 +1,7 @@
 #include "sql_find_get_assoc_info.h"
 
 
-bool CUniqKeydbManager::sql_select(const CUniqKey &UniqKey)
+std::vector<CHomeNameAndCostAndData> CUniqKeydbManager::sql_select(const CUniqKey &UniqKey, std::string sUniq_apart_key)
 {
     DataBase database;
 
@@ -16,14 +16,14 @@ bool CUniqKeydbManager::sql_select(const CUniqKey &UniqKey)
     if ( database.ConnectToDataBase(TableColumnNames) )
     {
         qDebug("ok connet");
-        // ok connect
 
         std::vector<CHomeNameAndCostAndData> ResultFind =
         database.Select_apart(
-                    "AlpinaHotel_https://r-cf.bstatic.com/xdata/images/hotel/square200/233703169.jpg?k=06b920fb70ba9014be03ba225e21277da7aef7275c3550a0394d475787d42290&o="
+                    sUniq_apart_key.c_str()
                     );
 
-
+        return ResultFind;
     }
-    return true;
+
+    return {};
 }
