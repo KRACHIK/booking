@@ -58,9 +58,14 @@ public:
 	)
     {
         CHome  Home(name, "", std::atoi (cost.c_str() ) ) ;		//CHomeNameAndCostAndData
-		Base::CData end;
+
+        Base::CData end;
 		Base::CData start;
 		Base::CData req;
+
+        Base::CData::Parse(date_start, end);
+        Base::CData::Parse(date_end, start);
+        Base::CData::Parse(date_req, req);
 
 		CHomeNameAndCostAndData obj(Home, end, start, req);
 		return obj;

@@ -18,6 +18,7 @@ bool CUniqKeydbManager::sql_select(const CUniqKey &UniqKey)
         qDebug("ok connet");
         // ok connect
 
+        std::vector<CHomeNameAndCostAndData> ResultFind =
         database.Select_apart(
                     "AlpinaHotel_https://r-cf.bstatic.com/xdata/images/hotel/square200/233703169.jpg?k=06b920fb70ba9014be03ba225e21277da7aef7275c3550a0394d475787d42290&o="
                     );

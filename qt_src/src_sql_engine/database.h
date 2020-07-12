@@ -10,6 +10,7 @@
 #include <QDate>
 #include <QDebug>
 
+#include "../../Src/Client_Base_type.h"
 
 class CSettingDB
 {
@@ -58,7 +59,8 @@ public:
     void SetSettingDB(const CSettingDB &GetSettingDB);
 
     void Select();
-    void Select_apart(std::string UniqApartKey);
+
+    std::vector<CHomeNameAndCostAndData> Select_apart(std::string UniqApartKey);
 
 private:
 

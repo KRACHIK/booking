@@ -8,7 +8,8 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
 
     CUniqKey  UniqKey;
-    CUniqKeydbManager::sql_select(UniqKey);
+
+ CUniqKeydbManager::sql_select(UniqKey);
 
     return 0;
 }
