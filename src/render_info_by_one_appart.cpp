@@ -28,7 +28,7 @@ std::vector<std::string>  CBuilder::deserialize_status(const std::string & sFile
 	 
 	for (auto & it : File_.GetArrName())
 	{
-		std::vector<std::string> token = CStringFuncs::split_Into_words(it);
+		std::vector<std::string> token = CStringFuncs3::split_Into_words(it);
 		 
 		StatusArr.push_back(CCalendar::GetStatus(token));
 	}

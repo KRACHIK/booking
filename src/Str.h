@@ -18,11 +18,9 @@
 
 #include <regex>
 
-
-namespace Str 
-{
-
-	class rENAME
+// CStringFuncs
+ 
+	class CStringFuncs
 	{
 	public:
 		static std::vector <CStr> Parse_Space(const std::string & buf);
@@ -32,9 +30,8 @@ namespace Str
 		static dati Parse_GetDataByPath(const std::string & Src);
 
 		static dati Parse_day_mother_year(const std::string & Src);
-
 	};
-}
+ 
  
 
 #endif 

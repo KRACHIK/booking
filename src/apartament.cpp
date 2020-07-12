@@ -10,7 +10,6 @@ std::string CHome::create_qniq_key() const
 
 CHome CHome::Deserealize(const CStr & Str)
 {
-	std::vector<CStr> Arr = Str::Util::Parse_Space(Str);
 
 	CStr Name = Arr[0];
 	int Cost = std::stoi(Arr[1]);

@@ -268,9 +268,9 @@ namespace client
 
 
 #if  1 
-namespace Str
-{
-	class Util
+ 
+	
+	class CStringFuncs_2
 	{
 	public:
 
@@ -282,7 +282,7 @@ namespace Str
 
 
 	};
-}
+ 
 #endif 
 
 

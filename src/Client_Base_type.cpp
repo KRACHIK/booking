@@ -51,7 +51,7 @@ CHomeNameAndCostAndData CHomeNameAndCostAndData::Derialize(const std::string & L
 
 	CHome home = CHome::Deserealize(LineArr);
 
-	std::vector<std::string> ArrData = Str::rENAME::Parse_Space(LineArr2);
+	std::vector<std::string> ArrData = CStringFuncs::Parse_Space(LineArr2);
 
 	if (ArrData.size() != 3)
 	{

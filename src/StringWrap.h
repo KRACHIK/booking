@@ -12,7 +12,7 @@
 #include <string>
 #include <regex>
 
-class CStringFuncs
+class CStringFuncs3
 {
 public:
 	static int get_index_by_reverse_search_in_array(std::vector<std::string> Words, std::string Substr);

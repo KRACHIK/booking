@@ -17,8 +17,6 @@
 #include  "calendar_def.h"
 #include  "calendar_data_provider.h"
 
- 
-
 
 class CHomeArr
 {

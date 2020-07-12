@@ -3,18 +3,18 @@
 #include "StringWrap.h"
 
 
-std::string CStringFuncs::regex_replace(std::string Str, const std::string &sFind, const std::string &sReplace)
+std::string CStringFuncs3::regex_replace(std::string Str, const std::string &sFind, const std::string &sReplace)
 {
     std::regex e(sFind);
     return std::regex_replace(Str, e, sReplace);
 }
 
 
-int CStringFuncs::get_index_by_reverse_search_in_array(std::vector<std::string> Words, std::string Substr)
+int CStringFuncs3::get_index_by_reverse_search_in_array(std::vector<std::string> Words, std::string Substr)
 {
     for (int i = Words.size() - 1; i > 0; i--)
     {
-        std::string Res1 = CStringFuncs::regex_search(Words[i], Substr);
+        std::string Res1 = CStringFuncs3::regex_search(Words[i], Substr);
 
         if (!Res1.empty())
             return i;
@@ -22,7 +22,7 @@ int CStringFuncs::get_index_by_reverse_search_in_array(std::vector<std::string> 
     return -1;
 }
 
-std::string CStringFuncs::regex_search(std::string s, std::string sRegex)
+std::string CStringFuncs3::regex_search(std::string s, std::string sRegex)
 {
     std::smatch m;
     std::regex e(sRegex);
@@ -35,7 +35,7 @@ std::string CStringFuncs::regex_search(std::string s, std::string sRegex)
     return std::string();
 }
 
-std::vector<std::string> CStringFuncs::get_all_regex_search(std::string s, const std::string &r)
+std::vector<std::string> CStringFuncs3::get_all_regex_search(std::string s, const std::string &r)
 {
     std::vector<std::string> Words;
 
@@ -53,7 +53,7 @@ std::vector<std::string> CStringFuncs::get_all_regex_search(std::string s, const
     return Words;
 }
 
-std::string CStringFuncs::is_regex_ip(std::string s)
+std::string CStringFuncs3::is_regex_ip(std::string s)
 {
     std::smatch m;
     std::regex e("\\d+\\.\\d+\\.\\d+\\.\\d+");
@@ -65,7 +65,7 @@ std::string CStringFuncs::is_regex_ip(std::string s)
     return std::string();
 }
 
-std::vector<std::string> CStringFuncs::split_into_lines(std::string Str)
+std::vector<std::string> CStringFuncs3::split_into_lines(std::string Str)
 {
     std::vector<std::string> result;
 
@@ -78,7 +78,7 @@ std::vector<std::string> CStringFuncs::split_into_lines(std::string Str)
     return result;
 }
 
-std::vector<std::string> CStringFuncs::split_Into_words(std::string Str)
+std::vector<std::string> CStringFuncs3::split_Into_words(std::string Str)
 {
     std::string Buf;
     std::stringstream ss(Str);
@@ -91,12 +91,12 @@ std::vector<std::string> CStringFuncs::split_Into_words(std::string Str)
 }
 
  
-bool CStringFuncs::is_find_str(const std::string &Str, const std::string &SubStr)
+bool CStringFuncs3::is_find_str(const std::string &Str, const std::string &SubStr)
 {
     return Str.find(SubStr) != std::string::npos;
 }
 
- int CStringFuncs::get_pos_sub_str(const std::string &Str, const std::string &SubStr)
+ int CStringFuncs3::get_pos_sub_str(const std::string &Str, const std::string &SubStr)
 {
     return Str.find(SubStr);
 }

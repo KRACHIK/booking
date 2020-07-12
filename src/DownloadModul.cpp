@@ -155,7 +155,7 @@ bool CDownload::IsPropuskDwnFile(const std::string & sDir, std::vector<client::C
 		// booking =                              booking14
 
 		std::string booking = CFileSystem::GetStemByPath(it);
-		std::string sNum = Str::rENAME::do_replace(booking, "booking", " ");
+		std::string sNum = CStringFuncs::do_replace(booking, "booking", " ");
 		int Num = std::stoi(sNum);
 		ArrNum.push_back(Num);
 	}
