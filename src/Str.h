@@ -44,13 +44,7 @@ class CStringFuncs
 {
 public:
 
-    static CStr remove_kovichka_and_slash(const std::string & Str)
-    {
-        std::string buf = do_replace(Str , "\"", "");
-         std::string bufbuf = do_replace(buf , "\"", "");
-
-        return  bufbuf;
-    }
+    static CStr remove_kovichka_and_slash(const std::string & Str);
 
 	static std::vector <CStr> Parse_Space(const std::string & buf);
 

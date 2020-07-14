@@ -1,17 +1,25 @@
 #include "Str.h"
 
 
+CStr CStringFuncs::remove_kovichka_and_slash(const std::string &Str)
+{
+    std::string buf = do_replace(Str , "\"", "");
+    std::string bufbuf = do_replace(buf , "\"", "");
+
+    return  bufbuf;
+}
+
 std::vector <CStr> CStringFuncs::Parse_Space(const std::string & buf)
 {
-	std::vector<std::string>words;
+    std::vector<std::string>words;
 
-	std::istringstream ist(buf);
-	std::string tmp;
+    std::istringstream ist(buf);
+    std::string tmp;
 
-	while (ist >> tmp)
-		words.push_back(tmp);
+    while (ist >> tmp)
+        words.push_back(tmp);
 
-	return words;
+    return words;
 }
 
 

@@ -246,18 +246,24 @@ void CHotelManager::save_result_compute(std::string sFilePath)
 	}
 }
 
+int CHotelManager::get_count_day_svoboden_dl9_zaseleniya()
+{
+    int  n =_CalendarManager.get_size(EHOTEL_STATUS::SVOBODEN_DL9_ZASELENIA);
+    return n;
+}
+
 
 
 #ifdef QT_COMPILER
-    // zero
+// zero
 #else
 namespace Level1
 {
-	void CMapDataBase::RenderStat()
-	{
-		for (auto it = GetMap().begin(); it != GetMap().end(); it++)
-		{
-			std::string sReport = it->second.CreateCalendarNoPeopleInHotel();
+void CMapDataBase::RenderStat()
+{
+    for (auto it = GetMap().begin(); it != GetMap().end(); it++)
+    {
+        std::string sReport = it->second.CreateCalendarNoPeopleInHotel();
 			Log::CFileLog::Log("[CMapDataBase::RenderStat] :" + sReport, "CreateCalendarNoPeopleInHotel.txt");
 		}
 
@@ -392,44 +398,114 @@ bool cforum::Date::isLeapYear()
 
 
 
+void CCalendar::Deserialize(std::vector<std::string> &Tokens)
+{
+    std::string    sKey = Tokens[0];
+    std::string     sCountry = Tokens[1];
+    std::string     sName = Tokens[2];
+    std::string     sDate = Tokens[3];
+    std::string     sCostType = Tokens[4];
+    std::string     sCost = Tokens[5];
+    std::string     sStatus = Tokens[6];
+
+    CHome d(sName,sKey, std::atoi(sCost.c_str()));
+    Base::CData day;
+    Base::CData::Parse(sDate, day);
+}
+
+std::string CCalendar::GetStatus(std::vector<std::string> &Tokens)
+{
+    // Input Atrium432_https://q-cf.bstatic.com/xdata/images/hotel/square200/244215887.jpg?k=833576b71e08c85f5cfe8c4c9333374825f5f86484228e755fac3d5ad9bd2a73&o= Country Atrium432 10.3.2020 BYN 13688 3
+    // Output: status
+    std::string sStatus = Tokens[6];
+    return sStatus;
+}
+
+void CCalendar::save_result_compute(CHomeNameAndCostAndData assoc_apart, const std::string &sFilePath)
+{
+    for (int i = 0; i < _Days.size(); i++)
+    {
+        std::string sStatus;
+
+        if (_Status[i] == EHOTEL_STATUS::BOOKING_SKAZAL_4TO_MEST_HETY)
+            sStatus = std::to_string(EHOTEL_STATUS::BOOKING_SKAZAL_4TO_MEST_HETY);
+
+        else if (_Status[i] == EHOTEL_STATUS::HETY_V_POISKOVOE_VIDACHI)
+            sStatus = std::to_string(EHOTEL_STATUS::HETY_V_POISKOVOE_VIDACHI);
+
+        else if (_Status[i] == EHOTEL_STATUS::NONE)
+            sStatus = std::to_string(EHOTEL_STATUS::NONE);
+
+        else if (_Status[i] == EHOTEL_STATUS::OTSYTSTVUET_V_VIDA4I_AND_BOOKING_SKAZAL_4TO_MEST_HETY)
+            sStatus = std::to_string(EHOTEL_STATUS::OTSYTSTVUET_V_VIDA4I_AND_BOOKING_SKAZAL_4TO_MEST_HETY);
+
+        else if (_Status[i] == EHOTEL_STATUS::SVOBODEN_DL9_ZASELENIA)
+            sStatus = std::to_string(EHOTEL_STATUS::SVOBODEN_DL9_ZASELENIA);
+
+        else if (_Status[i] == EHOTEL_STATUS::SVOBODEN_DL9_ZASELENIA_AND_ZAN9T_V_DRUGOM_DIAPOZONE)
+            sStatus = std::to_string(EHOTEL_STATUS::SVOBODEN_DL9_ZASELENIA_AND_ZAN9T_V_DRUGOM_DIAPOZONE);
+
+
+
+        std::string sKey = assoc_apart.GetHome().create_qniq_key();
+        std::string sCountry = "Country";
+        std::string sName = assoc_apart.GetHome().GetName();
+        std::string sDate = _Days[i].Serialize();
+        std::string sCostType = "BYN";
+        std::string sCost = "13688";
+
+        std::string sResult = sKey
+                + " " + sCountry
+                + " " + sName
+                + " " + sDate
+                + " " + sCostType
+                + " " + sCost
+                + " " + sStatus;
+
+        Log::CFileLog::raw_log(sResult, sFilePath);
+        Log::CFileLog::raw_log(sResult, sFilePath + FILE_PROCESSING_INFO_RESULT + "_" + sName + FILE_FORMAT);
+
+    }
+}
+
 Base::CData CCalendar::get_data_by_offset(int year, int month, int day, int offset)
 {
 
-	struct tm date = { 0, 0, 12 };  // nominal time midday (arbitrary).
-									//int year = 2010;
-									//int month = 2;  // February
-									//int day = 26;   // 26th
+    struct tm date = { 0, 0, 12 };  // nominal time midday (arbitrary).
+    //int year = 2010;
+    //int month = 2;  // February
+    //int day = 26;   // 26th
 
-									// Set up the date structure
-	date.tm_year = year - 1900;
-	date.tm_mon = month;  // note: zero indexed
-	date.tm_mday = day;       // note: not zero indexed
+    // Set up the date structure
+    date.tm_year = year - 1900;
+    date.tm_mon = month;  // note: zero indexed
+    date.tm_mday = day;       // note: not zero indexed
 
-							  // Date, less 100 days
-	DatePlusDays(&date, offset);
+    // Date, less 100 days
+    DatePlusDays(&date, offset);
 
-	//std::cout << asctime(&date) << std::endl;
-	//std::cout << " " << date.tm_year + 1900 << " " << date.tm_mon << " " << date.tm_mday;
+    //std::cout << asctime(&date) << std::endl;
+    //std::cout << " " << date.tm_year + 1900 << " " << date.tm_mon << " " << date.tm_mday;
 
-	Base::CData Result(
-		date.tm_mday
-		, date.tm_mon
-		, date.tm_year + 1900
-	);
+    Base::CData Result(
+                date.tm_mday
+                , date.tm_mon
+                , date.tm_year + 1900
+                );
 
-	//CData(int startDay_, int startMonth_, int startYear_);
+    //CData(int startDay_, int startMonth_, int startYear_);
 
-	return Result;
+    return Result;
 }
 
 void CCalendar::CreateCalendar(int DayRequest)
 {
-	_Status.reserve(DayRequest);
-	_Days.reserve(DayRequest);
-	_Cost.reserve(DayRequest);
+    _Status.reserve(DayRequest);
+    _Days.reserve(DayRequest);
+    _Cost.reserve(DayRequest);
 
-	for (int i = 1; i < DayRequest; i++)
-	{
+    for (int i = 1; i < DayRequest; i++)
+    {
         /*Base::CData Day = get_data_by_offset(2020, 2, 1, i);
         v funce  get_data_by_offset error ona vernet he vernuiy daty 30.03.2020 doljno bit 31.03.2020
         */
@@ -437,32 +513,32 @@ void CCalendar::CreateCalendar(int DayRequest)
 
         _Days.push_back(Day2);
 
-		_Status.push_back(EHOTEL_STATUS::HETY_V_POISKOVOE_VIDACHI);
+        _Status.push_back(EHOTEL_STATUS::HETY_V_POISKOVOE_VIDACHI);
 
-		_Cost.push_back(0);
-	}
+        _Cost.push_back(0);
+    }
 }
 
 EHOTEL_STATUS CCalendar::get_status_zalenia(Base::CData Data)
 {
-	for (int i = 0; i < _Days.size(); i++)
-	{
-		if (_Days[i] == Data)
-		{
-			return  _Status[i];
-		}
-	}
+    for (int i = 0; i < _Days.size(); i++)
+    {
+        if (_Days[i] == Data)
+        {
+            return  _Status[i];
+        }
+    }
 
-	return EHOTEL_STATUS::NONE;
+    return EHOTEL_STATUS::NONE;
 }
 
 void CCalendar::set_status(Base::CData Data, EHOTEL_STATUS status, float Cost)
 {
-	for (int i = 0; i < _Days.size(); i++)
-	{
-		if (_Days[i] == Data)
-		{
-			_Status[i] = status;
+    for (int i = 0; i < _Days.size(); i++)
+    {
+        if (_Days[i] == Data)
+        {
+            _Status[i] = status;
 			_Cost[i] = Cost;
 
 			return;
@@ -477,14 +553,25 @@ void CCalendar::set_status(Base::CData Data, EHOTEL_STATUS status, float Cost)
 	//assert(false);
 }
 
+int CCalendar::get_size(EHOTEL_STATUS Stat)
+{
+    int n=0;
+    for( EHOTEL_STATUS it : _Status)
+    {
+        if ( it == Stat)
+            n++;
+    }
+    return  n;
+}
+
 // Adjust date by a number of days +/-
 
 void CCalendar::DatePlusDays(tm * date, int days)
 {
-	const time_t ONE_DAY = 24 * 60 * 60;
+    const time_t ONE_DAY = 24 * 60 * 60;
 
-	// Seconds since start of epoch
-	time_t date_seconds = mktime(date) + (days * ONE_DAY);
+    // Seconds since start of epoch
+    time_t date_seconds = mktime(date) + (days * ONE_DAY);
 
 	// Update caller date
 	// Use localtime because mktime converts to UTC so may change date
