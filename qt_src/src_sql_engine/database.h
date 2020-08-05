@@ -11,6 +11,14 @@
 #include <QDebug>
 
 #include "../../Src/Client_Base_type.h"
+#include "../../Src/Str.h"
+
+class CUniqKey
+{
+public:
+    std::string _DATA_BASE_FILE = "C:/example/FULL_INFO_RAW_APART.db";
+    std::string _DATA_BASE_TABLE_NAME = "RAW_INFO_APART";
+};
 
 class CSettingDB
 {
@@ -58,7 +66,8 @@ public:
     CSettingDB GetSettingDB() const;
     void SetSettingDB(const CSettingDB &GetSettingDB);
 
-    void Select();
+
+    std::vector<std::string> Select();
 
     std::vector<CHomeNameAndCostAndData> Select_apart(std::string UniqApartKey);
 

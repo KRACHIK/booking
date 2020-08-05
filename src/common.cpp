@@ -527,4 +527,34 @@ bool CStringFuncs_2::Parse_GetDataByPath(const std::string & buf, Base::CData & 
 }
 
 
+
+
+
+int tmp::CDifferenceDate::getDifference(tmp::Date firstDate, tmp::Date secondDate)
+{
+    long int n1 = firstDate.year * 365 + firstDate.day;
+
+    for (int i = 0; i < firstDate.month - 1; i++)
+        n1 += get_month_Days()[i];
+
+    n1 += countLeapYears(firstDate);
+
+    long int n2 = secondDate.year * 365 + secondDate.day;
+
+    for (int i = 0; i < secondDate.month - 1; i++)
+        n2 += get_month_Days()[i];
+
+    n2 += countLeapYears(secondDate);
+
+    return abs(n2 - n1);
+}
+
+int tmp::CDifferenceDate::countLeapYears(tmp::Date date)
+{
+    int year = date.year;
+    if (date.month <= 2)
+        year--;
+    return year / 4 - year / 100 + year / 400;
+}
+
 #endif

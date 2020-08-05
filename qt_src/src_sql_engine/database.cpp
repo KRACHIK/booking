@@ -73,7 +73,7 @@ void DataBase::SetSettingDB(const CSettingDB &SettingDB)
     _SettingDB = SettingDB;
 }
 
-void DataBase::Select()
+std::vector<std::string> DataBase::Select()
 {
     QSqlQuery query;
     //
@@ -88,6 +88,7 @@ void DataBase::Select()
     }
 
     qDebug() <<Keys.size();
+    return Keys;
 }
 
 
@@ -106,11 +107,23 @@ std::vector<CHomeNameAndCostAndData>  DataBase::Select_apart(std::string UniqApa
                            "FROM RAW_INFO_APART "
                            "WHERE TABLE_APART_UNIQ_KEY =";
 
+#if 0 // ruchnoi` poisk
+     UniqApartKey =   "'"  "\""  +  UniqApartKey  +  "\""   "'"
+             " AND TABLE_RAW_SOURCE_DIR LIKE '%2327363%'";
+#else
+    // cliuch prishel iz bazy` danny`kh i uzhe soderzhit kovy`chki
+    UniqApartKey =   "'"     +  UniqApartKey  +       "'"
+              " AND TABLE_RAW_SOURCE_DIR LIKE '%2327363%'";
 
-     UniqApartKey =   "'"  "\""  +  UniqApartKey  +  "\""   "'";
+#endif
+
      cmd += UniqApartKey;
 
-    qDebug() <<"sql:"  << cmd.c_str() << "\n";
+    //qDebug() <<"sql:"  << cmd.c_str() << "\n";
+
+    Log::CFileLog::Log(cmd, LOG_CALENDAR);
+
+
 
     std::vector<CHomeNameAndCostAndData> ResultFind;
 

@@ -22,6 +22,7 @@ SOURCES += \
         ../../src/apartament.cpp \
         ../../src/calendar_map_adapter.cpp \
         ../../src/common.cpp \
+        ../sql_foreach_uniq_key/sql_foreach_uniq_key.cpp \
         ../sql_get_assoc_info_by_apart_key/sql_find_get_assoc_info.cpp \
         ../src_sql_engine/database.cpp \
         main.cpp \
@@ -38,6 +39,7 @@ HEADERS += \
     ../../src/apartament.h \
     ../../src/calendar_map_adapter.h \
     ../../src/common.h \
+    ../sql_foreach_uniq_key/sql_foreach_uniq_key.h \
     ../sql_get_assoc_info_by_apart_key/sql_find_get_assoc_info.h \
     ../src_sql_engine/database.h \
     qt_create_calandar.h

@@ -1,7 +1,8 @@
 #include "sql_find_get_assoc_info.h"
 
 
-std::vector<CHomeNameAndCostAndData> CUniqKeydbManager::sql_select(const CUniqKey &UniqKey, std::string sUniq_apart_key)
+std::vector<CHomeNameAndCostAndData> CUniqKeydbManager::sql_select(
+        const CUniqKey &UniqKey, std::string sUniq_apart_key)
 {
     DataBase database;
 

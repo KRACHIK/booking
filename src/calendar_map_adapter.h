@@ -143,6 +143,8 @@ public:
 
     int get_size(EHOTEL_STATUS Stat);
 
+    float get_midle_cost_by_one_day() const;
+
 private:
 	// Adjust date by a number of days +/-
 	void DatePlusDays(struct tm* date, int days);
@@ -172,8 +174,15 @@ public:
 
 	void save_result_compute(std::string sFilePath);
 
-    int get_count_day_svoboden_dl9_zaseleniya();
+        int get_count_day_svoboden_dl9_zaseleniya();
 
+        float get_price_is_status_BOOKING_SKAZAL_4TO_MEST_HETY();
+
+        /* get_result_for_excel
+              vernet stroku formata <IMIA, SKOL`KO ZARABOTAL, UNIKAL`YNYI` CLIUCH,>
+              dlia togo chtoby` potom zapisat` vse v odni fai`l, i poe`tomu fai`lu postroit` grafik v e`ksele
+        */
+        std::string get_result_for_excel(std::string apartKey);
 private:
 	std::vector<client::CHotel> _Arr;
 	std::vector<CHomeNameAndCostAndData> _ArrHomeNameAndCostAndData;

@@ -7,8 +7,10 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    CUniqKey  UniqKey;
-    CUniqKeydbManager::sql_select(UniqKey);
+    CUniqKey UniqKey = CUniqKeydbManager_foreach::GetDBSetting();
+
+    std::vector<std::string> key = CUniqKeydbManager_foreach::sql_select(UniqKey);
+
 
     return 0;
 }

@@ -58,7 +58,7 @@ public:
     );
 
 		 
-
+    float get_cost_for_one_day();
 
 private:
 	CHome _Home;

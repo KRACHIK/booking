@@ -93,4 +93,21 @@ CHomeNameAndCostAndData CHomeNameAndCostAndData::create_object(const std::string
     return obj;
 }
 
+float CHomeNameAndCostAndData::get_cost_for_one_day()
+{
+    if ( _Home.GetCost() > 0)
+    {
+
+        int n =  tmp::CDifferenceDate::getDifference( tmp::Date { GetDataStart().startDay, GetDataStart().startMonth, GetDataStart().startYear}
+                                     ,tmp::Date { GetDataEnd().startDay, GetDataEnd().startMonth, GetDataEnd().startYear}
+                                     );
+
+        float NewCost = _Home.GetCost() / n;
+        //Log::CFileLog::Log("[Compute] : old cost = " + std::to_string(_Home.GetCost()) + " new cost = "+ std::to_string(NewCost) , LOG_CALENDAR_ERR);
+        return NewCost;
+    }
+
+    return 0;
+}
+
 

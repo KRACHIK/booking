@@ -178,6 +178,7 @@ bool CHotelManager::is_init()
 	return !pusto;
 }
 
+
 void CHotelManager::Compute()
 {
 	_CalendarManager.CreateCalendar(180);
@@ -185,7 +186,9 @@ void CHotelManager::Compute()
 	for (CHomeNameAndCostAndData Apart : _ArrHomeNameAndCostAndData)
 	{
 		Base::CData cur_day = Apart.get_Level2_data();
-		float Cost = Apart.get_cost();
+        float Cost = Apart.get_cost_for_one_day();
+
+
 		EHOTEL_STATUS STARI_STATUS = _CalendarManager.get_status_zalenia(cur_day);
 
 		if (STARI_STATUS == EHOTEL_STATUS::NONE)
@@ -252,6 +255,33 @@ int CHotelManager::get_count_day_svoboden_dl9_zaseleniya()
     return n;
 }
 
+float CHotelManager::get_price_is_status_BOOKING_SKAZAL_4TO_MEST_HETY()
+{
+    int  n =_CalendarManager.get_size(EHOTEL_STATUS::BOOKING_SKAZAL_4TO_MEST_HETY);
+
+    float cost_by_one_day = _CalendarManager.get_midle_cost_by_one_day();
+
+    if (cost_by_one_day > 0.0f)
+    {
+        float Ret = cost_by_one_day * n;
+        return Ret;
+    }
+    return -1.0f;
+}
+
+std::string CHotelManager::get_result_for_excel(std::string apartKey)
+{
+    if ( _ArrHomeNameAndCostAndData.empty() )
+        return "[CHotelManager::get_result_for_excel] : Error";
+
+    std::string ApartName = _ArrHomeNameAndCostAndData[0].GetHome().GetName();
+    std::string UniqKey = _ArrHomeNameAndCostAndData[0].GetHome().create_qniq_key();
+    std::string ZarabotalCost = std::to_string(  get_price_is_status_BOOKING_SKAZAL_4TO_MEST_HETY() );
+
+    std::string Ret =  ZarabotalCost + " " +ApartName + " "  + apartKey;
+    return Ret;
+}
+
 
 
 #ifdef QT_COMPILER
@@ -264,18 +294,18 @@ void CMapDataBase::RenderStat()
     for (auto it = GetMap().begin(); it != GetMap().end(); it++)
     {
         std::string sReport = it->second.CreateCalendarNoPeopleInHotel();
-			Log::CFileLog::Log("[CMapDataBase::RenderStat] :" + sReport, "CreateCalendarNoPeopleInHotel.txt");
-		}
+        Log::CFileLog::Log("[CMapDataBase::RenderStat] :" + sReport, "CreateCalendarNoPeopleInHotel.txt");
+    }
 
-		for (auto it = GetMap().begin(); it != GetMap().end(); it++)
-		{
-			std::string sReport = it->second.DynamikCost();
-			Log::CFileLog::Log("[CMapDataBase::RenderStat] :" + sReport, "CreateDynamikCost.txt");
-		}
-	}
+    for (auto it = GetMap().begin(); it != GetMap().end(); it++)
+    {
+        std::string sReport = it->second.DynamikCost();
+        Log::CFileLog::Log("[CMapDataBase::RenderStat] :" + sReport, "CreateDynamikCost.txt");
+    }
+}
 
 
-	void CMapDataBase::AddKey(std::vector<std::string> NameHomes)
+void CMapDataBase::AddKey(std::vector<std::string> NameHomes)
 	{
 		//Log::CFileLog::Log("AddKey: Start", LOG_CALENDAR);
 		for (auto it : NameHomes)
@@ -562,6 +592,28 @@ int CCalendar::get_size(EHOTEL_STATUS Stat)
             n++;
     }
     return  n;
+}
+
+float CCalendar::get_midle_cost_by_one_day() const
+{
+    float SumCost = 0;
+    int k=0;
+
+    for (auto it : _Cost)
+    {
+        if ( it > 0.0f )
+        {
+            SumCost += it;
+            k++;
+        }
+    }
+
+    if (k > 0 )
+    {
+        return SumCost / k;
+    }
+
+    return -1.0f ;
 }
 
 // Adjust date by a number of days +/-
