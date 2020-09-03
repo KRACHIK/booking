@@ -64,7 +64,7 @@ namespace Log {
 class CFileLog
 {
 public:
-    static void Log(const std::string & Str, const std::string & sFileName);
+    static void Log(const std::string & Str, const std::string & sFileName, const std::string & sProgName = "");
     static void raw_log(const std::string & Str, const std::string & sFileName);
 };
 

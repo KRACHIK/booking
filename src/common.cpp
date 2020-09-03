@@ -3,7 +3,7 @@
 
 namespace Log {
 
-	void CFileLog::Log(const std::string & Str, const std::string & sFileName)
+	void CFileLog::Log(const std::string & Str, const std::string & sFileName, const std::string & sProgName  /*=*/)
 	{
 		struct tm *u;
         char s1[40] = { 0 };
@@ -13,7 +13,7 @@ namespace Log {
 
 		std::stringstream ss;
 
-		ss << s1 << Str << "\n";
+		ss << sProgName << " " << s1 << Str << "\n";
 
 		std::ofstream outFile(sFileName, std::ios::app);
 		outFile << ss.rdbuf();
