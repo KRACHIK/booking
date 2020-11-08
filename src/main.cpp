@@ -6,6 +6,14 @@
 #include "common.h"
 #include "parser.h"
 
+
+#define DBG_DEMO 1
+//#define DBG_PATH "D:\\Development\\booking\\bin2\\Debug\\db\\-2326178\\03.09.2020\\04.09.2020-11.09.2020" // old 
+ #define DBG_PATH "D:\\Development\\booking\\bin2\\Debug\\db\\-2327363\\02.09.2020\\03.09.2020-04.09.2020" // new ok worc parse cost
+ //#define DBG_PATH "D:\\Development\\booking\\bin2\\Debug\\db\\-2327363\\30.10.2020\\31.10.2020-01.11.2020" // new get cost not work 
+ 
+//#define DBG_PATH "D:\\1"
+
 int main(int argc, const char** argv)
 {
 	client::CSeting Seting;
@@ -22,22 +30,28 @@ int main(int argc, const char** argv)
 		return 1;
 	}
 
+#if DBG_DEMO 
+	std::string sTarget = DBG_PATH;
+	std::string sResult = "not use";
+#else
 	std::string sTarget = argv[1];
 	std::string sResult = argv[2];
+#endif
 
-	Log::CFileLog::Log("Dir Target" + sTarget, LOG_PARSER);
-	Log::CFileLog::Log("parse result" + sResult, LOG_PARSER);
+	std::string input_prams("Dir Target: <" + sTarget + ">" + " file name for save result parse: <" + sResult + ">");
+
+	Log::CFileLog::Log(input_prams, LOG_PARSER, LOG_PARSER);
 
 	std::vector<std::experimental::filesystem::path> Arr = CFileSystem::directory_iterator(sTarget);
 	std::vector<std::string> HTMLArr = CFileSystem::Filter(Arr, ".html");
 
 	if (HTMLArr.empty())
 	{
-		Log::CFileLog::Log("not find HTML", LOG_CALENDAR);
+		Log::CFileLog::Log("Eror! not find HTML" + input_prams, LOG_PARSER_ERR, LOG_PARSER);
 		return 1;
 	}
 
-	CHomeArr   homeArr;
+	CHomeArr homeArr;
 
 	for (auto it : HTMLArr)
 	{
@@ -46,6 +60,16 @@ int main(int argc, const char** argv)
 #else
 		std::string sTotalHome = IHotelParser::GetTotalHome(it);
 #endif
+	}
+	 
+	bool bRet = homeArr.is_not_init_objects();
+	if (bRet )
+	{  
+		Log::CFileLog::Log("[" + std::string(__func__) + " : bad parse in dir "
+			+ Base::CUtil::GetDirByFilePath(HTMLArr[0])
+			+ " navernoe, booking.com izminil dizain, i teper, nujnih html tegov !Ý.", LOG_PARSER, LOG_PARSER);
+		assert(false);
+		exit(-1);
 	}
 
 

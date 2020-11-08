@@ -28,9 +28,33 @@ public:
 
 	void save_apart_name_andurl(const std::string & sFileName);
 
+	bool is_not_init_objects() const 
+	{
+		if (_Arr.empty())
+		{
+			return true;
+		}
+
+		auto is_not_init_cost = [=]() {
+			int SumCost = 0;
+			for (auto it : _Arr)
+			{
+				SumCost += it.GetCost();
+			}
+
+			if (SumCost <= 0)
+			{
+				return true;
+			}
+
+			return false;
+		};
+
+		return is_not_init_cost();
+	}
+
 private:
 	std::vector<CHome> _Arr;
-
 };
 
 class CFile

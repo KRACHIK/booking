@@ -45,13 +45,9 @@ int main()
 		}
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
-
-
-
+ 
 	//bool bRunUtil = client::CLogic::RunUtilDownload(TaskArr, Seting);
-
-
-
+ 
 	// 1 если нужно работаь
 	// 2 сформировать рабочие каталоги
 			// получить задание

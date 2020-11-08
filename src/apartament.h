@@ -27,7 +27,10 @@ public:
 	std::string GetSerialize();
 
 	std::string GetName() const { return _sName; }
-	int  GetCost() { return _Cost; }
+	int  GetCost() const 
+	{ 
+		return _Cost; 
+	}
 
 	std::string get_url_mini_img() const { return _sUrlMiniIMG; }
 

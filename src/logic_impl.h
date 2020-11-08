@@ -14,6 +14,15 @@ namespace client
 	{
 	public:
 
+		/* CLogic::get_path_for_run_utils
+		output: 
+				{  "D:\Development\booking\bin2\Debug\db\-2326178\03.09.2020\04.09.2020-11.09.2020"
+				  ,"D:\Development\booking\bin2\Debug\db\-2326178\03.09.2020\04.09.2020-11.09.2020"
+				  ,"..."
+		        }
+		vernet massiv putey.  rabota zavisit ot nalichiy files "booking0_FILE_UNIQ_APART_KEY_02.09.2020_20-19-55.kr4"
+		algoritm perebiraer vse files v katalogah level2dir && level3dir i vozvrat znacheniy ne zavisit ot tekuchey dati
+		*/
 		static std::vector<std::string> get_path_for_run_utils();
 
 		static bool IsWork(std::vector<client::CTask> & TaskArr);

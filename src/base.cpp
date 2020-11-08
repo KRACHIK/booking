@@ -222,10 +222,10 @@ std::vector<int> CFileRead::GetArrToken(const std::string & FileText, CToken Tok
 	while (found >= 0)
 	{
 		sResult = CStringFind_impl::FindForeach(FileText, Token.GetTegStart(), Token.GetTegEnd(), found);
-
+		  
 		if (found >= 0)
 		{
-			//Log::CFileLog::Log("[CFileRead::GetArrToken] : " + sResult, LOG_PARSER);
+			Log::CFileLog::Log("[CFileRead::GetArrToken] : " + sResult, LOG_PARSER);
 
 			Arr.push_back(std::stoi(sResult));
 		}

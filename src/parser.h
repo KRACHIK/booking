@@ -12,9 +12,7 @@
 #endif  
 
 #include "base.h"
-
 #include "parser_impl.h"
-
 #include "common.h"
 
 class IHotelParser
@@ -41,11 +39,7 @@ private:
 
 	static std::vector<std::string> GetClosedHome(std::string sFileHTML);
 
-	static void GetPosledniiBlock()
-	{
-
-	}
-
+	 
 	/* static void GetNameAndPrice_Impl(
 		std::string & sFileHTML
 		, CSave & Save

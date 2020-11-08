@@ -71,15 +71,15 @@ void IHotelParser::create_object_name_and_cost_and_url(
 )
 {
 
-	int price = get_price_Impl(Text);
 	std::string sName = get_name_impl(Text);
+	  
+	int price = get_price_Impl(Text);
 	std::string url = get_url_IMGMini(tokenURL, Text);
 
 	CHome Home(sName, url, price);
  
 	homeArr.AddHome(Home);
 	Save.AddHomeName(sName);
-
 }
 
 /* 
@@ -124,17 +124,18 @@ void IHotelParser::GetNameAndPrice_Impl(
 }
 */
 
+
 void IHotelParser::GetNameAndPrice(std::string sFileHTML, client::CSeting Seting, CSave & Save, std::string sResult, CHomeArr & homeArr )
 {
-	std::string sWorkDirAndCurrentDay = Seting.GetWorkDirAndCurrentDay();
-
-	Log::CFileLog::Log("[IHotelParser::GetNameAndPrice] : " + sFileHTML, LOG_PARSER);
-
+	Log::CFileLog::Log("[" + std::string(__func__) + "] : " + sFileHTML, LOG_PARSER, LOG_PARSER);
+ 
 	// delete  CRLF
 	std::string sFileText = CFileRead::OpenFileAndReplaceCRLF(sFileHTML);
 
 	// delete space
 	sFileText = CFileRead::ReplaceSpace(sFileText);
+	 
+	CFile::Save(sFileText,   "Not-Space.log"); // создает запись типа booking_not_space. потом где в другой фенку происходит вызов get_dir_iterator по маске booking.  и мы полуычаем бескоенчную екурсию 
 
 	// DBG save
 	CToken Token("<imgclass=|hotel_image|src=", "<imgclass=|hotel_image|src="); //   class="hotel_image"src="
@@ -144,7 +145,7 @@ void IHotelParser::GetNameAndPrice(std::string sFileHTML, client::CSeting Seting
 
 	if (TokenArr.empty())
 	{
-		Log::CFileLog::Log("[IHotelParser::GetNameAndPrice] : " + sFileHTML + " HE CODERJIT BLOCKOV TokenArr.empty() or block vsego odin. Error faith Ahtung ", LOG_PARSER_ERR);
+		Log::CFileLog::Log("[IHotelParser::GetNameAndPrice] : " + sFileHTML + " HE CODERJIT BLOCKOV TokenArr.empty() or block vsego odin. Error faith Ahtung ", LOG_PARSER_ERR, LOG_PARSER);
 		return;
 	}
 
@@ -209,14 +210,83 @@ std::vector<int> IHotelParser::GetArrPriceByText(std::string sText_HTML)
 {
 	std::string sFileText = CFileRead::ReplaceCRLF(sText_HTML);
 	sFileText = CFileRead::ReplaceSpace(sFileText);
+	  
+	auto Parse_v1_2020_mart = [=] () -> std::vector<int> 
+	{
+		std::vector<int> Price = CFileRead::GetArrToken(sFileText, CToken("aria-hidden=|true|>BYN&nbsp;", "</div>")); // etot kod rabotal vmate 2020 goda. potom buking smenil dizain. i vse slomalos
+		return Price;
+	};
 
-#if 1
-	std::vector<int> Price = CFileRead::GetArrToken(sFileText, CToken("aria-hidden=|true|>BYN&nbsp;", "</div>"));
-#else
-	std::vector<int> Price = CFileRead::GetArrToken(sFileText, CToken("aria-hidden=|true|>US$", "</div>"));
-#endif
+	auto Parse_v1_2020_sent9br = [=] () -> std::vector<int>
+	{
+		/*  input: sFileText =  "...mouseenter=|customGoal:AdeKbCcBUfQUaSHbZFVXOJUNQKFcFXZYCaJFSSZRe:2|>BYN 623</div><spanclass=|bui-u-sr-only|>ЦенаBYN 623</span></div></div><divclass=|prco-...."
+			output: StrPrice  = "В 623"          */
+		std::vector<std::string> StrPrice = CFileRead::GetArrTokenRaw(sFileText, CToken(":2|>BYN", "</div><spanclass=|bui-u-sr-only"));  // etot kod rabotaet He sovsev korectno (smotri input\output), 
 
-	return Price;
+		if (StrPrice.size() == 1)
+		{
+			std::vector<int> PriceInt;
+			std::string ret = std::string(StrPrice[0], 2, StrPrice[0].size());
+			Log::CFileLog::Log("[" + std::string(__func__) +  "std::stoi for: " + ret + " " , LOG_PARSER, LOG_PARSER);
+			PriceInt.push_back(std::stoi(ret));
+			return PriceInt;
+		}
+		return {  };
+	};
+
+	auto Parse_v1_2020_no9br = [=]() -> std::vector<int>
+	{
+		/*  input: sFileText =  "...mouseenter=|customGoal:AdeKbCcBUfQUaSHbZFVXOJUNQKFcFXZYCaJFSSZRe:2|>BYN 623</div><spanclass=|bui-u-sr-only|>ЦенаBYN 623</span></div></div><divclass=|prco-...."
+			output: StrPrice  = "В 623"          */
+		std::vector<std::string> StrPrice = CFileRead::GetArrTokenRaw(sFileText, CToken("|>BYN", "</div><spanclass=|bui-u-sr-only"));  // etot kod rabotaet He sovsev korectno (smotri input\output), 
+
+		if (StrPrice.size() == 1)
+		{
+			std::vector<int> PriceInt;
+			std::string ret = std::string(StrPrice[0], 2, StrPrice[0].size());
+			Log::CFileLog::Log("[" + std::string(__func__) + "std::stoi for: " + ret + " ", LOG_PARSER, LOG_PARSER);
+			PriceInt.push_back(std::stoi(ret));
+			return PriceInt;
+		}
+		return {  };
+	};
+
+
+	std::vector<int> Price_1 = Parse_v1_2020_mart();
+	std::vector<int> Price_2 = Parse_v1_2020_sent9br();
+	std::vector<int> Price_3 = Parse_v1_2020_no9br();
+	 
+	std::vector<int> PriceResult;
+	 
+	int CheckParser = 0;
+
+	if (Price_1.size() == 1)
+	{
+		CheckParser++;
+		PriceResult = Price_1;
+	}
+	if (Price_2.size() == 1)
+	{
+		PriceResult = Price_2;
+		CheckParser++;
+	}
+	if (Price_3.size() == 1)
+	{
+		PriceResult = Price_3;
+		CheckParser++;
+	}
+	 
+	if (CheckParser > 1)
+	{
+		Log::CFileLog::Log("[" + std::string(__func__) + "] : Error. Ahtung! [if (Price_1.size() >= 1 && Price_2.size() >= 1)] pri parsinge stranici bili obnarujeni html tegi, iz ranih vremen. ", LOG_PARSER, LOG_PARSER);		 
+	}
+
+
+	#if 0 
+		std::vector<int> Price = CFileRead::GetArrToken(sFileText, CToken("aria-hidden=|true|>US$", "</div>"));
+	#endif
+
+	return PriceResult;
 }
 
 std::vector<std::string> IHotelParser::GetClosedHome(std::string sFileHTML)
